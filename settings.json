@@ -2,15 +2,23 @@
   "permissions": {
     "allow": [
       "Read",
-      "Write(./src/**)",
-      "Edit(./src/**)",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
       "Bash(find *)",
       "Bash(ls *)",
-      "Bash(npm run test*)"
+      "Bash(cat *)",
+      "Bash(npm run test*)",
+      "Bash(grep *)"
     ],
     "deny": [
       "Write(./.env)",
-      "Write(./node_modules/**)"
+      "Write(./node_modules/**)",
+      "Bash(* deploy *)",
+      "Bash(* publish *)",
+      "Bash(git push *)",
+      "Bash(git pull *)"
     ]
   },
   "model": "opus[1m]",
