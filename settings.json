@@ -35,6 +35,19 @@
     "Notion@claude-plugins-official": true,
     "slack@claude-plugins-official": true
   },
+  "hooks": {
+    "ConfigChange": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/claude-dotfiles/scripts/dotfiles-sync.sh\"",
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
   "effortLevel": "medium"

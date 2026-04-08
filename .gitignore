@@ -12,3 +12,7 @@
 !install.ps1
 !README.md
 !CLAUDE.md
+!bootstrap.sh
+!bootstrap.ps1
+!scripts/
+!scripts/**

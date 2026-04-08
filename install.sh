@@ -133,7 +133,18 @@ elif [ -f "$DOTFILES_PLUGINS" ]; then
 fi
 
 # Register alias in shell profile
-ALIAS_LINE="alias dotclaude='git -C $DOTFILES_DIR'"
+FUNC_MARKER="function dotclaude"
+read -r -d '' FUNC_BODY << 'DOTCLAUDE_FUNC' || true
+function dotclaude() {
+  local DOTCLAUDE_DIR="__DOTFILES_DIR__"
+  if [ "$1" = "sync" ]; then
+    bash "$DOTCLAUDE_DIR/scripts/dotfiles-sync.sh"
+  else
+    git -C "$DOTCLAUDE_DIR" "$@"
+  fi
+}
+DOTCLAUDE_FUNC
+FUNC_BODY="${FUNC_BODY//__DOTFILES_DIR__/$DOTFILES_DIR}"
 
 SHELL_PROFILE=""
 if [ -f "$HOME/.zshrc" ]; then
@@ -143,19 +154,25 @@ elif [ -f "$HOME/.bashrc" ]; then
 fi
 
 if [ -n "$SHELL_PROFILE" ]; then
-  if grep -qF "alias dotclaude=" "$SHELL_PROFILE"; then
-    sed -i.bak "s|alias dotclaude=.*|$ALIAS_LINE|" "$SHELL_PROFILE"
-    echo "[alias]  Updated dotclaude alias in $SHELL_PROFILE"
+  if grep -qF "$FUNC_MARKER" "$SHELL_PROFILE"; then
+    sed -i.bak "/function dotclaude/,/^}/d" "$SHELL_PROFILE"
+    echo "" >> "$SHELL_PROFILE"
+    echo "$FUNC_BODY" >> "$SHELL_PROFILE"
+    echo "[alias]  Updated dotclaude function in $SHELL_PROFILE"
   else
     echo "" >> "$SHELL_PROFILE"
-    echo "$ALIAS_LINE" >> "$SHELL_PROFILE"
-    echo "[alias]  Added dotclaude alias to $SHELL_PROFILE"
+    echo "$FUNC_BODY" >> "$SHELL_PROFILE"
+    echo "[alias]  Added dotclaude function to $SHELL_PROFILE"
   fi
   echo ""
   echo "Done! Run 'source $SHELL_PROFILE' or restart your shell to use 'dotclaude'."
 else
   echo ""
-  echo "Done! Could not detect shell profile. Manually add this to your profile:"
-  echo "  $ALIAS_LINE"
+  echo "Done! Could not detect shell profile. Manually add this function to your profile:"
+  echo "$FUNC_BODY"
 fi
+
+# Make sync script executable
+chmod +x "$DOTFILES_DIR/scripts/dotfiles-sync.sh"
+
 echo ""

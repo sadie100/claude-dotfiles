@@ -129,7 +129,17 @@ if (Test-Path $TargetPlugins) {
 }
 
 # Register function in PowerShell profile
-$FuncLine = "function dotclaude { git -C `"$DotfilesDir`" @args }"
+$FuncBody = @"
+
+function dotclaude {
+    if (`$args[0] -eq 'sync') {
+        bash "$DotfilesDir/scripts/dotfiles-sync.sh"
+    } else {
+        git -C "$DotfilesDir" @args
+    }
+}
+"@
+
 $ProfilePath = $PROFILE.CurrentUserCurrentHost
 
 if (!(Test-Path $ProfilePath)) {
@@ -138,11 +148,13 @@ if (!(Test-Path $ProfilePath)) {
 
 $ProfileContent = Get-Content $ProfilePath -Raw -ErrorAction SilentlyContinue
 if ($ProfileContent -match "function dotclaude") {
-    $ProfileContent = $ProfileContent -replace "function dotclaude \{[^}]+\}", $FuncLine
+    # Remove old function block
+    $ProfileContent = $ProfileContent -replace "(?s)function dotclaude\s*\{.*?\}", ""
+    $ProfileContent = $ProfileContent.TrimEnd() + "`n" + $FuncBody
     Set-Content -Path $ProfilePath -Value $ProfileContent
     Write-Host "[alias]  Updated dotclaude function in $ProfilePath"
 } else {
-    Add-Content -Path $ProfilePath -Value "`n$FuncLine"
+    Add-Content -Path $ProfilePath -Value $FuncBody
     Write-Host "[alias]  Added dotclaude function to $ProfilePath"
 }
 
