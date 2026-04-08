@@ -59,7 +59,14 @@ if ((Test-Path $SettingsTarget) -and (Get-Item $SettingsTarget).Attributes.HasFl
 
         # Deep merge: dotfiles base + user's unique keys/array entries
         $merged = Merge-JsonDeep $dotfilesSettings $existingSettings
-        $merged | ConvertTo-Json -Depth 10 | Set-Content -Path $SettingsSource
+        $json = $merged | ConvertTo-Json -Depth 10
+        # ConvertTo-Json uses 4-space indent; normalize to 2-space
+        $json = ($json -split "`n" | ForEach-Object {
+            if ($_ -match '^( +)') {
+                (' ' * [math]::Floor($Matches[1].Length / 2)) + $_.TrimStart()
+            } else { $_ }
+        }) -join "`n"
+        $json | Set-Content -Path $SettingsSource
         Write-Host "[merge]  Merged user settings into dotfiles settings.json"
 
         # Backup original
@@ -186,6 +193,18 @@ if ($ProfileContent -match "function dotclaude") {
 } else {
     Add-Content -Path $ProfilePath -Value $FuncBody
     Write-Host "[alias]  Added dotclaude function to $ProfilePath"
+}
+
+# --- Sync dotfiles repo if there are changes ---
+$SyncScript = Join-Path $DotfilesDir "scripts" "dotfiles-sync.sh"
+if (Test-Path $SyncScript) {
+    $hasChanges = (git -C $DotfilesDir status --porcelain) -ne ""
+    if ($hasChanges) {
+        Write-Host ""
+        Write-Host "[sync]   Pushing merged changes..." -ForegroundColor Yellow
+        bash $SyncScript
+        Write-Host "[sync]   Done" -ForegroundColor Yellow
+    }
 }
 
 Write-Host ""

@@ -169,4 +169,12 @@ fi
 # Make sync script executable
 chmod +x "$DOTFILES_DIR/scripts/dotfiles-sync.sh"
 
+# --- Sync dotfiles repo if there are changes ---
+if [ -n "$(git -C "$DOTFILES_DIR" status --porcelain)" ]; then
+  echo ""
+  echo "[sync]   Pushing merged changes..."
+  bash "$DOTFILES_DIR/scripts/dotfiles-sync.sh"
+  echo "[sync]   Done"
+fi
+
 echo ""
