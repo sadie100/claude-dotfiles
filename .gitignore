@@ -1,0 +1,13 @@
+# Ignore everything
+*
+
+# Allow managed files
+!.gitignore
+!settings.json
+!skills/
+!skills/**
+!plugins/
+!plugins/installed_plugins.json
+!install.sh
+!install.ps1
+!README.md

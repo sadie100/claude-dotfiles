@@ -1,0 +1,119 @@
+{
+  "version": 2,
+  "plugins": {
+    "typescript-lsp@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "d:\\dev\\works\\kevin-front",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\claude-plugins-official\\typescript-lsp\\1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-02-06T08:04:49.622Z",
+        "lastUpdated": "2026-02-06T08:04:49.622Z",
+        "gitCommitSha": "236752ad9ab36029b648bfd94707944760242768"
+      }
+    ],
+    "atlassian@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "d:\\dev\\works\\kevin-front",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\claude-plugins-official\\atlassian\\63e369036b13",
+        "version": "63e369036b13",
+        "installedAt": "2026-02-06T08:05:15.880Z",
+        "lastUpdated": "2026-02-24T04:19:55.758Z",
+        "gitCommitSha": "25068023d5078c7f1050c533da139304d8bc204d"
+      }
+    ],
+    "Notion@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "d:\\dev\\works\\kevin-front",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\claude-plugins-official\\Notion\\0.1.0",
+        "version": "0.1.0",
+        "installedAt": "2026-02-06T08:06:08.497Z",
+        "lastUpdated": "2026-02-06T08:06:08.497Z",
+        "gitCommitSha": "9847f2aa1a15f25df35ed1fb7b4557dbb60cd651"
+      }
+    ],
+    "slack@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "d:\\dev\\works\\kevin-front",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\claude-plugins-official\\slack\\aa296ec81e8c",
+        "version": "aa296ec81e8c",
+        "installedAt": "2026-02-06T08:06:28.786Z",
+        "lastUpdated": "2026-02-23T04:31:02.317Z",
+        "gitCommitSha": "236752ad9ab36029b648bfd94707944760242768"
+      }
+    ],
+    "document-skills@anthropic-agent-skills": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\anthropic-agent-skills\\document-skills\\1ed29a03dc85",
+        "version": "1ed29a03dc85",
+        "installedAt": "2026-02-10T06:16:31.748Z",
+        "lastUpdated": "2026-02-10T06:16:31.748Z",
+        "gitCommitSha": "1ed29a03dc852d30fa6ef2ca53a67dc2c2c2c563"
+      }
+    ],
+    "frontend-design@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\claude-plugins-official\\frontend-design\\unknown",
+        "version": "unknown",
+        "installedAt": "2026-02-10T08:32:18.888Z",
+        "lastUpdated": "2026-04-07T05:57:57.464Z",
+        "gitCommitSha": "2cd88e7947b7382e045666abee790c7f55f669f3"
+      }
+    ],
+    "context7@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\claude-plugins-official\\context7\\unknown",
+        "version": "unknown",
+        "installedAt": "2026-02-10T08:51:23.020Z",
+        "lastUpdated": "2026-04-07T05:57:57.475Z",
+        "gitCommitSha": "2cd88e7947b7382e045666abee790c7f55f669f3"
+      }
+    ],
+    "code-simplifier@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\claude-plugins-official\\code-simplifier\\1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-02-10T08:54:03.417Z",
+        "lastUpdated": "2026-02-10T08:54:03.417Z",
+        "gitCommitSha": "2cd88e7947b7382e045666abee790c7f55f669f3"
+      }
+    ],
+    "code-review@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\claude-plugins-official\\code-review\\unknown",
+        "version": "unknown",
+        "installedAt": "2026-02-10T08:54:38.209Z",
+        "lastUpdated": "2026-04-07T05:57:57.489Z",
+        "gitCommitSha": "2cd88e7947b7382e045666abee790c7f55f669f3"
+      }
+    ],
+    "feature-dev@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\claude-plugins-official\\feature-dev\\unknown",
+        "version": "unknown",
+        "installedAt": "2026-02-10T08:57:05.155Z",
+        "lastUpdated": "2026-04-07T05:57:57.499Z",
+        "gitCommitSha": "2cd88e7947b7382e045666abee790c7f55f669f3"
+      }
+    ],
+    "chrome-devtools-mcp@chrome-devtools-plugins": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\carpe\\.claude\\plugins\\cache\\chrome-devtools-plugins\\chrome-devtools-mcp\\latest",
+        "version": "latest",
+        "installedAt": "2026-03-16T08:13:40.179Z",
+        "lastUpdated": "2026-03-16T08:13:40.179Z",
+        "gitCommitSha": "e6b7a09e6eeaed65da173a338babd70db3c36ad7"
+      }
+    ]
+  }
+}

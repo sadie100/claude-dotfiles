@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write(./src/**)",
+      "Edit(./src/**)",
+      "Bash(find *)",
+      "Bash(ls *)",
+      "Bash(npm run test*)"
+    ],
+    "deny": [
+      "Write(./.env)",
+      "Write(./node_modules/**)"
+    ]
+  },
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "document-skills@anthropic-agent-skills": true,
+    "frontend-design@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "chrome-devtools-mcp@chrome-devtools-plugins": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "atlassian@claude-plugins-official": true,
+    "Notion@claude-plugins-official": true,
+    "slack@claude-plugins-official": true
+  },
+  "autoUpdatesChannel": "latest",
+  "plansDirectory": ".claude/plans",
+  "effortLevel": "medium"
+}
