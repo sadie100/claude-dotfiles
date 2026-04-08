@@ -22,7 +22,6 @@ Write-Host ""
 
 # Ensure target directories exist
 New-Item -ItemType Directory -Path (Join-Path $ClaudeDir "plugins") -Force | Out-Null
-New-Item -ItemType Directory -Path (Join-Path $ClaudeDir "skills") -Force | Out-Null
 
 # Backup and symlink files
 foreach ($f in $Files) {
@@ -43,40 +42,33 @@ foreach ($f in $Files) {
     }
 }
 
-# --- Skills: absorb existing + symlink all ---
-
+# --- Skills: absorb existing + directory symlink ---
 $SkillsTarget = Join-Path $ClaudeDir "skills"
 $SkillsSource = Join-Path $DotfilesDir "skills"
 
-# Step 1: Absorb existing non-symlink skills into dotfiles repo
-foreach ($skill in (Get-ChildItem -Path $SkillsTarget -Directory -ErrorAction SilentlyContinue)) {
-    if ($skill.Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) { continue }
+if ((Test-Path $SkillsTarget) -and (Get-Item $SkillsTarget).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
+    Write-Host "[skip]   $SkillsTarget (already linked)"
+} else {
+    # Absorb existing skills into dotfiles repo
+    if (Test-Path $SkillsTarget) {
+        foreach ($skill in (Get-ChildItem -Path $SkillsTarget -Directory -ErrorAction SilentlyContinue)) {
+            $repoSkill = Join-Path $SkillsSource $skill.Name
 
-    $repoSkill = Join-Path $SkillsSource $skill.Name
-
-    if (Test-Path $repoSkill) {
-        Write-Host "[skip]   $($skill.Name) already exists in dotfiles, backing up local copy"
-        Move-Item -Path $skill.FullName -Destination "$($skill.FullName).bak" -Force
-    } else {
-        Write-Host "[absorb] $($skill.FullName) -> $repoSkill"
-        Copy-Item -Path $skill.FullName -Destination $repoSkill -Recurse
-        Remove-Item -Path $skill.FullName -Recurse -Force
-    }
-}
-
-# Step 2: Symlink all dotfiles skills back
-foreach ($skill in (Get-ChildItem -Path $SkillsSource -Directory)) {
-    $target = Join-Path $SkillsTarget $skill.Name
-
-    if ((Test-Path $target) -and (Get-Item $target).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
-        Write-Host "[skip]   $target (already linked)"
-    } else {
-        if (Test-Path $target) {
-            Move-Item -Path $target -Destination "${target}.bak" -Force
+            if (Test-Path $repoSkill) {
+                Write-Host "[skip]   $($skill.Name) already exists in dotfiles, backing up local copy"
+                Move-Item -Path $skill.FullName -Destination "$($skill.FullName).bak" -Force
+            } else {
+                Write-Host "[absorb] $($skill.FullName) -> $repoSkill"
+                Copy-Item -Path $skill.FullName -Destination $repoSkill -Recurse
+            }
         }
-        New-Item -ItemType SymbolicLink -Path $target -Target $skill.FullName -Force | Out-Null
-        Write-Host "[link]   $target -> $($skill.FullName)"
+        # Remove original directory (absorbed contents are in repo now)
+        Remove-Item -Path $SkillsTarget -Recurse -Force
     }
+
+    # Symlink entire skills directory
+    New-Item -ItemType SymbolicLink -Path $SkillsTarget -Target $SkillsSource -Force | Out-Null
+    Write-Host "[link]   $SkillsTarget -> $SkillsSource"
 }
 
 # --- CLAUDE.md: merge with marker block ---

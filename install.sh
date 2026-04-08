@@ -14,7 +14,6 @@ echo "Target: $CLAUDE_DIR"
 echo ""
 
 mkdir -p "$CLAUDE_DIR/plugins"
-mkdir -p "$CLAUDE_DIR/skills"
 
 # Backup and symlink files
 for f in "${FILES[@]}"; do
@@ -34,41 +33,36 @@ for f in "${FILES[@]}"; do
   fi
 done
 
-# --- Skills: absorb existing + symlink all ---
+# --- Skills: absorb existing + directory symlink ---
+SKILLS_TARGET="$CLAUDE_DIR/skills"
+SKILLS_SOURCE="$DOTFILES_DIR/skills"
 
-# Step 1: Absorb existing non-symlink skills into dotfiles repo
-for skill in "$CLAUDE_DIR/skills/"*/; do
-  [ -d "$skill" ] || continue
-  name="$(basename "$skill")"
-  repo_skill="$DOTFILES_DIR/skills/$name"
+if [ -L "$SKILLS_TARGET" ]; then
+  echo "[skip]   $SKILLS_TARGET (already linked)"
+else
+  # Absorb existing skills into dotfiles repo
+  if [ -d "$SKILLS_TARGET" ]; then
+    for skill in "$SKILLS_TARGET/"*/; do
+      [ -d "$skill" ] || continue
+      name="$(basename "$skill")"
+      repo_skill="$SKILLS_SOURCE/$name"
 
-  # Skip if already a symlink (already managed)
-  [ -L "${skill%/}" ] && continue
-
-  if [ -d "$repo_skill" ]; then
-    echo "[skip]   $name already exists in dotfiles, backing up local copy"
-    mv "$skill" "${skill%/}.bak"
-  else
-    echo "[absorb] $skill -> $repo_skill"
-    cp -r "$skill" "$repo_skill"
-    rm -rf "$skill"
+      if [ -d "$repo_skill" ]; then
+        echo "[skip]   $name already exists in dotfiles, backing up local copy"
+        mv "$skill" "${skill%/}.bak"
+      else
+        echo "[absorb] $skill -> $repo_skill"
+        cp -r "$skill" "$repo_skill"
+      fi
+    done
+    # Remove original directory (absorbed contents are in repo now)
+    rm -rf "$SKILLS_TARGET"
   fi
-done
 
-# Step 2: Symlink all dotfiles skills back
-for skill in "$DOTFILES_DIR/skills/"*/; do
-  [ -d "$skill" ] || continue
-  name="$(basename "$skill")"
-  target="$CLAUDE_DIR/skills/$name"
-
-  if [ -L "$target" ]; then
-    echo "[skip]   $target (already linked)"
-  else
-    [ -e "$target" ] && mv "$target" "${target}.bak"
-    ln -s "$skill" "$target"
-    echo "[link]   $target -> $skill"
-  fi
-done
+  # Symlink entire skills directory
+  ln -s "$SKILLS_SOURCE" "$SKILLS_TARGET"
+  echo "[link]   $SKILLS_TARGET -> $SKILLS_SOURCE"
+fi
 
 # --- CLAUDE.md: merge with marker block ---
 MARKER="# >>> claude-dotfiles >>>"
