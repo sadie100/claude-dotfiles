@@ -13,8 +13,6 @@ echo "Source: $DOTFILES_DIR"
 echo "Target: $CLAUDE_DIR"
 echo ""
 
-mkdir -p "$CLAUDE_DIR/plugins"
-
 # Backup and symlink files
 for f in "${FILES[@]}"; do
   target="$CLAUDE_DIR/$f"
@@ -96,40 +94,6 @@ else
     echo "$MARKER_END"
   } >> "$TARGET_CLAUDE"
   echo "[merge]  Appended dotfiles content to $TARGET_CLAUDE"
-fi
-
-# --- Plugins: merge installed_plugins.json ---
-DOTFILES_PLUGINS="$DOTFILES_DIR/plugins/installed_plugins.json"
-TARGET_PLUGINS="$CLAUDE_DIR/plugins/installed_plugins.json"
-
-if [ -f "$TARGET_PLUGINS" ] && [ ! -L "$TARGET_PLUGINS" ] && [ -f "$DOTFILES_PLUGINS" ]; then
-  # Merge: existing + dotfiles (dotfiles wins on conflict)
-  python3 -c "
-import json, sys
-with open(sys.argv[1]) as f: existing = json.load(f)
-with open(sys.argv[2]) as f: dotfiles = json.load(f)
-merged = existing.copy()
-merged['plugins'] = {**existing.get('plugins', {}), **dotfiles.get('plugins', {})}
-with open(sys.argv[1], 'w') as f: json.dump(merged, f, indent=2)
-" "$TARGET_PLUGINS" "$DOTFILES_PLUGINS"
-  echo "[merge]  Merged plugins: kept existing + added dotfiles entries"
-elif [ -L "$TARGET_PLUGINS" ]; then
-  echo "[skip]   $TARGET_PLUGINS (is a symlink, removing and merging)"
-  real_content="$(cat "$TARGET_PLUGINS")"
-  rm "$TARGET_PLUGINS"
-  echo "$real_content" > "$TARGET_PLUGINS"
-  python3 -c "
-import json, sys
-with open(sys.argv[1]) as f: existing = json.load(f)
-with open(sys.argv[2]) as f: dotfiles = json.load(f)
-merged = existing.copy()
-merged['plugins'] = {**existing.get('plugins', {}), **dotfiles.get('plugins', {})}
-with open(sys.argv[1], 'w') as f: json.dump(merged, f, indent=2)
-" "$TARGET_PLUGINS" "$DOTFILES_PLUGINS"
-  echo "[merge]  Merged plugins after removing symlink"
-elif [ -f "$DOTFILES_PLUGINS" ]; then
-  cp "$DOTFILES_PLUGINS" "$TARGET_PLUGINS"
-  echo "[copy]   $DOTFILES_PLUGINS -> $TARGET_PLUGINS"
 fi
 
 # Register alias in shell profile
