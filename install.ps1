@@ -172,7 +172,16 @@ $FuncBody = @"
 
 function dotclaude {
     if (`$args[0] -eq 'sync') {
-        bash "$DotfilesDir/scripts/dotfiles-sync.sh"
+        `$d = "$DotfilesDir"
+        if (-not (git -C `$d status --porcelain)) { Write-Host "No changes"; return }
+        git -C `$d add -A
+        `$changed = (git -C `$d diff --cached --name-only) -join ", "
+        git -C `$d commit -m "sync: `$changed" --no-gpg-sign 2>`$null
+        `$b = git -C `$d branch --show-current
+        if (-not (git -C `$d push origin `$b 2>`$null)) {
+            git -C `$d pull --rebase origin `$b 2>`$null
+            git -C `$d push origin `$b 2>`$null
+        }
     } else {
         git -C "$DotfilesDir" @args
     }
