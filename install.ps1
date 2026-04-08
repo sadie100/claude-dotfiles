@@ -11,10 +11,6 @@ $ErrorActionPreference = "Stop"
 $DotfilesDir = $PSScriptRoot
 $ClaudeDir = Join-Path $env:USERPROFILE ".claude"
 
-$Files = @(
-    "settings.json"
-)
-
 Write-Host "=== Claude Code Dotfiles Installer ===" -ForegroundColor Cyan
 Write-Host "Source: $DotfilesDir"
 Write-Host "Target: $ClaudeDir"
@@ -23,23 +19,57 @@ Write-Host ""
 # Ensure target directories exist
 New-Item -ItemType Directory -Path (Join-Path $ClaudeDir "plugins") -Force | Out-Null
 
-# Backup and symlink files
-foreach ($f in $Files) {
-    $target = Join-Path $ClaudeDir $f
-    $source = Join-Path $DotfilesDir $f
+# --- settings.json: deep merge then symlink ---
+function Merge-JsonDeep {
+    param($Base, $Override)
+    $result = $Base.PSObject.Copy()
+    foreach ($prop in $Override.PSObject.Properties) {
+        $key = $prop.Name
+        $overVal = $prop.Value
+        if ($result.PSObject.Properties[$key]) {
+            $baseVal = $result.$key
+            if ($baseVal -is [PSCustomObject] -and $overVal -is [PSCustomObject]) {
+                $result.$key = Merge-JsonDeep $baseVal $overVal
+            } elseif ($baseVal -is [System.Collections.IEnumerable] -and $baseVal -isnot [string] -and
+                      $overVal -is [System.Collections.IEnumerable] -and $overVal -isnot [string]) {
+                $merged = [System.Collections.Generic.List[object]]::new()
+                foreach ($item in $baseVal) { $merged.Add($item) }
+                foreach ($item in $overVal) {
+                    if ($merged -notcontains $item) { $merged.Add($item) }
+                }
+                $result.$key = $merged.ToArray()
+            }
+            # scalar conflicts: base (dotfiles) wins — no overwrite
+        } else {
+            $result | Add-Member -NotePropertyName $key -NotePropertyValue $overVal
+        }
+    }
+    return $result
+}
 
-    if ((Test-Path $target) -and -not (Get-Item $target).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
-        $backup = "${target}.bak"
-        Write-Host "[backup] $target -> $backup"
-        Move-Item -Path $target -Destination $backup -Force
+$SettingsSource = Join-Path $DotfilesDir "settings.json"
+$SettingsTarget = Join-Path $ClaudeDir "settings.json"
+
+if ((Test-Path $SettingsTarget) -and (Get-Item $SettingsTarget).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
+    Write-Host "[skip]   $SettingsTarget (already linked)"
+} else {
+    if ((Test-Path $SettingsTarget) -and -not (Get-Item $SettingsTarget).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
+        $existingSettings = Get-Content $SettingsTarget -Raw | ConvertFrom-Json
+        $dotfilesSettings = Get-Content $SettingsSource -Raw | ConvertFrom-Json
+
+        # Deep merge: dotfiles base + user's unique keys/array entries
+        $merged = Merge-JsonDeep $dotfilesSettings $existingSettings
+        $merged | ConvertTo-Json -Depth 10 | Set-Content -Path $SettingsSource
+        Write-Host "[merge]  Merged user settings into dotfiles settings.json"
+
+        # Backup original
+        $backup = "${SettingsTarget}.bak"
+        Write-Host "[backup] $SettingsTarget -> $backup"
+        Move-Item -Path $SettingsTarget -Destination $backup -Force
     }
 
-    if ((Test-Path $target) -and (Get-Item $target).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
-        Write-Host "[skip]   $target (already linked)"
-    } else {
-        New-Item -ItemType SymbolicLink -Path $target -Target $source -Force | Out-Null
-        Write-Host "[link]   $target -> $source"
-    }
+    New-Item -ItemType SymbolicLink -Path $SettingsTarget -Target $SettingsSource -Force | Out-Null
+    Write-Host "[link]   $SettingsTarget -> $SettingsSource"
 }
 
 # --- Skills: absorb existing + directory symlink ---

@@ -4,32 +4,62 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
-FILES=(
-  "settings.json"
-)
-
 echo "=== Claude Code Dotfiles Installer ==="
 echo "Source: $DOTFILES_DIR"
 echo "Target: $CLAUDE_DIR"
 echo ""
 
-# Backup and symlink files
-for f in "${FILES[@]}"; do
-  target="$CLAUDE_DIR/$f"
-  source="$DOTFILES_DIR/$f"
+# --- settings.json: deep merge then symlink ---
+SETTINGS_SOURCE="$DOTFILES_DIR/settings.json"
+SETTINGS_TARGET="$CLAUDE_DIR/settings.json"
 
-  if [ -e "$target" ] && [ ! -L "$target" ]; then
-    echo "[backup] $target -> ${target}.bak"
-    mv "$target" "${target}.bak"
+if [ -L "$SETTINGS_TARGET" ]; then
+  echo "[skip]   $SETTINGS_TARGET (already linked)"
+else
+  if [ -f "$SETTINGS_TARGET" ]; then
+    # Deep merge: dotfiles as base, user's unique keys/array entries added
+    # jq: base * override for objects, arrays are unioned
+    merged=$(jq -s '
+      def deep_merge:
+        if length == 2 then
+          .[0] as $base | .[1] as $over |
+          if ($base | type) == "object" and ($over | type) == "object" then
+            ($base | keys) as $bk | ($over | keys) as $ok |
+            ([$bk[], $ok[]] | unique) | map(. as $k |
+              if ($base | has($k)) and ($over | has($k)) then
+                if ($base[$k] | type) == "object" and ($over[$k] | type) == "object" then
+                  {($k): ([$base[$k], $over[$k]] | deep_merge)}
+                elif ($base[$k] | type) == "array" and ($over[$k] | type) == "array" then
+                  {($k): ([$base[$k][], $over[$k][]] | unique)}
+                else
+                  {($k): $base[$k]}
+                end
+              elif ($base | has($k)) then
+                {($k): $base[$k]}
+              else
+                {($k): $over[$k]}
+              end
+            ) | add // {}
+          else
+            $base
+          end
+        else
+          .[0]
+        end;
+      deep_merge
+    ' "$SETTINGS_SOURCE" "$SETTINGS_TARGET")
+
+    echo "$merged" > "$SETTINGS_SOURCE"
+    echo "[merge]  Merged user settings into dotfiles settings.json"
+
+    # Backup original
+    echo "[backup] $SETTINGS_TARGET -> ${SETTINGS_TARGET}.bak"
+    mv "$SETTINGS_TARGET" "${SETTINGS_TARGET}.bak"
   fi
 
-  if [ -L "$target" ]; then
-    echo "[skip]   $target (already linked)"
-  else
-    ln -s "$source" "$target"
-    echo "[link]   $target -> $source"
-  fi
-done
+  ln -s "$SETTINGS_SOURCE" "$SETTINGS_TARGET"
+  echo "[link]   $SETTINGS_TARGET -> $SETTINGS_SOURCE"
+fi
 
 # --- Skills: absorb existing + directory symlink ---
 SKILLS_TARGET="$CLAUDE_DIR/skills"

@@ -6,7 +6,7 @@
 
 | 파일 | 용도 | 설치 방식 | 자동 동기화 |
 |------|------|-----------|-------------|
-| `settings.json` | 전역 permissions, 모델, 플러그인 활성화 등 | symlink | O |
+| `settings.json` | 전역 permissions, 모델, 플러그인 활성화 등 | JSON 머지 + symlink | O |
 | `skills/` | 커스텀 스킬 디렉토리 | 스킬 폴더를 symlink | O |
 | `CLAUDE.md` | 전역 지시사항 | 마커 블록으로 머지 | X (수동) |
 
@@ -43,8 +43,13 @@ cd ~/claude-dotfiles
 
 `install.sh` (Linux/macOS) 와 `install.ps1` (Windows) 는 다음을 수행합니다.
 
-### 1. settings.json — symlink
-기존 파일이 있으면 `.bak`으로 백업 후 symlink 생성. 이미 링크된 경우 건너뜀.
+### 1. settings.json — JSON 머지 + symlink
+기존 `~/.claude/settings.json`이 있으면 dotfiles 버전과 **deep merge** 후 symlink 생성. 이미 링크된 경우 건너뜀.
+
+- **dotfiles 키 우선** — 충돌 시 dotfiles 값 유지
+- **사용자 고유 키 보존** — dotfiles에 없는 키는 그대로 추가
+- **배열 합집합** — `permissions.allow` 등 배열은 중복 없이 합침
+- 머지 결과는 dotfiles `settings.json`에 반영되고, 원본은 `.bak`으로 백업
 
 ### 2. skills — 흡수 + 디렉토리 symlink
 - **흡수**: 기존 `~/.claude/skills/`에 있는 스킬을 이 레포의 `skills/`로 복사
