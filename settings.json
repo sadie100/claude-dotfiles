@@ -33,7 +33,14 @@
     "typescript-lsp@claude-plugins-official": true,
     "atlassian@claude-plugins-official": true,
     "Notion@claude-plugins-official": true,
-    "slack@claude-plugins-official": true
+    "slack@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": false,
+    "playwright@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true
   },
   "hooks": {
     "ConfigChange": [
@@ -50,5 +57,13 @@
   },
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
-  "effortLevel": "medium"
+  "effortLevel": "medium",
+  "extraKnownMarketplaces": {
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
+      }
+    }
+  }
 }
