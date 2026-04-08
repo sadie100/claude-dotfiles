@@ -135,10 +135,12 @@ if (Test-Path $TargetClaude) {
 }
 
 # --- Plugins: merge installed_plugins.json ---
-$DotfilesPlugins = Join-Path $DotfilesDir "plugins" "installed_plugins.json"
-$TargetPlugins = Join-Path $ClaudeDir "plugins" "installed_plugins.json"
+$DotfilesPlugins = Join-Path (Join-Path $DotfilesDir "plugins") "installed_plugins.json"
+$TargetPlugins = Join-Path (Join-Path $ClaudeDir "plugins") "installed_plugins.json"
 
-if (Test-Path $TargetPlugins) {
+if (!(Test-Path $DotfilesPlugins)) {
+    Write-Host "[skip]   No plugins definition in dotfiles"
+} elseif (Test-Path $TargetPlugins) {
     # Remove symlink first if exists
     if ((Get-Item $TargetPlugins).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
         $content = Get-Content $TargetPlugins -Raw
@@ -177,7 +179,8 @@ function dotclaude {
 }
 "@
 
-$ProfilePath = $PROFILE.CurrentUserCurrentHost
+# Explicitly target the user's profile (admin elevation can change $PROFILE)
+$ProfilePath = Join-Path ([Environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 
 if (!(Test-Path $ProfilePath)) {
     New-Item -ItemType File -Path $ProfilePath -Force | Out-Null
@@ -185,9 +188,25 @@ if (!(Test-Path $ProfilePath)) {
 
 $ProfileContent = Get-Content $ProfilePath -Raw -ErrorAction SilentlyContinue
 if ($ProfileContent -match "function dotclaude") {
-    # Remove old function block
-    $ProfileContent = $ProfileContent -replace "(?s)function dotclaude\s*\{.*?\}", ""
-    $ProfileContent = $ProfileContent.TrimEnd() + "`n" + $FuncBody
+    # Remove old function block (handles nested braces)
+    $lines = $ProfileContent -split "`n"
+    $newLines = [System.Collections.Generic.List[string]]::new()
+    $skip = $false
+    $braceDepth = 0
+    foreach ($line in $lines) {
+        if (!$skip -and $line -match '^\s*function dotclaude') {
+            $skip = $true
+            $braceDepth = 0
+        }
+        if ($skip) {
+            $braceDepth += ($line.ToCharArray() | Where-Object { $_ -eq '{' }).Count
+            $braceDepth -= ($line.ToCharArray() | Where-Object { $_ -eq '}' }).Count
+            if ($braceDepth -le 0 -and $line -match '\}') { $skip = $false; continue }
+        } else {
+            $newLines.Add($line)
+        }
+    }
+    $ProfileContent = ($newLines -join "`n").TrimEnd() + "`n" + $FuncBody
     Set-Content -Path $ProfilePath -Value $ProfileContent
     Write-Host "[alias]  Updated dotclaude function in $ProfilePath"
 } else {
@@ -196,15 +215,20 @@ if ($ProfileContent -match "function dotclaude") {
 }
 
 # --- Sync dotfiles repo if there are changes ---
-$SyncScript = Join-Path $DotfilesDir "scripts" "dotfiles-sync.sh"
-if (Test-Path $SyncScript) {
-    $hasChanges = (git -C $DotfilesDir status --porcelain) -ne ""
-    if ($hasChanges) {
-        Write-Host ""
-        Write-Host "[sync]   Pushing merged changes..." -ForegroundColor Yellow
-        bash $SyncScript
-        Write-Host "[sync]   Done" -ForegroundColor Yellow
+$hasChanges = (git -C $DotfilesDir status --porcelain) -ne ""
+if ($hasChanges) {
+    Write-Host ""
+    Write-Host "[sync]   Pushing merged changes..." -ForegroundColor Yellow
+    git -C $DotfilesDir add -A
+    $changed = (git -C $DotfilesDir diff --cached --name-only) -join ", "
+    git -C $DotfilesDir commit -m "sync: $changed" --no-gpg-sign 2>$null
+    $branch = git -C $DotfilesDir branch --show-current
+    git -C $DotfilesDir push origin $branch 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        git -C $DotfilesDir pull --rebase origin $branch 2>$null
+        git -C $DotfilesDir push origin $branch 2>$null
     }
+    Write-Host "[sync]   Done" -ForegroundColor Yellow
 }
 
 Write-Host ""
