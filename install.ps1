@@ -13,12 +13,6 @@ $ClaudeDir = Join-Path $env:USERPROFILE ".claude"
 
 $Files = @(
     "settings.json"
-    "plugins\installed_plugins.json"
-    "CLAUDE.md"
-)
-
-$Dirs = @(
-    "skills"
 )
 
 Write-Host "=== Claude Code Dotfiles Installer ===" -ForegroundColor Cyan
@@ -28,6 +22,7 @@ Write-Host ""
 
 # Ensure target directories exist
 New-Item -ItemType Directory -Path (Join-Path $ClaudeDir "plugins") -Force | Out-Null
+New-Item -ItemType Directory -Path (Join-Path $ClaudeDir "skills") -Force | Out-Null
 
 # Backup and symlink files
 foreach ($f in $Files) {
@@ -48,23 +43,97 @@ foreach ($f in $Files) {
     }
 }
 
-# Backup and symlink directories
-foreach ($d in $Dirs) {
-    $target = Join-Path $ClaudeDir $d
-    $source = Join-Path $DotfilesDir $d
+# --- Skills: absorb existing + symlink all ---
 
-    if ((Test-Path $target) -and -not (Get-Item $target).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
-        $backup = "${target}.bak"
-        Write-Host "[backup] $target -> $backup"
-        Move-Item -Path $target -Destination $backup -Force
+$SkillsTarget = Join-Path $ClaudeDir "skills"
+$SkillsSource = Join-Path $DotfilesDir "skills"
+
+# Step 1: Absorb existing non-symlink skills into dotfiles repo
+foreach ($skill in (Get-ChildItem -Path $SkillsTarget -Directory -ErrorAction SilentlyContinue)) {
+    if ($skill.Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) { continue }
+
+    $repoSkill = Join-Path $SkillsSource $skill.Name
+
+    if (Test-Path $repoSkill) {
+        Write-Host "[skip]   $($skill.Name) already exists in dotfiles, backing up local copy"
+        Move-Item -Path $skill.FullName -Destination "$($skill.FullName).bak" -Force
+    } else {
+        Write-Host "[absorb] $($skill.FullName) -> $repoSkill"
+        Copy-Item -Path $skill.FullName -Destination $repoSkill -Recurse
+        Remove-Item -Path $skill.FullName -Recurse -Force
     }
+}
+
+# Step 2: Symlink all dotfiles skills back
+foreach ($skill in (Get-ChildItem -Path $SkillsSource -Directory)) {
+    $target = Join-Path $SkillsTarget $skill.Name
 
     if ((Test-Path $target) -and (Get-Item $target).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
         Write-Host "[skip]   $target (already linked)"
     } else {
-        New-Item -ItemType SymbolicLink -Path $target -Target $source -Force | Out-Null
-        Write-Host "[link]   $target -> $source"
+        if (Test-Path $target) {
+            Move-Item -Path $target -Destination "${target}.bak" -Force
+        }
+        New-Item -ItemType SymbolicLink -Path $target -Target $skill.FullName -Force | Out-Null
+        Write-Host "[link]   $target -> $($skill.FullName)"
     }
+}
+
+# --- CLAUDE.md: merge with marker block ---
+$Marker = "# >>> claude-dotfiles >>>"
+$MarkerEnd = "# <<< claude-dotfiles <<<"
+$DotfilesClaude = Join-Path $DotfilesDir "CLAUDE.md"
+$TargetClaude = Join-Path $ClaudeDir "CLAUDE.md"
+$DotfilesContent = Get-Content $DotfilesClaude -Raw
+
+if (Test-Path $TargetClaude) {
+    $existing = Get-Content $TargetClaude -Raw
+    if ($existing -match [regex]::Escape($Marker)) {
+        $pattern = [regex]::Escape($Marker) + "[\s\S]*?" + [regex]::Escape($MarkerEnd)
+        $replacement = "$Marker`n$DotfilesContent`n$MarkerEnd"
+        $updated = [regex]::Replace($existing, $pattern, $replacement)
+        Set-Content -Path $TargetClaude -Value $updated -NoNewline
+        Write-Host "[merge]  Updated managed block in $TargetClaude"
+    } else {
+        $block = "`n$Marker`n$DotfilesContent`n$MarkerEnd`n"
+        Add-Content -Path $TargetClaude -Value $block -NoNewline
+        Write-Host "[merge]  Appended dotfiles content to $TargetClaude"
+    }
+} else {
+    $block = "$Marker`n$DotfilesContent`n$MarkerEnd`n"
+    Set-Content -Path $TargetClaude -Value $block -NoNewline
+    Write-Host "[merge]  Created $TargetClaude with dotfiles content"
+}
+
+# --- Plugins: merge installed_plugins.json ---
+$DotfilesPlugins = Join-Path $DotfilesDir "plugins" "installed_plugins.json"
+$TargetPlugins = Join-Path $ClaudeDir "plugins" "installed_plugins.json"
+
+if (Test-Path $TargetPlugins) {
+    # Remove symlink first if exists
+    if ((Get-Item $TargetPlugins).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
+        $content = Get-Content $TargetPlugins -Raw
+        Remove-Item $TargetPlugins -Force
+        Set-Content -Path $TargetPlugins -Value $content -NoNewline
+        Write-Host "[fix]    Removed symlink, restored as regular file"
+    }
+
+    $existing = Get-Content $TargetPlugins -Raw | ConvertFrom-Json
+    $dotfiles = Get-Content $DotfilesPlugins -Raw | ConvertFrom-Json
+
+    # Merge: add dotfiles plugins that don't exist in target
+    foreach ($key in $dotfiles.plugins.PSObject.Properties.Name) {
+        if (-not $existing.plugins.PSObject.Properties[$key]) {
+            $existing.plugins | Add-Member -NotePropertyName $key -NotePropertyValue $dotfiles.plugins.$key
+            Write-Host "[merge]  Added plugin: $key"
+        }
+    }
+
+    $existing | ConvertTo-Json -Depth 10 | Set-Content -Path $TargetPlugins
+    Write-Host "[merge]  Merged plugins: kept existing + added dotfiles entries"
+} else {
+    Copy-Item -Path $DotfilesPlugins -Destination $TargetPlugins
+    Write-Host "[copy]   $DotfilesPlugins -> $TargetPlugins"
 }
 
 # Register function in PowerShell profile
