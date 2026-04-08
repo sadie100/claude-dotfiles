@@ -7,6 +7,7 @@ CLAUDE_DIR="$HOME/.claude"
 FILES=(
   "settings.json"
   "plugins/installed_plugins.json"
+  "CLAUDE.md"
 )
 
 DIRS=(

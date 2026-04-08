@@ -14,6 +14,7 @@ $ClaudeDir = Join-Path $env:USERPROFILE ".claude"
 $Files = @(
     "settings.json"
     "plugins\installed_plugins.json"
+    "CLAUDE.md"
 )
 
 $Dirs = @(
