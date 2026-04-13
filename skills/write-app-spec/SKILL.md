@@ -1,9 +1,9 @@
 ---
-name: spec-writer
+name: write-app-spec
 description: Analyzes a codebase and writes a SPEC.md that documents the app's functionality, screens/pages, core logic, and data models in a PRD-adjacent but implementation-focused format. Use when the user asks to write a spec, create SPEC.md, document what the app does, or produce a functional specification. Triggers on requests like "write a spec for this app", "create SPEC.md", "document the features", or "write a PRD-like doc focused on functionality".
 ---
 
-# spec-writer
+# write-app-spec
 
 Explore the codebase, then write a SPEC.md documenting what the app does and how.
 

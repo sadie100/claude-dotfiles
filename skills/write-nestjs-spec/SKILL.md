@@ -1,9 +1,9 @@
 ---
-name: write-spec
+name: write-nestjs-spec
 description: NestJS 백엔드 모듈의 API 스펙 문서(.spec.md)를 작성한다. 모듈명을 인자로 받아 엔티티, API 명세, 유효성 검증, 비즈니스 규칙 등을 포함한 구조화된 스펙 문서를 생성한다. 사용 예시 - /write-spec payment, /write-spec notification. 새로운 기능 모듈의 API 설계를 문서화할 때, 기존 모듈의 스펙을 작성할 때, 또는 API 명세서가 필요할 때 사용한다.
 ---
 
-# Write Spec
+# write-nestjs-spec
 
 NestJS 백엔드 모듈의 API 스펙 문서를 작성하는 skill.
 
