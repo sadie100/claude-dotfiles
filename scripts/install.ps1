@@ -108,30 +108,20 @@ if ((Test-Path $SkillsTarget) -and (Get-Item $SkillsTarget).Attributes.HasFlag([
     Write-Host "[link]   $SkillsTarget -> $SkillsSource"
 }
 
-# --- CLAUDE.md: merge with marker block ---
-$Marker = "# >>> claude-dotfiles >>>"
-$MarkerEnd = "# <<< claude-dotfiles <<<"
+# --- CLAUDE.md: symlink ---
 $DotfilesClaude = Join-Path $DotfilesDir "CLAUDE.md"
 $TargetClaude = Join-Path $ClaudeDir "CLAUDE.md"
-$DotfilesContent = Get-Content $DotfilesClaude -Raw
 
-if (Test-Path $TargetClaude) {
-    $existing = Get-Content $TargetClaude -Raw
-    if ($existing -match [regex]::Escape($Marker)) {
-        $pattern = [regex]::Escape($Marker) + "[\s\S]*?" + [regex]::Escape($MarkerEnd)
-        $replacement = "$Marker`n$DotfilesContent`n$MarkerEnd"
-        $updated = [regex]::Replace($existing, $pattern, $replacement)
-        Set-Content -Path $TargetClaude -Value $updated -NoNewline
-        Write-Host "[merge]  Updated managed block in $TargetClaude"
-    } else {
-        $block = "`n$Marker`n$DotfilesContent`n$MarkerEnd`n"
-        Add-Content -Path $TargetClaude -Value $block -NoNewline
-        Write-Host "[merge]  Appended dotfiles content to $TargetClaude"
-    }
+if ((Test-Path $TargetClaude) -and (Get-Item $TargetClaude).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
+    Write-Host "[skip]   $TargetClaude (already linked)"
 } else {
-    $block = "$Marker`n$DotfilesContent`n$MarkerEnd`n"
-    Set-Content -Path $TargetClaude -Value $block -NoNewline
-    Write-Host "[merge]  Created $TargetClaude with dotfiles content"
+    if (Test-Path $TargetClaude) {
+        $backup = "${TargetClaude}.bak"
+        Write-Host "[backup] $TargetClaude -> $backup"
+        Move-Item -Path $TargetClaude -Destination $backup -Force
+    }
+    New-Item -ItemType SymbolicLink -Path $TargetClaude -Target $DotfilesClaude -Force | Out-Null
+    Write-Host "[link]   $TargetClaude -> $DotfilesClaude"
 }
 
 # --- Plugins: merge installed_plugins.json ---

@@ -92,38 +92,19 @@ else
   echo "[link]   $SKILLS_TARGET -> $SKILLS_SOURCE"
 fi
 
-# --- CLAUDE.md: merge with marker block ---
-MARKER="# >>> claude-dotfiles >>>"
-MARKER_END="# <<< claude-dotfiles <<<"
+# --- CLAUDE.md: symlink ---
 DOTFILES_CLAUDE="$DOTFILES_DIR/CLAUDE.md"
 TARGET_CLAUDE="$CLAUDE_DIR/CLAUDE.md"
 
-if [ -f "$TARGET_CLAUDE" ] && grep -qF "$MARKER" "$TARGET_CLAUDE"; then
-  # Replace existing managed block
-  tmp="$(mktemp)"
-  awk -v m="$MARKER" -v me="$MARKER_END" '
-    $0 == m { skip=1; next }
-    $0 == me { skip=0; next }
-    !skip { print }
-  ' "$TARGET_CLAUDE" > "$tmp"
-  {
-    cat "$tmp"
-    echo "$MARKER"
-    cat "$DOTFILES_CLAUDE"
-    echo "$MARKER_END"
-  } > "$TARGET_CLAUDE"
-  rm "$tmp"
-  echo "[merge]  Updated managed block in $TARGET_CLAUDE"
+if [ -L "$TARGET_CLAUDE" ]; then
+  echo "[skip]   $TARGET_CLAUDE (already linked)"
 else
   if [ -f "$TARGET_CLAUDE" ]; then
-    echo "" >> "$TARGET_CLAUDE"
+    echo "[backup] $TARGET_CLAUDE -> ${TARGET_CLAUDE}.bak"
+    mv "$TARGET_CLAUDE" "${TARGET_CLAUDE}.bak"
   fi
-  {
-    echo "$MARKER"
-    cat "$DOTFILES_CLAUDE"
-    echo "$MARKER_END"
-  } >> "$TARGET_CLAUDE"
-  echo "[merge]  Appended dotfiles content to $TARGET_CLAUDE"
+  ln -s "$DOTFILES_CLAUDE" "$TARGET_CLAUDE"
+  echo "[link]   $TARGET_CLAUDE -> $DOTFILES_CLAUDE"
 fi
 
 # Register alias in shell profile

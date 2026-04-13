@@ -8,7 +8,7 @@
 |------|------|-----------|-------------|
 | `settings.json` | 전역 permissions, 모델, 플러그인 활성화 등 | JSON 머지 + symlink | O |
 | `skills/` | 커스텀 스킬 디렉토리 | 스킬 폴더를 symlink | O |
-| `CLAUDE.md` | 전역 지시사항 | 마커 블록으로 머지 | X (수동) |
+| `CLAUDE.md` | 전역 지시사항 | symlink | O |
 
 ## 새 환경에서 설치 (원라이너)
 
@@ -59,18 +59,10 @@ cd ~/claude-dotfiles
 
 디렉토리 통째로 연결되므로, 이후 새 스킬을 만들면 자동으로 레포에 반영됩니다.
 
-### 3. CLAUDE.md — 마커 블록 머지
-기존 `~/.claude/CLAUDE.md` 내용은 유지하고, 레포의 내용을 마커 블록으로 추가합니다.
+### 3. CLAUDE.md — symlink
+기존 `~/.claude/CLAUDE.md`가 있으면 `.bak`으로 백업한 뒤, 이 레포의 `CLAUDE.md`로 symlink를 생성합니다. 이미 링크된 경우 건너뜀.
 
-```markdown
-# 사용자의 기존 내용은 그대로
-
-# >>> claude-dotfiles >>>
-(이 레포의 CLAUDE.md 내용)
-# <<< claude-dotfiles <<<
-```
-
-재실행 시 마커 블록 안의 내용만 업데이트. 마커 밖의 내용은 건드리지 않습니다.
+직접 `~/.claude/CLAUDE.md`를 편집하면 레포의 파일이 수정되므로, 자동 동기화로 반영됩니다.
 
 ### 4. dotclaude 함수 등록
 셸 프로필(`~/.zshrc`, `~/.bashrc`, 또는 PowerShell `$PROFILE`)에 `dotclaude` 함수를 등록합니다. 자동 동기화 대상이 아닌 파일(CLAUDE.md)을 수동으로 동기화할 때 사용합니다.
@@ -94,7 +86,7 @@ dotclaude pull    # git pull
 
 ### 수동 동기화
 
-**CLAUDE.md**는 symlink가 아닌 머지 방식이라 자동 동기화 대상이 아닙니다. 변경 시 `dotclaude sync`로 동기화하세요:
+자동 동기화 훅이 감지하지 못하는 변경이 있을 경우 `dotclaude sync`로 동기화하세요:
 
 ```bash
 dotclaude sync
