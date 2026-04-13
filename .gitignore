@@ -1,16 +1,2 @@
-# Ignore everything
-*
-
-# Allow managed files
-!.gitignore
-!settings.json
-!skills/
-!skills/**
-!install.sh
-!install.ps1
-!README.md
-!CLAUDE.md
-!bootstrap.sh
-!bootstrap.ps1
-!scripts/
-!scripts/**
+*.bak
+.claude/plans/

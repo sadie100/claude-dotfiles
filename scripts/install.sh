@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
 echo "=== Claude Code Dotfiles Installer ==="
@@ -131,11 +131,32 @@ FUNC_MARKER="function dotclaude"
 read -r -d '' FUNC_BODY << 'DOTCLAUDE_FUNC' || true
 function dotclaude() {
   local DOTCLAUDE_DIR="__DOTFILES_DIR__"
-  if [ "$1" = "sync" ]; then
-    bash "$DOTCLAUDE_DIR/scripts/dotfiles-sync.sh"
-  else
-    git -C "$DOTCLAUDE_DIR" "$@"
-  fi
+  case "$1" in
+    sync)
+      bash "$DOTCLAUDE_DIR/scripts/dotfiles-sync.sh"
+      ;;
+    open)
+      if [[ "$OSTYPE" == darwin* ]]; then
+        open "$DOTCLAUDE_DIR"
+      else
+        xdg-open "$DOTCLAUDE_DIR"
+      fi
+      ;;
+    settings)
+      local editor="${EDITOR:-vi}"
+      case "$2" in
+        --vim) editor="vim" ;;
+        --vi) editor="vi" ;;
+        --nano) editor="nano" ;;
+        --code) editor="code" ;;
+        --notepad) editor="notepad" ;;
+      esac
+      $editor "$DOTCLAUDE_DIR/settings.json"
+      ;;
+    *)
+      git -C "$DOTCLAUDE_DIR" "$@"
+      ;;
+  esac
 }
 DOTCLAUDE_FUNC
 FUNC_BODY="${FUNC_BODY//__DOTFILES_DIR__/$DOTFILES_DIR}"

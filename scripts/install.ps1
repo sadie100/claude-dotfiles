@@ -8,7 +8,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
 $ErrorActionPreference = "Stop"
 
-$DotfilesDir = $PSScriptRoot
+$DotfilesDir = Split-Path $PSScriptRoot -Parent
 $ClaudeDir = Join-Path $env:USERPROFILE ".claude"
 
 Write-Host "=== Claude Code Dotfiles Installer ===" -ForegroundColor Cyan
@@ -182,6 +182,18 @@ function dotclaude {
             git -C `$d pull --rebase origin `$b 2>`$null
             git -C `$d push origin `$b 2>`$null
         }
+    } elseif (`$args[0] -eq 'open') {
+        explorer.exe "$DotfilesDir"
+    } elseif (`$args[0] -eq 'settings') {
+        `$editor = if (`$env:EDITOR) { `$env:EDITOR } else { 'notepad' }
+        switch (`$args[1]) {
+            '--vim'     { `$editor = 'vim' }
+            '--vi'      { `$editor = 'vi' }
+            '--nano'    { `$editor = 'nano' }
+            '--code'    { `$editor = 'code' }
+            '--notepad' { `$editor = 'notepad' }
+        }
+        & `$editor "$DotfilesDir\settings.json"
     } else {
         git -C "$DotfilesDir" @args
     }

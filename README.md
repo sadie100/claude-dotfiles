@@ -14,16 +14,16 @@
 
 ```bash
 # Linux / macOS
-curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.sh | bash
 
 # Windows (PowerShell, 관리자 권한 자동 요청)
-irm https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/bootstrap.ps1 | iex
+irm https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.ps1 | iex
 ```
 
 기본 클론 위치는 `~/claude-dotfiles`. 변경하려면:
 
 ```bash
-DOTFILES_DIR=~/my-claude curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/bootstrap.sh | bash
+DOTFILES_DIR=~/my-claude curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.sh | bash
 ```
 
 ### 수동 설치
@@ -33,10 +33,10 @@ git clone https://github.com/sadie100/claude-dotfiles.git ~/claude-dotfiles
 cd ~/claude-dotfiles
 
 # Linux / macOS
-./install.sh
+./scripts/install.sh
 
 # Windows (관리자 권한 자동 요청)
-.\install.bat
+.\scripts\install.bat
 ```
 
 ## install 스크립트 동작

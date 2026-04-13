@@ -1,6 +1,6 @@
 # Auto-elevate to admin (needed for symlink creation)
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    $scriptContent = Invoke-RestMethod "https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/bootstrap.ps1"
+    $scriptContent = Invoke-RestMethod "https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.ps1"
     $tempFile = [System.IO.Path]::GetTempFileName() + ".ps1"
     Set-Content -Path $tempFile -Value $scriptContent
     Start-Process powershell.exe -Verb RunAs -ArgumentList "-ExecutionPolicy Bypass -File `"$tempFile`""
@@ -31,4 +31,4 @@ if (Test-Path (Join-Path $DotfilesDir ".git")) {
 
 # Run installer
 Write-Host ""
-& "$DotfilesDir\install.ps1"
+& "$DotfilesDir\scripts\install.ps1"

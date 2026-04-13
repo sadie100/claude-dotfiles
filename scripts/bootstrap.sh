@@ -23,4 +23,4 @@ fi
 
 # Run installer
 echo ""
-bash "$DOTFILES_DIR/install.sh"
+bash "$DOTFILES_DIR/scripts/install.sh"

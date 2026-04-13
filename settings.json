@@ -22,6 +22,19 @@
     ]
   },
   "model": "opus[1m]",
+  "hooks": {
+    "ConfigChange": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/claude-dotfiles/scripts/dotfiles-sync.sh\"",
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "document-skills@anthropic-agent-skills": true,
     "frontend-design@claude-plugins-official": true,
@@ -42,22 +55,6 @@
     "skill-creator@claude-plugins-official": true,
     "ui-ux-pro-max@ui-ux-pro-max-skill": true
   },
-  "hooks": {
-    "ConfigChange": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$HOME/claude-dotfiles/scripts/dotfiles-sync.sh\"",
-            "async": true
-          }
-        ]
-      }
-    ]
-  },
-  "autoUpdatesChannel": "latest",
-  "plansDirectory": ".claude/plans",
-  "effortLevel": "medium",
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
       "source": {
@@ -65,5 +62,8 @@
         "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
       }
     }
-  }
+  },
+  "effortLevel": "high",
+  "autoUpdatesChannel": "latest",
+  "plansDirectory": ".claude/plans"
 }
