@@ -9,7 +9,9 @@
       "Bash(find *)",
       "Bash(ls *)",
       "Bash(cat *)",
-      "Bash(npm run test*)",
+      "Bash(cd *)",
+      "Bash(npm *)",
+      "Bash(pnpm *)",
       "Bash(grep *)"
     ],
     "deny": [
@@ -63,7 +65,7 @@
       }
     }
   },
-  "effortLevel": "high",
+  "effortLevel": "medium",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans"
 }
