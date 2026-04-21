@@ -12,7 +12,8 @@
       "Bash(cd *)",
       "Bash(npm *)",
       "Bash(pnpm *)",
-      "Bash(grep *)"
+      "Bash(grep *)",
+      "mcp__plugin_playwright_*"
     ],
     "deny": [
       "Write(./.env)",
