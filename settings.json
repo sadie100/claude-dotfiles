@@ -13,7 +13,9 @@
       "Bash(npm *)",
       "Bash(pnpm *)",
       "Bash(grep *)",
-      "mcp__plugin_playwright_*"
+      "mcp__plugin_playwright_*",
+      "Bash(xargs grep *)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools*"
     ],
     "deny": [
       "Write(./.env)",
