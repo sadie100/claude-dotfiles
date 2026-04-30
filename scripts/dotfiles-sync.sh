@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DOTFILES_DIR="${DOTFILES_DIR:-$HOME/claude-dotfiles}"
+DOTFILES_DIR="${DOTCLAUDE_DIR:-${DOTFILES_DIR:-$HOME/claude-dotfiles}}"
 
 # Exit if dotfiles repo doesn't exist
 [ -d "$DOTFILES_DIR/.git" ] || exit 0

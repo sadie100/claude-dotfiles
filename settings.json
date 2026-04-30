@@ -33,7 +33,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$HOME/claude-dotfiles/scripts/dotfiles-sync.sh\"",
+            "command": "node \"$DOTCLAUDE_DIR/scripts/dotfiles-sync.mjs\"",
             "async": true
           }
         ]

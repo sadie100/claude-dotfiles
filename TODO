@@ -1,0 +1,1 @@
+- [ ] dotclaude-func.sh / dotclaude-func.ps1을 dotclaude.mjs 하나로 통합 (node CLI + npm link 방식으로 프로필 source 제거)

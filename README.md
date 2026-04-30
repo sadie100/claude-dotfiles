@@ -64,7 +64,15 @@ cd ~/claude-dotfiles
 
 직접 `~/.claude/CLAUDE.md`를 편집하면 레포의 파일이 수정되므로, 자동 동기화로 반영됩니다.
 
-### 4. dotclaude 함수 등록
+### 4. `DOTCLAUDE_DIR` 환경변수 등록
+이 레포의 절대 경로를 `DOTCLAUDE_DIR` 환경변수로 등록합니다. 자동 동기화 훅 등에서 레포 위치를 참조할 때 사용됩니다.
+
+- **Linux/macOS**: 셸 프로필(`~/.zshrc`, `~/.bashrc`)에 `export DOTCLAUDE_DIR=...` 추가
+- **Windows**: `[Environment]::SetEnvironmentVariable`로 **사용자 환경변수에 영구 등록** + PowerShell 프로필에도 `$env:DOTCLAUDE_DIR` 설정
+
+> Windows에서 시스템 환경변수로 등록하는 이유: PowerShell 프로필 변수는 해당 세션에서만 유효하지만, Claude Code 훅은 bash(Git Bash)로 실행되어 PowerShell 프로필을 읽지 못합니다. 시스템 환경변수는 모든 셸에서 접근 가능합니다.
+
+### 5. dotclaude 함수 등록
 셸 프로필(`~/.zshrc`, `~/.bashrc`, 또는 PowerShell `$PROFILE`)에 `dotclaude` 함수를 등록합니다.
 
 함수 본문은 레포의 `scripts/dotclaude-func.sh` (Bash) / `scripts/dotclaude-func.ps1` (PowerShell)에 있고, 프로필에는 환경변수 설정 + source 두 줄만 추가됩니다. 따라서 `git pull`만 하면 모든 머신에서 함수가 즉시 업데이트됩니다.

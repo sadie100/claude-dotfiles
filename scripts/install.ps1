@@ -157,6 +157,9 @@ if (!(Test-Path $DotfilesPlugins)) {
     Write-Host "[copy]   $DotfilesPlugins -> $TargetPlugins"
 }
 
+# Register DOTCLAUDE_DIR as user environment variable (visible to all shells)
+[Environment]::SetEnvironmentVariable("DOTCLAUDE_DIR", $DotfilesDir, "User")
+
 # Register dotclaude in PowerShell profile (dot-source from repo, not inline)
 $SourceMarker = "# dotclaude-start"
 $SourceBlock = @"
