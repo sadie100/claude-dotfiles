@@ -107,50 +107,12 @@ else
   echo "[link]   $TARGET_CLAUDE -> $DOTFILES_CLAUDE"
 fi
 
-# Register alias in shell profile
-FUNC_MARKER="function dotclaude"
-read -r -d '' FUNC_BODY << 'DOTCLAUDE_FUNC' || true
-function dotclaude() {
-  local DOTCLAUDE_DIR="__DOTFILES_DIR__"
-  case "$1" in
-    --help|-h|help)
-      echo "Usage: dotclaude <command> [options]"
-      echo ""
-      echo "Commands:"
-      echo "  sync              Sync dotfiles (git add, commit, push)"
-      echo "  open              Open dotfiles directory in file explorer"
-      echo "  settings [--ed]   Edit settings.json (--vim, --vi, --nano, --code, --notepad)"
-      echo "  help, --help, -h  Show this help message"
-      echo "  <git-command>     Any other argument is passed to git"
-      ;;
-    sync)
-      bash "$DOTCLAUDE_DIR/scripts/dotfiles-sync.sh"
-      ;;
-    open)
-      if [[ "$OSTYPE" == darwin* ]]; then
-        open "$DOTCLAUDE_DIR"
-      else
-        xdg-open "$DOTCLAUDE_DIR"
-      fi
-      ;;
-    settings)
-      local editor="${EDITOR:-vi}"
-      case "$2" in
-        --vim) editor="vim" ;;
-        --vi) editor="vi" ;;
-        --nano) editor="nano" ;;
-        --code) editor="code" ;;
-        --notepad) editor="notepad" ;;
-      esac
-      $editor "$DOTCLAUDE_DIR/settings.json"
-      ;;
-    *)
-      git -C "$DOTCLAUDE_DIR" "$@"
-      ;;
-  esac
-}
-DOTCLAUDE_FUNC
-FUNC_BODY="${FUNC_BODY//__DOTFILES_DIR__/$DOTFILES_DIR}"
+# Register dotclaude in shell profile (source from repo, not inline)
+DOTCLAUDE_SOURCE_MARKER="# dotclaude-start"
+DOTCLAUDE_SOURCE_BLOCK="$DOTCLAUDE_SOURCE_MARKER
+export DOTCLAUDE_DIR=\"$DOTFILES_DIR\"
+source \"\$DOTCLAUDE_DIR/scripts/dotclaude-func.sh\"
+# dotclaude-end"
 
 SHELL_PROFILE=""
 if [ -f "$HOME/.zshrc" ]; then
@@ -160,22 +122,26 @@ elif [ -f "$HOME/.bashrc" ]; then
 fi
 
 if [ -n "$SHELL_PROFILE" ]; then
-  if grep -qF "$FUNC_MARKER" "$SHELL_PROFILE"; then
+  # Remove old inline function if present
+  if grep -qF "function dotclaude" "$SHELL_PROFILE"; then
     sed -i.bak "/function dotclaude/,/^}/d" "$SHELL_PROFILE"
-    echo "" >> "$SHELL_PROFILE"
-    echo "$FUNC_BODY" >> "$SHELL_PROFILE"
-    echo "[alias]  Updated dotclaude function in $SHELL_PROFILE"
-  else
-    echo "" >> "$SHELL_PROFILE"
-    echo "$FUNC_BODY" >> "$SHELL_PROFILE"
-    echo "[alias]  Added dotclaude function to $SHELL_PROFILE"
+    echo "[clean]  Removed old inline dotclaude function from $SHELL_PROFILE"
   fi
+
+  # Remove old source block if present, then re-add
+  if grep -qF "$DOTCLAUDE_SOURCE_MARKER" "$SHELL_PROFILE"; then
+    sed -i.bak "/# dotclaude-start/,/# dotclaude-end/d" "$SHELL_PROFILE"
+  fi
+
+  echo "" >> "$SHELL_PROFILE"
+  echo "$DOTCLAUDE_SOURCE_BLOCK" >> "$SHELL_PROFILE"
+  echo "[alias]  Registered dotclaude in $SHELL_PROFILE (sourced from repo)"
   echo ""
   echo "Done! Run 'source $SHELL_PROFILE' or restart your shell to use 'dotclaude'."
 else
   echo ""
-  echo "Done! Could not detect shell profile. Manually add this function to your profile:"
-  echo "$FUNC_BODY"
+  echo "Done! Could not detect shell profile. Manually add these lines to your profile:"
+  echo "$DOTCLAUDE_SOURCE_BLOCK"
 fi
 
 # Make sync script executable

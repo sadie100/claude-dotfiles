@@ -65,13 +65,18 @@ cd ~/claude-dotfiles
 직접 `~/.claude/CLAUDE.md`를 편집하면 레포의 파일이 수정되므로, 자동 동기화로 반영됩니다.
 
 ### 4. dotclaude 함수 등록
-셸 프로필(`~/.zshrc`, `~/.bashrc`, 또는 PowerShell `$PROFILE`)에 `dotclaude` 함수를 등록합니다. 자동 동기화 대상이 아닌 파일(CLAUDE.md)을 수동으로 동기화할 때 사용합니다.
+셸 프로필(`~/.zshrc`, `~/.bashrc`, 또는 PowerShell `$PROFILE`)에 `dotclaude` 함수를 등록합니다.
+
+함수 본문은 레포의 `scripts/dotclaude-func.sh` (Bash) / `scripts/dotclaude-func.ps1` (PowerShell)에 있고, 프로필에는 환경변수 설정 + source 두 줄만 추가됩니다. 따라서 `git pull`만 하면 모든 머신에서 함수가 즉시 업데이트됩니다.
 
 ```bash
-dotclaude sync    # add -A + commit + push (한방)
-dotclaude status  # git status
-dotclaude log     # git log
-dotclaude pull    # git pull
+dotclaude --help      # 지원하는 모든 커맨드 보기
+dotclaude sync        # add -A + commit + push (한방)
+dotclaude open        # dotfiles 디렉토리 열기
+dotclaude settings    # settings.json 편집 (--vim, --code 등)
+dotclaude status      # git status (git 명령 패스스루)
+dotclaude log         # git log
+dotclaude pull        # git pull
 ```
 
 ## 동기화
