@@ -113,6 +113,16 @@ read -r -d '' FUNC_BODY << 'DOTCLAUDE_FUNC' || true
 function dotclaude() {
   local DOTCLAUDE_DIR="__DOTFILES_DIR__"
   case "$1" in
+    --help|-h|help)
+      echo "Usage: dotclaude <command> [options]"
+      echo ""
+      echo "Commands:"
+      echo "  sync              Sync dotfiles (git add, commit, push)"
+      echo "  open              Open dotfiles directory in file explorer"
+      echo "  settings [--ed]   Edit settings.json (--vim, --vi, --nano, --code, --notepad)"
+      echo "  help, --help, -h  Show this help message"
+      echo "  <git-command>     Any other argument is passed to git"
+      ;;
     sync)
       bash "$DOTCLAUDE_DIR/scripts/dotfiles-sync.sh"
       ;;

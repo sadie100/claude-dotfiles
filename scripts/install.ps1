@@ -161,7 +161,16 @@ if (!(Test-Path $DotfilesPlugins)) {
 $FuncBody = @"
 
 function dotclaude {
-    if (`$args[0] -eq 'sync') {
+    if (`$args[0] -in @('--help', '-h', 'help')) {
+        Write-Host "Usage: dotclaude <command> [options]"
+        Write-Host ""
+        Write-Host "Commands:"
+        Write-Host "  sync              Sync dotfiles (git add, commit, push)"
+        Write-Host "  open              Open dotfiles directory in file explorer"
+        Write-Host "  settings [--ed]   Edit settings.json (--vim, --vi, --nano, --code, --notepad)"
+        Write-Host "  help, --help, -h  Show this help message"
+        Write-Host "  <git-command>     Any other argument is passed to git"
+    } elseif (`$args[0] -eq 'sync') {
         `$d = "$DotfilesDir"
         if (-not (git -C `$d status --porcelain)) { Write-Host "No changes"; return }
         git -C `$d add -A
