@@ -1,1 +1,8 @@
+- [ ] "https://code.claude.com/docs/ko/hooks-guide#get-notified-when-claude-needs-input" 참고해서 훅 몇개 자동화하기(알림받기, 코드형식지정, 환경다시로드 괜찮아보임..)
+- [ ] UI수정일 경우 플랜 작성할 때 해당 UI에 대한 검증법을 Google DevTools MCP 혹은 Playwright MCP를 통해 점검하는 내용이 추가되도록 훅이나 스킬을 작성하면 좋을듯. 가능한가?
+아니면 Stop훅에 명시하거나.
+- [ ] Vercel 리액트 스킬들 설치하고, Stop 훅에다가 해당 스킬들이 호출되어야 하는 경우를 명시해서 자동 리팩토링을 시키면 좋을 것 같음... Stop 훅에 리팩토링 관련 스킬 내지는
+어떠한 커맨드?를 연결하고 해당 스킬 안에서 어떤 코드를 수정했는지에 따라 유연하게 스킬들을 사용해서 고치면 좋을 것 같음. (ex: 리액트면 vercel 스킬들 사용, 다른 프레임워크면 뭐 다른 스킬 사용, 이렇게...)
+- [ ] dotfiles-sync에 HARNESS.md 업데이트하라고 지침 할 수 있나? 아니면 그 이전 ConfigChange 훅이나 custom-skill-creator 스킬md 쪽에 명시해줘야 할듯...
+- [ ] 랄프 좀 더 써먹도록 학습 내지 구체화하기
 - [ ] dotclaude-func.sh / dotclaude-func.ps1을 dotclaude.mjs 하나로 통합 (node CLI + npm link 방식으로 프로필 source 제거)
