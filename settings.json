@@ -1,4 +1,5 @@
 {
+  "effortLevel": "medium",
   "permissions": {
     "allow": [
       "Read",
@@ -27,6 +28,8 @@
     ]
   },
   "model": "opus[1m]",
+  "plansDirectory": ".claude/plans",
+  "autoUpdatesChannel": "latest",
   "hooks": {
     "ConfigChange": [
       {
@@ -41,24 +44,24 @@
     ]
   },
   "enabledPlugins": {
-    "document-skills@anthropic-agent-skills": true,
-    "frontend-design@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
-    "chrome-devtools-mcp@chrome-devtools-plugins": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "atlassian@claude-plugins-official": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
     "Notion@claude-plugins-official": true,
-    "slack@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": false,
-    "playwright@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": false,
-    "ui-ux-pro-max@ui-ux-pro-max-skill": true
+    "frontend-design@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": false,
+    "document-skills@anthropic-agent-skills": true,
+    "chrome-devtools-mcp@chrome-devtools-plugins": true,
+    "slack@claude-plugins-official": true,
+    "atlassian@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": false
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
@@ -67,8 +70,5 @@
         "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
       }
     }
-  },
-  "effortLevel": "medium",
-  "autoUpdatesChannel": "latest",
-  "plansDirectory": ".claude/plans"
+  }
 }
