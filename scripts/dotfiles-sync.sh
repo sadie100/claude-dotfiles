@@ -8,10 +8,10 @@ DOTFILES_DIR="${DOTCLAUDE_DIR:-${DOTFILES_DIR:-$HOME/claude-dotfiles}}"
 
 cd "$DOTFILES_DIR"
 
-# Lockfile to prevent concurrent syncs
-LOCKFILE="$DOTFILES_DIR/.git/dotfiles-sync.lock"
-exec 200>"$LOCKFILE"
-flock -n 200 || exit 0
+# Lockdir to prevent concurrent syncs (mkdir is atomic, portable across macOS/Linux)
+LOCKDIR="$DOTFILES_DIR/.git/dotfiles-sync.lock.d"
+mkdir "$LOCKDIR" 2>/dev/null || exit 0
+trap 'rmdir "$LOCKDIR"' EXIT
 
 # Exit if no changes
 if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then

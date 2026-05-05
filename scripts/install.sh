@@ -19,35 +19,38 @@ else
   if [ -f "$SETTINGS_TARGET" ]; then
     # Deep merge: dotfiles as base, user's unique keys/array entries added
     # jq: base * override for objects, arrays are unioned
-    merged=$(jq -s '
-      def deep_merge:
-        if length == 2 then
-          .[0] as $base | .[1] as $over |
-          if ($base | type) == "object" and ($over | type) == "object" then
-            ($base | keys) as $bk | ($over | keys) as $ok |
-            ([$bk[], $ok[]] | unique) | map(. as $k |
-              if ($base | has($k)) and ($over | has($k)) then
-                if ($base[$k] | type) == "object" and ($over[$k] | type) == "object" then
-                  {($k): ([$base[$k], $over[$k]] | deep_merge)}
-                elif ($base[$k] | type) == "array" and ($over[$k] | type) == "array" then
-                  {($k): ([$base[$k][], $over[$k][]] | unique)}
-                else
-                  {($k): $base[$k]}
-                end
-              elif ($base | has($k)) then
-                {($k): $base[$k]}
-              else
-                {($k): $over[$k]}
-              end
-            ) | add // {}
-          else
-            $base
-          end
-        else
-          .[0]
-        end;
-      deep_merge
-    ' "$SETTINGS_SOURCE" "$SETTINGS_TARGET")
+    merged=$(python3 -c '
+import json, sys
+
+def deep_merge(base, over):
+    if isinstance(base, dict) and isinstance(over, dict):
+        result = {}
+        for k in set(list(base.keys()) + list(over.keys())):
+            if k in base and k in over:
+                if isinstance(base[k], dict) and isinstance(over[k], dict):
+                    result[k] = deep_merge(base[k], over[k])
+                elif isinstance(base[k], list) and isinstance(over[k], list):
+                    seen = []
+                    for item in base[k] + over[k]:
+                        if item not in seen:
+                            seen.append(item)
+                    result[k] = seen
+                else:
+                    result[k] = base[k]
+            elif k in base:
+                result[k] = base[k]
+            else:
+                result[k] = over[k]
+        return result
+    return base
+
+with open(sys.argv[1]) as f:
+    base = json.load(f)
+with open(sys.argv[2]) as f:
+    over = json.load(f)
+
+print(json.dumps(deep_merge(base, over), indent=2, ensure_ascii=False))
+' "$SETTINGS_SOURCE" "$SETTINGS_TARGET")
 
     echo "$merged" > "$SETTINGS_SOURCE"
     echo "[merge]  Merged user settings into dotfiles settings.json"
