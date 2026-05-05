@@ -1,5 +1,4 @@
 {
-  "effortLevel": "medium",
   "permissions": {
     "allow": [
       "Read",
@@ -28,8 +27,6 @@
     ]
   },
   "model": "opus[1m]",
-  "plansDirectory": ".claude/plans",
-  "autoUpdatesChannel": "latest",
   "hooks": {
     "ConfigChange": [
       {
@@ -46,7 +43,6 @@
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "ui-ux-pro-max@ui-ux-pro-max-skill": true,
-    "Notion@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
@@ -61,7 +57,8 @@
     "superpowers@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": false
+    "skill-creator@claude-plugins-official": false,
+    "notion@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
@@ -70,5 +67,8 @@
         "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
       }
     }
-  }
+  },
+  "effortLevel": "medium",
+  "autoUpdatesChannel": "latest",
+  "plansDirectory": ".claude/plans"
 }
