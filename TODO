@@ -1,3 +1,4 @@
+- [ ] 지금 mcp 공유가 안됨. 루트폴더의 .claude.json의 mcpServers 키의 value를 가져와서 합치는 로직이 필요...
 - [ ] "https://code.claude.com/docs/ko/hooks-guide#get-notified-when-claude-needs-input" 참고해서 훅 몇개 자동화하기(알림받기, 코드형식지정, 환경다시로드 괜찮아보임..)
 - [ ] UI수정일 경우 플랜 작성할 때 해당 UI에 대한 검증법을 Google DevTools MCP 혹은 Playwright MCP를 통해 점검하는 내용이 추가되도록 훅이나 스킬을 작성하면 좋을듯. 가능한가?
 아니면 Stop훅에 명시하거나.
