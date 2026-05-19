@@ -15,7 +15,9 @@
       "Bash(grep *)",
       "mcp__plugin_playwright_*",
       "Bash(xargs grep *)",
-      "mcp__plugin_chrome-devtools-mcp_chrome-devtools*"
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools*",
+      "mcp__plugin_context7*",
+      "mcp__aws-knowledge*"
     ],
     "deny": [
       "Write(./.env)",
