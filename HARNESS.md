@@ -1,22 +1,18 @@
 # Claude Code Harness 구성 현황
 
+<!-- harness-sync-fingerprint: 0000000000000000000000000000000000000000000000000000000000000000 -->
+
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
----
-
-## 모델 설정
-
-| 항목 | 값 |
-|------|-----|
-| 모델 | `opus[1m]` (Claude Opus, 1M 컨텍스트) |
-| Effort Level | `medium` |
-| Auto Updates | `latest` |
-| Plans Directory | `.claude/plans` |
+> 플러그인 / 스킬 / 훅 섹션은 `scripts/harness-sync/harness-sync.mjs`가 자동으로 갱신합니다.
+> 마커(`<!-- AUTO:BEGIN ... -->` / `<!-- AUTO:END ... -->`) 사이는 직접 수정하지 마세요.
+> 모델·권한 정보는 [`settings.json`](settings.json)에서 직접 확인하세요.
 
 ---
 
 ## 플러그인 (Enabled Plugins)
 
+<!-- AUTO:BEGIN plugins -->
 ### Official Plugins (`claude-plugins-official`)
 
 | 플러그인 | 상태 | 설명 |
@@ -31,9 +27,9 @@
 | `superpowers` | ✅ 활성 | 확장 기능 모음 |
 | `security-guidance` | ✅ 활성 | 보안 가이드라인 제공 |
 | `claude-md-management` | ✅ 활성 | CLAUDE.md 파일 관리/개선 |
-| `skill-creator` | ✅ 활성 | 스킬 생성/수정/평가 |
+| `skill-creator` | ❌ 비활성 | 스킬 생성/수정/평가 |
 | `atlassian` | ✅ 활성 | Jira/Confluence 연동 |
-| `Notion` | ✅ 활성 | Notion 연동 |
+| `notion` | ✅ 활성 | Notion 연동 |
 | `slack` | ✅ 활성 | Slack 연동 |
 | `ralph-loop` | ❌ 비활성 | 반복 실행 루프 |
 
@@ -51,9 +47,10 @@
 
 ### Custom Marketplace (`ui-ux-pro-max-skill`)
 
-| 플러그인 | 상태 | 소스 | 설명 |
-|----------|----|-----|-------------|
-| `ui-ux-pro-max` | ✅ 활성 | `nextlevelbuilder/ui-ux-pro-max-skill` (GitHub) | AI 기반 디자인 인텔리전스 스킬. 제품 요구사항을 분석하여 디자인 시스템을 자동 생성 |
+| 플러그인 | 상태 | 설명 |
+|----------|------|------|
+| `ui-ux-pro-max` | ✅ 활성 | AI 기반 디자인 인텔리전스 스킬. 제품 요구사항을 분석하여 디자인 시스템을 자동 생성 |
+<!-- AUTO:END plugins -->
 
 ---
 
@@ -64,6 +61,7 @@
 - `built-in`: Claude Code 내장 스킬 (네임스페이스 없음)
 - 그 외: 해당 플러그인/마켓플레이스 이름
 
+<!-- AUTO:BEGIN skills -->
 ### 개발 프로세스 (4단계 워크플로우)
 
 | 스킬 | 트리거 | 소속 | 설명 |
@@ -94,7 +92,6 @@
 | `chrome-devtools-mcp:chrome-devtools` | 브라우저 디버깅/자동화 시 | chrome-devtools-mcp | Chrome DevTools MCP 기반 범용 브라우저 디버깅 |
 | `chrome-devtools-mcp:a11y-debugging` | 접근성 진단 요청 시 | chrome-devtools-mcp | 시맨틱 HTML, ARIA, 키보드 네비게이션, 명도 대비 점검 |
 | `chrome-devtools-mcp:debug-optimize-lcp` | LCP/Core Web Vitals 최적화 요청 시 | chrome-devtools-mcp | Largest Contentful Paint 디버깅 및 최적화 가이드 |
-| `chrome-devtools-mcp:memory-leak-debugging` | 메모리 누수 진단 요청 시 | chrome-devtools-mcp | JS/Node 앱 메모리 누수 진단 및 해결 |
 | `chrome-devtools-mcp:chrome-devtools-cli` | 브라우저 자동화 스크립트 작성 시 | chrome-devtools-mcp | CLI에서 Chrome DevTools 자동화 |
 | `chrome-devtools-mcp:troubleshooting` | MCP 연결/타깃 문제 발생 시 | chrome-devtools-mcp | Chrome DevTools MCP 연결 문제 해결 |
 | `document-skills:webapp-testing` | 로컬 웹앱 테스트 요청 시 | document-skills | Playwright 기반 로컬 웹앱 동작 검증 |
@@ -214,36 +211,18 @@
 | `keybindings-help` | 키바인딩 커스터마이즈 요청 시 | built-in | `~/.claude/keybindings.json` 수정 |
 | `fewer-permission-prompts` | 권한 프롬프트 최소화 요청 시 | built-in | 자주 쓰는 read-only 명령을 allowlist로 추가 |
 | `loop` | 반복 실행 요청 시 | built-in | 프롬프트/슬래시 명령을 주기적으로 실행 |
+<!-- AUTO:END skills -->
 
 ---
 
 ## 훅 (Hooks)
 
+<!-- AUTO:BEGIN hooks -->
 | 이벤트 | 실행 명령 | 비동기 | 설명 |
 |--------|-----------|--------|------|
-| `ConfigChange` | `node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"` | ✅ | 설정 변경 시 자동으로 git commit + push 동기화 (플랫폼에 맞는 .sh/.ps1로 라우팅) |
-
----
-
-## 권한 (Permissions)
-
-### 허용 (Allow)
-
-| 도구/명령 | 설명 |
-|-----------|------|
-| `Read`, `Edit`, `Write`, `Glob`, `Grep` | 기본 파일 조작 도구 |
-| `Bash(find/ls/cat/cd/npm/pnpm/grep/xargs grep)` | 셸 명령 (제한적) |
-| `mcp__plugin_playwright_*` | Playwright 브라우저 도구 전체 |
-| `mcp__plugin_chrome-devtools-mcp_chrome-devtools*` | Chrome DevTools MCP 도구 전체 |
-
-### 거부 (Deny)
-
-| 패턴 | 설명 |
-|------|------|
-| `Write(./.env)` | 환경 변수 파일 쓰기 금지 |
-| `Write(./node_modules/**)` | node_modules 쓰기 금지 |
-| `Bash(* deploy/publish *)` | 배포/퍼블리시 명령 금지 |
-| `Bash(git push/pull *)` | git push/pull 자동 실행 금지 |
+| `ConfigChange` | `node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"` | ❌ (sync) | 설정 변경 시 HARNESS.md 자동 갱신 (fingerprint로 게이트) |
+| `ConfigChange` | `node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"` | ✅ (async) | 설정 변경 시 git commit + push 동기화 |
+<!-- AUTO:END hooks -->
 
 ---
 

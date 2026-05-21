@@ -1,0 +1,1106 @@
+diff --git a/HARNESS.md b/HARNESS.md
+index f7fe356..7f56dee 100644
+--- a/HARNESS.md
++++ b/HARNESS.md
+@@ -2,253 +2,374 @@
+ 
+ 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
+ 
++> `<!-- AUTO:BEGIN ... -->` / `<!-- AUTO:END ... -->` 사이는 `scripts/harness-sync/harness-sync.mjs`가 자동 재생성합니다. 그 밖의 영역(빌트인 스킬, 안내 문구 등)은 직접 편집하세요.
++
+ ---
+ 
+ ## 모델 설정
+ 
++<!-- AUTO:BEGIN model -->
+ | 항목 | 값 |
+-|------|-----|
+-| 모델 | `opus[1m]` (Claude Opus, 1M 컨텍스트) |
++|---|---|
++| 모델 | `opus[1m]` |
+ | Effort Level | `medium` |
+ | Auto Updates | `latest` |
+ | Plans Directory | `.claude/plans` |
++<!-- AUTO:END model -->
+ 
+ ---
+ 
+-## 플러그인 (Enabled Plugins)
++## 마켓플레이스
++
++<!-- AUTO:BEGIN marketplaces -->
++| 마켓플레이스 | 출처 | 설명 |
++|---|---|---|
++| anthropic-agent-skills | official |  |
++| chrome-devtools-plugins | official | Bundled plugins for actuating and debugging the Chrome browser. |
++| claude-plugins-official | official | Directory of popular Claude Code extensions including development tools, productivity plugins, and MCP integrations |
++| ui-ux-pro-max-skill | github:nextlevelbuilder/ui-ux-pro-max-skill |  |
++<!-- AUTO:END marketplaces -->
+ 
+-### Official Plugins (`claude-plugins-official`)
++---
+ 
+-| 플러그인 | 상태 | 설명 |
+-|----------|------|------|
+-| `context7` | ✅ 활성 | 라이브러리/프레임워크 최신 문서 조회 |
+-| `code-simplifier` | ✅ 활성 | 코드 단순화 및 리팩토링 |
+-| `code-review` | ✅ 활성 | PR 코드 리뷰 |
+-| `feature-dev` | ✅ 활성 | 코드베이스 분석 기반 기능 개발 가이드 |
+-| `frontend-design` | ✅ 활성 | 프로덕션급 프론트엔드 UI 생성 |
+-| `typescript-lsp` | ✅ 활성 | TypeScript 언어 서버 지원 |
+-| `playwright` | ✅ 활성 | 브라우저 자동화 및 테스트 |
+-| `superpowers` | ✅ 활성 | 확장 기능 모음 |
+-| `security-guidance` | ✅ 활성 | 보안 가이드라인 제공 |
+-| `claude-md-management` | ✅ 활성 | CLAUDE.md 파일 관리/개선 |
+-| `skill-creator` | ✅ 활성 | 스킬 생성/수정/평가 |
+-| `atlassian` | ✅ 활성 | Jira/Confluence 연동 |
+-| `Notion` | ✅ 활성 | Notion 연동 |
+-| `slack` | ✅ 활성 | Slack 연동 |
+-| `ralph-loop` | ❌ 비활성 | 반복 실행 루프 |
++## 플러그인
++
++<!-- AUTO:BEGIN plugins -->
++#### `anthropic-agent-skills`
++| 플러그인 | 상태 | 버전 | 설명 |
++|---|---|---|---|
++| document-skills | ✅ |  | Collection of document processing suite including Excel, Word, PowerPoint, and PDF capabilities |
++
++#### `chrome-devtools-plugins`
++| 플러그인 | 상태 | 버전 | 설명 |
++|---|---|---|---|
++| chrome-devtools-mcp | ✅ | 0.23.0 | Reliable automation, in-depth debugging, and performance analysis in Chrome using Chrome DevTools and Puppeteer |
++
++#### `claude-plugins-official`
++| 플러그인 | 상태 | 버전 | 설명 |
++|---|---|---|---|
++| atlassian | ✅ |  | Connect to Atlassian products including Jira and Confluence. Search and create issues, access documentation, manage sprints, and integrate your development workflow with Atlassian's collaboration tools. |
++| claude-md-management | ✅ | 1.0.0 | Tools to maintain and improve CLAUDE.md files - audit quality, capture session learnings, and keep project memory current. |
++| code-review | ✅ |  | Automated code review for pull requests using multiple specialized agents with confidence-based scoring |
++| code-simplifier | ✅ | 1.0.0 | Agent that simplifies and refines code for clarity, consistency, and maintainability while preserving functionality |
++| context7 | ✅ |  | Upstash Context7 MCP server for up-to-date documentation lookup. Pull version-specific documentation and code examples directly from source repositories into your LLM context. |
++| feature-dev | ✅ |  | Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review |
++| frontend-design | ✅ |  | Frontend design skill for UI/UX implementation |
++| notion | ✅ | 0.1.0 | Notion Skills + Notion MCP server packaged as a Claude Code plugin. |
++| playwright | ✅ |  | Browser automation and end-to-end testing MCP server by Microsoft. Enables Claude to interact with web pages, take screenshots, fill forms, click elements, and perform automated browser testing workflows. |
++| ralph-loop | ❌ | 1.0.0 | Continuous self-referential AI loops for interactive iterative development, implementing the Ralph Wiggum technique. Run Claude in a while-true loop with the same prompt until task completion. |
++| security-guidance | ✅ |  | Security reminder hook that warns about potential security issues when editing files, including command injection, XSS, and unsafe code patterns |
++| skill-creator | ❌ |  | Create new skills, improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, update or optimize an existing skill, run evals to test a skill, or benchmark skill performance with variance analysis. |
++| slack | ✅ | 1.0.0 | Slack integration for searching messages, sending communications, managing canvases, and more |
++| superpowers | ✅ | 5.1.0 | Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques |
++| typescript-lsp | ✅ |  | TypeScript/JavaScript language server for enhanced code intelligence |
++
++#### `ui-ux-pro-max-skill`
++| 플러그인 | 상태 | 버전 | 설명 |
++|---|---|---|---|
++| ui-ux-pro-max | ✅ | 2.5.0 | UI/UX design intelligence. 67 styles, 161 palettes, 57 font pairings, 25 charts, 15 stacks (React, Next.js, Vue, Svelte, Astro, SwiftUI, React Native, Flutter, Tailwind, shadcn/ui, Nuxt, Jetpack Compose). Actions: plan, build, create, design, implement, review, fix, improve, optimize, enhance, refactor, check UI/UX code. Projects: website, landing page, dashboard, admin panel, e-commerce, SaaS, portfolio, blog, mobile app. Elements: button, modal, navbar, sidebar, card, table, form, chart. Styles: glassmorphism, claymorphism, minimalism, brutalism, neumorphism, bento grid, dark mode, responsive, skeuomorphism, flat design. Topics: color palette, accessibility, animation, layout, typography, font pairing, spacing, hover, shadow, gradient. |
++
++<!-- AUTO:END plugins -->
+ 
+-### Anthropic Agent Skills (`anthropic-agent-skills`)
++---
+ 
+-| 플러그인 | 상태 | 설명 |
+-|----------|------|------|
+-| `document-skills` | ✅ 활성 | PDF, PPTX, XLSX, 웹 아티팩트 등 문서 관련 스킬 모음 |
++## 커스텀 스킬 (`skills/`)
++
++이 레포의 `skills/` 디렉토리에서 발견된 로컬 스킬입니다.
++
++<!-- AUTO:BEGIN custom-skills -->
++| 스킬 | 설명 |
++|---|---|
++| custom-skill-creator | Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy. |
++| dev-architecture | 기능 개발을 위한 아키텍처 설계 문서를 작성한다. AI가 기술 옵션 분석과 트레이드오프를 제시하고, 사용자가 기술 판단과 시스템 영향을 평가하여 결정한다. 사용 시점: "아키텍처 설계해줘", "기술 구조 잡아줘", "시스템 설계 시작하자", "/dev-architecture {기능명}" 등 아키텍처 단계 요청 시 트리거. PRD 문서(docs/dev-process/PRD.md)가 있으면 이를 기반으로 진행한다. |
++| dev-prd | 기능 개발을 위한 PRD(제품 요구사항 문서) 및 디자인 문서를 작성한다. AI가 초안을 작성하고 사용자가 우선순위와 요구사항을 결정하는 협업 방식으로 진행한다. 사용 시점: "PRD 작성해줘", "기획서 만들어줘", "요구사항 정리해줘", "기능 기획 시작하자", "/dev-prd {기능명}" 등 기획/디자인 단계 요청 시 트리거. 인자로 기능명 또는 프로젝트명을 받는다. |
++| dev-process | 4단계 개발 프로세스를 순차적으로 실행하는 오케스트레이터. PRD → 아키텍처 → 구현 스펙 → 테스트 케이스 순서로 진행한다. 각 단계에서 AI가 초안을 작성하고 사용자가 검증/확정하는 협업 방식으로 진행한다. 사용 시점: "개발 프로세스 시작하자", "기능 개발 전체 플로우 돌려줘", "/dev-process {기능명}" 등 전체 프로세스를 시작할 때 트리거. |
++| dev-spec | 기능 개발을 위한 상세 구현 스펙 문서를 작성한다. AI가 상세 스펙 초안과 인수 조건을 작성하고, 사용자가 도메인 규칙과 엣지 케이스를 검증한다. 사용 시점: "구현 스펙 작성해줘", "상세 스펙 만들어줘", "API 스펙 정리해줘", "/dev-spec {기능명}" 등 구현 스펙 단계 요청 시 트리거. PRD(docs/dev-process/PRD.md)와 아키텍처(docs/dev-process/ARCHITECTURE.md)가 있으면 이를 기반으로 진행한다. |
++| dev-testcase | 기능 개발을 위한 테스트 케이스 및 시나리오 문서를 작성한다. AI가 스펙의 인수 조건에서 테스트 케이스를 자동 도출하고, 사용자가 누락 여부와 AC 매핑을 검증한다. 사용 시점: "테스트 케이스 만들어줘", "TC 작성해줘", "테스트 시나리오 정리해줘", "/dev-testcase {기능명}" 등 테스트 케이스 단계 요청 시 트리거. SPEC(docs/dev-process/SPEC.md)이 있으면 인수 조건에서 TC를 자동 도출한다. |
++| measure-rerender | Measure React component re-rendering performance in the browser using Chrome DevTools MCP. Use when the user reports unnecessary re-renders, asks to profile rendering performance, measure component render counts, or optimize React rendering after state changes. |
++| mobile-view-debugger | 모바일 뷰에서 UI 문제점을 탐색하고 진단하는 스킬. Chrome DevTools MCP를 사용하여 모바일 디바이스 에뮬레이션, 스크린샷 촬영, DOM/CSS 분석을 수행한다. 레이아웃 깨짐, 가로 오버플로우, 잘린 텍스트, 작은 터치 타겟, 반응형 이미지 문제 등 모바일에서 흔히 발생하는 UI 문제를 자동으로 감지하고 리포트한다. 사용 시점: "모바일에서 이상하게 나와", "모바일 뷰 확인해줘", "반응형 깨졌어", "모바일 레이아웃 점검", "스마트폰에서 UI 확인" 등 모바일 관련 UI 디버깅 요청 시 트리거. 인자로 URL을 받거나, 현재 프로젝트의 로컬 서버 주소를 사용한다. |
++| validate-ui | Validate UI changes in the browser using Chrome DevTools MCP. Use when the user asks to verify, check, or validate UI changes in the browser, or mentions browser testing, visual verification, or E2E-style validation after code edits. |
++| write-app-spec | Analyzes a codebase and writes a SPEC.md that documents the app's functionality, screens/pages, core logic, and data models in a PRD-adjacent but implementation-focused format. Use when the user asks to write a spec, create SPEC.md, document what the app does, or produce a functional specification. Triggers on requests like "write a spec for this app", "create SPEC.md", "document the features", or "write a PRD-like doc focused on functionality". |
++| write-nestjs-spec | NestJS 백엔드 모듈의 API 스펙 문서(.spec.md)를 작성한다. 모듈명을 인자로 받아 엔티티, API 명세, 유효성 검증, 비즈니스 규칙 등을 포함한 구조화된 스펙 문서를 생성한다. 사용 예시 - /write-spec payment, /write-spec notification. 새로운 기능 모듈의 API 설계를 문서화할 때, 기존 모듈의 스펙을 작성할 때, 또는 API 명세서가 필요할 때 사용한다. |
++<!-- AUTO:END custom-skills -->
+ 
+-### Chrome DevTools (`chrome-devtools-plugins`)
++---
+ 
+-| 플러그인 | 상태 | 설명 |
+-|----------|------|------|
+-| `chrome-devtools-mcp` | ✅ 활성 | Chrome DevTools 프로토콜 기반 브라우저 디버깅/자동화 |
++## 플러그인 제공 스킬
++
++활성화된 플러그인의 캐시에서 발견된 `SKILL.md` 목록입니다.
++
++<!-- AUTO:BEGIN plugin-skills -->
++#### `document-skills` (anthropic-agent-skills)
++| 스킬 | 설명 |
++|---|---|
++| algorithmic-art | Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems. Create original algorithmic art rather than copying existing artists' work to avoid copyright violations. |
++| brand-guidelines | Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply. |
++| canvas-design | Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations. |
++| claude-api | Build, debug, and optimize Claude API / Anthropic SDK apps. Apps built with this skill should include prompt caching. Also handles migrating existing Claude API code between Claude model versions (4.5 → 4.6, 4.6 → 4.7, retired-model replacements). TRIGGER when: code imports `anthropic`/`@anthropic-ai/sdk`; user asks for the Claude API, Anthropic SDK, or Managed Agents; user adds/modifies/tunes a Claude feature (caching, thinking, compaction, tool use, batch, files, citations, memory) or model (Opus/Sonnet/Haiku) in a file; questions about prompt caching / cache hit rate in an Anthropic SDK project. SKIP: file imports `openai`/other-provider SDK, filename like `*-openai.py`/`*-generic.py`, provider-neutral code, general programming/ML. |
++| doc-coauthoring | Guide users through a structured workflow for co-authoring documentation. Use when user wants to write documentation, proposals, technical specs, decision docs, or similar structured content. This workflow helps users efficiently transfer context, refine content through iteration, and verify the doc works for readers. Trigger when user mentions writing docs, creating proposals, drafting specs, or similar documentation tasks. |
++| docx | Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files). Triggers include: any mention of 'Word doc', 'word document', '.docx', or requests to produce professional documents with formatting like tables of contents, headings, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx files, inserting or replacing images in documents, performing find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a 'report', 'memo', 'letter', 'template', or similar deliverable as a Word or .docx file, use this skill. Do NOT use for PDFs, spreadsheets, Google Docs, or general coding tasks unrelated to document generation. |
++| frontend-design | Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics. |
++| internal-comms | A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use this skill whenever asked to write some sort of internal communications (status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, project updates, etc.). |
++| mcp-builder | Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK). |
++| pdf | Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill. |
++| pptx | Use this skill any time a .pptx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates, layouts, speaker notes, or comments. Trigger whenever the user mentions \"deck,\" \"slides,\" \"presentation,\" or references a .pptx filename, regardless of what they plan to do with the content afterward. If a .pptx file needs to be opened, created, or touched, use this skill. |
++| skill-creator | Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy. |
++| slack-gif-creator | Knowledge and utilities for creating animated GIFs optimized for Slack. Provides constraints, validation tools, and animation concepts. Use when users request animated GIFs for Slack like "make me a GIF of X doing Y for Slack." |
++| theme-factory | Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact that has been creating, or can generate a new theme on-the-fly. |
++| web-artifacts-builder | Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts. |
++| webapp-testing | Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs. |
++| xlsx | Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \"the xlsx in my downloads\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved. |
++
++#### `chrome-devtools-mcp` (chrome-devtools-plugins)
++| 스킬 | 설명 |
++|---|---|
++| a11y-debugging | Uses Chrome DevTools MCP for accessibility (a11y) debugging and auditing based on web.dev guidelines. Use when testing semantic HTML, ARIA labels, focus states, keyboard navigation, tap targets, and color contrast. |
++| chrome-devtools | Uses Chrome DevTools via MCP for efficient debugging, troubleshooting and browser automation. Use when debugging web pages, automating browser interactions, analyzing performance, or inspecting network requests. This skill does not apply to `--slim` mode (MCP configuration). |
++| chrome-devtools-cli | Use this skill to write shell scripts or run shell commands to automate tasks in the browser or otherwise use Chrome DevTools via CLI. |
++| debug-optimize-lcp | Guides debugging and optimizing Largest Contentful Paint (LCP) using Chrome DevTools MCP tools. Use this skill whenever the user asks about LCP performance, slow page loads, Core Web Vitals optimization, or wants to understand why their page's main content takes too long to appear. Also use when the user mentions "largest contentful paint", "page load speed", "CWV", or wants to improve how fast their hero image or main content renders. |
++| memory-leak-debugging | Diagnoses and resolves memory leaks in JavaScript/Node.js applications. Use when a user reports high memory usage, OOM errors, or wants to analyze heapsnapshots or run memory leak detection tools like memlab. |
++| troubleshooting | Uses Chrome DevTools MCP and documentation to troubleshoot connection and target issues. Trigger this skill when list_pages, new_page, or navigate_page fail, or when the server initialization fails. |
++
++#### `atlassian` (claude-plugins-official)
++| 스킬 | 설명 |
++|---|---|
++| capture-tasks-from-meeting-notes | Analyze meeting notes to find action items and create Jira tasks for assigned work. When an agent needs to: (1) Create Jira tasks or tickets from meeting notes, (2) Extract or find action items from notes or Confluence pages, (3) Parse meeting notes for assigned tasks, or (4) Analyze notes and generate tasks for team members. Identifies assignees, looks up account IDs, and creates tasks with proper context. |
++| generate-status-report | Generate project status reports from Jira issues and publish to Confluence. When an agent needs to: (1) Create a status report for a project, (2) Summarize project progress or updates, (3) Generate weekly/daily reports from Jira, (4) Publish status summaries to Confluence, or (5) Analyze project blockers and completion. Queries Jira issues, categorizes by status/priority, and creates formatted reports for delivery managers and executives. |
++| search-company-knowledge | Search across company knowledge bases (Confluence, Jira, internal docs) to find and explain internal concepts, processes, and technical details. When an agent needs to: (1) Find or search for information about systems, terminology, processes, deployment, authentication, infrastructure, architecture, or technical concepts, (2) Search internal documentation, knowledge base, company docs, or our docs, (3) Explain what something is, how it works, or look up information, or (4) Synthesize information from multiple sources. Searches in parallel and provides cited answers. |
++| spec-to-backlog | Automatically convert Confluence specification documents into structured Jira backlogs with Epics and implementation tickets. When an agent needs to: (1) Create Jira tickets from a Confluence page, (2) Generate a backlog from a specification, (3) Break down a spec into implementation tasks, or (4) Convert requirements into Jira issues. Handles reading Confluence pages, analyzing specifications, creating Epics with proper structure, and generating detailed implementation tickets linked to the Epic. |
++| triage-issue | Intelligently triage bug reports and error messages by searching for duplicates in Jira and offering to create new issues or add comments to existing ones. When an agent needs to: (1) Triage a bug report or error message, (2) Check if an issue is a duplicate, (3) Find similar past issues, (4) Create a new bug ticket with proper context, or (5) Add information to an existing ticket. Searches Jira for similar issues, identifies duplicates, checks fix history, and helps create well-structured bug reports. |
++
++#### `claude-md-management` (claude-plugins-official)
++| 스킬 | 설명 |
++|---|---|
++| claude-md-improver | Audit and improve CLAUDE.md files in repositories. Use when user asks to check, audit, update, improve, or fix CLAUDE.md files. Scans for all CLAUDE.md files, evaluates quality against templates, outputs quality report, then makes targeted updates. Also use when the user mentions "CLAUDE.md maintenance" or "project memory optimization". |
++
++#### `frontend-design` (claude-plugins-official)
++| 스킬 | 설명 |
++|---|---|
++| frontend-design | Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics. |
++
++#### `slack` (claude-plugins-official)
++| 스킬 | 설명 |
++|---|---|
++| slack-messaging | Guidance for composing well-formatted, effective Slack messages using standard markdown |
++| slack-search | Guidance for effectively searching Slack to find messages, files, channels, and people |
++
++#### `superpowers` (claude-plugins-official)
++| 스킬 | 설명 |
++|---|---|
++| brainstorming | You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation. |
++| dispatching-parallel-agents | Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies |
++| executing-plans | Use when you have a written implementation plan to execute in a separate session with review checkpoints |
++| finishing-a-development-branch | Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup |
++| receiving-code-review | Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation |
++| requesting-code-review | Use when completing tasks, implementing major features, or before merging to verify work meets requirements |
++| subagent-driven-development | Use when executing implementation plans with independent tasks in the current session |
++| systematic-debugging | Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes |
++| test-driven-development | Use when implementing any feature or bugfix, before writing implementation code |
++| using-git-worktrees | Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback |
++| using-superpowers | Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions |
++| verification-before-completion | Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always |
++| writing-plans | Use when you have a spec or requirements for a multi-step task, before touching code |
++| writing-skills | Use when creating new skills, editing existing skills, or verifying skills work before deployment |
++
++#### `ui-ux-pro-max` (ui-ux-pro-max-skill)
++| 스킬 | 설명 |
++|---|---|
++| ckm:banner-design | Design banners for social media, ads, website heroes, creative assets, and print. Multiple art direction options with AI-generated visuals. Actions: design, create, generate banner. Platforms: Facebook, Twitter/X, LinkedIn, YouTube, Instagram, Google Display, website hero, print. Styles: minimalist, gradient, bold typography, photo-based, illustrated, geometric, retro, glassmorphism, 3D, neon, duotone, editorial, collage. Uses ui-ux-pro-max, frontend-design, ai-artist, ai-multimodal skills. |
++| ckm:brand | Brand voice, visual identity, messaging frameworks, asset management, brand consistency. Activate for branded content, tone of voice, marketing assets, brand compliance, style guides. |
++| ckm:design | Comprehensive design skill: brand identity, design tokens, UI styling, logo generation (55 styles, Gemini AI), corporate identity program (50 deliverables, CIP mockups), HTML presentations (Chart.js), banner design (22 styles, social/ads/web/print), icon design (15 styles, SVG, Gemini 3.1 Pro), social photos (HTML→screenshot, multi-platform). Actions: design logo, create CIP, generate mockups, build slides, design banner, generate icon, create social photos, social media images, brand identity, design system. Platforms: Facebook, Twitter, LinkedIn, YouTube, Instagram, Pinterest, TikTok, Threads, Google Ads. |
++| ckm:design-system | Token architecture, component specifications, and slide generation. Three-layer tokens (primitive→semantic→component), CSS variables, spacing/typography scales, component specs, strategic slide creation. Use for design tokens, systematic design, brand-compliant presentations. |
++| ckm:slides | Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies. |
++| ckm:ui-styling | Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling, and canvas-based visual designs. Use when building user interfaces, implementing design systems, creating responsive layouts, adding accessible components (dialogs, dropdowns, forms, tables), customizing themes and colors, implementing dark mode, generating visual designs and posters, or establishing consistent styling patterns across applications. |
++| ui-ux-pro-max | UI/UX design intelligence for web and mobile. Includes 50+ styles, 161 color palettes, 57 font pairings, 161 product types, 99 UX guidelines, and 25 chart types across 10 stacks (React, Next.js, Vue, Svelte, SwiftUI, React Native, Flutter, Tailwind, shadcn/ui, and HTML/CSS). Actions: plan, build, create, design, implement, review, fix, improve, optimize, enhance, refactor, and check UI/UX code. Projects: website, landing page, dashboard, admin panel, e-commerce, SaaS, portfolio, blog, and mobile app. Elements: button, modal, navbar, sidebar, card, table, form, and chart. Styles: glassmorphism, claymorphism, minimalism, brutalism, neumorphism, bento grid, dark mode, responsive, skeuomorphism, and flat design. Topics: color systems, accessibility, animation, layout, typography, font pairing, spacing, interaction states, shadow, and gradient. Integrations: shadcn/ui MCP for component search and examples. |
++
++<!-- AUTO:END plugin-skills -->
+ 
+-### Custom Marketplace (`ui-ux-pro-max-skill`)
++---
+ 
+-| 플러그인 | 상태 | 소스 | 설명 |
+-|----------|----|-----|-------------|
+-| `ui-ux-pro-max` | ✅ 활성 | `nextlevelbuilder/ui-ux-pro-max-skill` (GitHub) | AI 기반 디자인 인텔리전스 스킬. 제품 요구사항을 분석하여 디자인 시스템을 자동 생성 |
++## 플러그인 제공 슬래시 커맨드
++
++활성화된 플러그인의 `commands/*.md`에서 도출됩니다. `/<커맨드명>` 형태로 호출합니다.
++
++<!-- AUTO:BEGIN plugin-commands -->
++#### `claude-md-management` (claude-plugins-official)
++| 명령 | 설명 |
++|---|---|
++| revise-claude-md | Update CLAUDE.md with learnings from this session |
++
++#### `code-review` (claude-plugins-official)
++| 명령 | 설명 |
++|---|---|
++| code-review | Code review a pull request |
++
++#### `feature-dev` (claude-plugins-official)
++| 명령 | 설명 |
++|---|---|
++| feature-dev | Guided feature development with codebase understanding and architecture focus |
++
++#### `notion` (claude-plugins-official)
++| 명령 | 설명 |
++|---|---|
++| create-database-row | Insert a new row into a specified Notion database using natural-language property values. |
++| create-page | Create a new Notion page, optionally under a specific parent, using the Notion Workspace Skill and Notion MCP server. |
++| create-task | Create a new task in the user’s Notion tasks database with sensible defaults. |
++| database-query | Query a Notion database by name or ID and return structured, readable results. |
++| find | Quickly find pages or databases in Notion by title keywords. |
++| search | Search the user’s Notion workspace using the Notion MCP server and Notion Workspace Skill. |
++
++#### `slack` (claude-plugins-official)
++| 명령 | 설명 |
++|---|---|
++| channel-digest | Get a digest of recent activity across multiple Slack channels |
++| draft-announcement | Draft a well-formatted Slack announcement and save it as a draft |
++| find-discussions | Find discussions about a specific topic across Slack channels |
++| standup | Generate a standup update based on your recent Slack activity |
++| summarize-channel | Summarize recent activity in a Slack channel |
++
++<!-- AUTO:END plugin-commands -->
+ 
+ ---
+ 
+-## 스킬 (Skills)
+-
+-현재 세션에서 사용 가능한 모든 스킬 목록입니다. **소속** 컬럼은 스킬의 출처를 의미합니다:
+-- `custom`: 이 레포의 `skills/` 디렉토리에 정의된 로컬 스킬
+-- `built-in`: Claude Code 내장 스킬 (네임스페이스 없음)
+-- 그 외: 해당 플러그인/마켓플레이스 이름
+-
+-### 개발 프로세스 (4단계 워크플로우)
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `dev-prd` | `/dev-prd {기능명}` | custom | PRD(제품 요구사항 문서) 작성. 사용자와 협업하여 기능 기획 |
+-| `dev-architecture` | `/dev-architecture {기능명}` | custom | 아키텍처 설계. 기술 옵션 분석 및 트레이드오프 제시 |
+-| `dev-spec` | `/dev-spec {기능명}` | custom | 상세 구현 스펙 작성. 인수 조건(AC)을 Given-When-Then 형식으로 정의 |
+-| `dev-testcase` | `/dev-testcase {기능명}` | custom | 테스트 케이스 자동 도출. 스펙의 AC에서 TC를 생성 |
+-| `dev-process` | `/dev-process {기능명}` | custom | 위 4단계를 순차 실행하는 오케스트레이터 |
+-| `feature-dev:feature-dev` | 기능 개발 요청 시 | feature-dev | 코드베이스 이해 기반 가이드형 기능 개발 |
+-
+-### 문서/스펙 작성
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `write-app-spec` | `/write-app-spec` | custom | 프론트엔드/풀스택 앱의 코드베이스를 분석하여 화면, 라우팅, 핵심 로직, 데이터 모델을 문서화한 SPEC.md 생성 |
+-| `write-nestjs-spec` | `/write-nestjs-spec {모듈명}` | custom | NestJS 백엔드 모듈 API 스펙 문서 생성 |
+-| `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시 | document-skills | 구조화된 문서/제안서/스펙 공동 작성 워크플로우 |
+-| `document-skills:internal-comms` | 사내 커뮤니케이션 작성 요청 시 | document-skills | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성 |
+-
+-### 브라우저 테스트/검증
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `validate-ui` | UI 변경 후 검증 요청 시 | custom | Chrome DevTools MCP를 사용한 4계층 검증(A11y Snapshot, Screenshot, DOM Query, Runtime Logs) |
+-| `measure-rerender` | 리렌더링 성능 측정 요청 시 | custom | React 컴포넌트 리렌더링 횟수 측정 및 비교 분석 |
+-| `mobile-view-debugger` | 모바일 뷰 문제 진단 요청 시 | custom | 모바일 에뮬레이션 + 자동 진단(오버플로우, 터치 타겟 등) |
+-| `chrome-devtools-mcp:chrome-devtools` | 브라우저 디버깅/자동화 시 | chrome-devtools-mcp | Chrome DevTools MCP 기반 범용 브라우저 디버깅 |
+-| `chrome-devtools-mcp:a11y-debugging` | 접근성 진단 요청 시 | chrome-devtools-mcp | 시맨틱 HTML, ARIA, 키보드 네비게이션, 명도 대비 점검 |
+-| `chrome-devtools-mcp:debug-optimize-lcp` | LCP/Core Web Vitals 최적화 요청 시 | chrome-devtools-mcp | Largest Contentful Paint 디버깅 및 최적화 가이드 |
+-| `chrome-devtools-mcp:memory-leak-debugging` | 메모리 누수 진단 요청 시 | chrome-devtools-mcp | JS/Node 앱 메모리 누수 진단 및 해결 |
+-| `chrome-devtools-mcp:chrome-devtools-cli` | 브라우저 자동화 스크립트 작성 시 | chrome-devtools-mcp | CLI에서 Chrome DevTools 자동화 |
+-| `chrome-devtools-mcp:troubleshooting` | MCP 연결/타깃 문제 발생 시 | chrome-devtools-mcp | Chrome DevTools MCP 연결 문제 해결 |
+-| `document-skills:webapp-testing` | 로컬 웹앱 테스트 요청 시 | document-skills | Playwright 기반 로컬 웹앱 동작 검증 |
+-
+-### 코드 리뷰/품질
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `code-review:code-review` | `/code-review` | code-review | PR 코드 리뷰 수행 |
+-| `review` | `/review` | built-in | PR 리뷰 |
+-| `security-review` | `/security-review` | built-in | 현재 브랜치의 변경사항 보안 리뷰 |
+-| `simplify` | `/simplify` | built-in | 변경된 코드의 재사용/품질/효율 검토 후 수정 |
+-
+-### UI/디자인 생성
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `frontend-design:frontend-design` | 프론트엔드 UI 생성 요청 시 | frontend-design | 프로덕션급 디자인 품질의 프론트엔드 인터페이스 생성 |
+-| `document-skills:frontend-design` | 웹 컴포넌트/페이지 빌드 요청 시 | document-skills | 동일 계열의 frontend-design 스킬 (document-skills 마켓플레이스 버전) |
+-| `ui-ux-pro-max:ui-ux-pro-max` | UI/UX 설계/구현 요청 시 | ui-ux-pro-max | 50+ 스타일, 161 컬러 팔레트, 57 폰트 페어링 등 디자인 인텔리전스 |
+-| `document-skills:theme-factory` | 아티팩트 테마 적용 요청 시 | document-skills | 슬라이드/문서/HTML 아티팩트에 사전 정의된 테마 적용 |
+-| `document-skills:brand-guidelines` | 브랜드 가이드 적용 요청 시 | document-skills | Anthropic 공식 브랜드 색상/타이포 적용 |
+-
+-### 문서 포맷 생성
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `document-skills:docx` | .docx 파일 작업 요청 시 | document-skills | Word 문서 생성/편집/추출 |
+-| `document-skills:pptx` | .pptx 파일 작업 요청 시 | document-skills | PowerPoint 슬라이드 덱 생성/편집 |
+-| `document-skills:xlsx` | 스프레드시트 작업 요청 시 | document-skills | Excel(.xlsx/.csv 등) 생성/편집/정제 |
+-| `document-skills:pdf` | PDF 작업 요청 시 | document-skills | PDF 읽기/병합/분할/OCR 등 |
+-| `document-skills:canvas-design` | 포스터/시각 아트 생성 요청 시 | document-skills | .png/.pdf 기반 비주얼 아트 생성 |
+-| `document-skills:algorithmic-art` | 알고리즈믹 아트 요청 시 | document-skills | p5.js 기반 제너러티브 아트 생성 |
+-| `document-skills:slack-gif-creator` | Slack용 GIF 생성 요청 시 | document-skills | Slack 최적화 애니메이션 GIF 생성 |
+-| `document-skills:web-artifacts-builder` | 복잡한 HTML 아티팩트 빌드 시 | document-skills | React/Tailwind/shadcn 기반 다중 컴포넌트 아티팩트 |
+-
+-### Slack 연동
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `slack:slack-messaging` | Slack 메시지 작성 시 | slack | Slack용 마크다운 포맷팅 가이드 |
+-| `slack:slack-search` | Slack 검색 시 | slack | 메시지/파일/채널/사람 검색 가이드 |
+-| `slack:summarize-channel` | 채널 요약 요청 시 | slack | 특정 채널 최근 활동 요약 |
+-| `slack:channel-digest` | 여러 채널 다이제스트 요청 시 | slack | 여러 채널 활동을 한 번에 요약 |
+-| `slack:find-discussions` | 특정 주제 논의 찾기 요청 시 | slack | 채널 전반에서 토픽 관련 논의 검색 |
+-| `slack:draft-announcement` | 공지 초안 작성 요청 시 | slack | 잘 포맷팅된 공지 초안 작성 후 저장 |
+-| `slack:standup` | 스탠드업 업데이트 요청 시 | slack | 최근 Slack 활동 기반 스탠드업 생성 |
+-
+-### Notion 연동
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `Notion:search` | Notion 검색 요청 시 | Notion | Notion 워크스페이스 검색 |
+-| `Notion:find` | Notion 페이지/DB 찾기 요청 시 | Notion | 키워드로 페이지/DB 빠르게 찾기 |
+-| `Notion:create-page` | Notion 페이지 생성 요청 시 | Notion | 새 페이지 생성 |
+-| `Notion:create-database-row` | DB 행 추가 요청 시 | Notion | 자연어 속성값으로 DB에 행 삽입 |
+-| `Notion:create-task` | Notion 태스크 생성 요청 시 | Notion | 태스크 DB에 새 태스크 생성 |
+-| `Notion:database-query` | DB 조회 요청 시 | Notion | DB 쿼리 후 구조화된 결과 반환 |
+-| `Notion:tasks:setup` | 태스크 보드 셋업 요청 시 | Notion | Notion 태스크 보드 초기 구성 |
+-| `Notion:tasks:plan` | 태스크 플래닝 요청 시 | Notion | Notion 페이지 URL 기반 플래닝 |
+-| `Notion:tasks:build` | 태스크 빌드 요청 시 | Notion | Notion 페이지 URL 기반 태스크 구축 |
+-| `Notion:tasks:explain-diff` | 코드 변경 설명 문서 작성 시 | Notion | 코드 변경 내용을 설명하는 Notion 문서 생성 |
+-
+-### Atlassian 연동 (Jira/Confluence)
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `atlassian:capture-tasks-from-meeting-notes` | 회의록 기반 Jira 태스크 생성 시 | atlassian | 회의록에서 액션 아이템 추출하여 Jira 태스크 생성 |
+-| `atlassian:generate-status-report` | 프로젝트 상태 보고서 작성 시 | atlassian | Jira 이슈 기반 상태 보고서 생성 및 Confluence 게시 |
+-| `atlassian:search-company-knowledge` | 사내 지식 검색 요청 시 | atlassian | Confluence/Jira 등 사내 지식 베이스 통합 검색 |
+-| `atlassian:spec-to-backlog` | 스펙 → Jira 백로그 변환 시 | atlassian | Confluence 스펙 문서를 Epic + 구현 티켓으로 변환 |
+-| `atlassian:triage-issue` | 버그 트리아지 요청 시 | atlassian | Jira에서 중복 검색 후 신규 이슈 생성/기존 이슈 코멘트 |
+-
+-### Superpowers (개발 워크플로우)
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `superpowers:using-superpowers` | 모든 대화 시작 시 | superpowers | superpowers 스킬 사용법 안내 |
+-| `superpowers:brainstorming` | 기능/컴포넌트 설계 시작 시 | superpowers | 구현 전 사용자 의도/요구사항/설계 탐색 |
+-| `superpowers:writing-plans` | 멀티스텝 작업 계획 작성 시 | superpowers | 코드 작업 전 구현 계획 작성 |
+-| `superpowers:writing-skills` | 스킬 작성/편집/검증 시 | superpowers | 신규 스킬 작성/편집 가이드 |
+-| `superpowers:executing-plans` | 작성된 계획 실행 시 | superpowers | 리뷰 체크포인트 포함 별도 세션에서 계획 실행 |
+-| `superpowers:test-driven-development` | 기능/버그픽스 구현 시 | superpowers | 구현 코드 작성 전 TDD 적용 |
+-| `superpowers:systematic-debugging` | 버그/테스트 실패 시 | superpowers | 픽스 제안 전 체계적 디버깅 |
+-| `superpowers:verification-before-completion` | 완료 선언 직전 | superpowers | 완료/통과 주장 전 검증 명령 실행 |
+-| `superpowers:subagent-driven-development` | 독립 작업이 있는 계획 실행 시 | superpowers | 현재 세션에서 서브에이전트로 독립 작업 실행 |
+-| `superpowers:dispatching-parallel-agents` | 독립 작업 2개 이상 시 | superpowers | 공유 상태 없는 독립 작업 병렬 실행 |
+-| `superpowers:requesting-code-review` | 작업 완료/머지 직전 | superpowers | 요구사항 충족 검증을 위한 코드 리뷰 요청 |
+-| `superpowers:receiving-code-review` | 코드 리뷰 피드백 수신 시 | superpowers | 피드백 검증 후 적용 (맹목적 동의 금지) |
+-| `superpowers:finishing-a-development-branch` | 구현 완료 후 브랜치 정리 시 | superpowers | 머지/PR/정리 옵션 제시 |
+-| `superpowers:using-git-worktrees` | 격리된 워크스페이스 필요 시 | superpowers | git worktree 기반 격리 워크스페이스 보장 |
+-
+-### CLAUDE.md / 스킬 관리
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `claude-md-management:claude-md-improver` | CLAUDE.md 감사/개선 요청 시 | claude-md-management | 레포의 CLAUDE.md 파일 품질 평가 및 개선 |
+-| `claude-md-management:revise-claude-md` | 세션 학습 반영 요청 시 | claude-md-management | 세션 학습을 CLAUDE.md에 반영 |
+-| `custom-skill-creator` | 스킬 생성/수정/평가 요청 시 | custom | 스킬 생성, 편집, 성능 측정 |
+-| `document-skills:skill-creator` | 스킬 생성/평가 요청 시 | document-skills | document-skills 마켓플레이스의 스킬 생성기 |
+-| `find-skills` | 스킬 검색/설치 요청 시 | built-in | 설치 가능한 스킬 발견 |
+-| `init` | `/init` | built-in | CLAUDE.md 초기 생성 |
+-
+-### Claude API / MCP 빌드
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `claude-api` | Anthropic SDK 코드 작업 시 | built-in | Claude API/Anthropic SDK 앱 구축·디버깅·최적화 |
+-| `document-skills:claude-api` | 동일 | document-skills | 동일 스킬의 document-skills 마켓플레이스 버전 |
+-| `document-skills:mcp-builder` | MCP 서버 구축 요청 시 | document-skills | 고품질 MCP 서버 생성 가이드 |
+-
+-### 환경/설정
+-
+-| 스킬 | 트리거 | 소속 | 설명 |
+-|------|--------|------|------|
+-| `update-config` | settings.json 변경 요청 시 | built-in | 권한, 환경 변수, 훅 등 settings 구성 |
+-| `keybindings-help` | 키바인딩 커스터마이즈 요청 시 | built-in | `~/.claude/keybindings.json` 수정 |
+-| `fewer-permission-prompts` | 권한 프롬프트 최소화 요청 시 | built-in | 자주 쓰는 read-only 명령을 allowlist로 추가 |
+-| `loop` | 반복 실행 요청 시 | built-in | 프롬프트/슬래시 명령을 주기적으로 실행 |
++## 플러그인 제공 에이전트 (서브에이전트)
++
++활성화된 플러그인의 `agents/*.md`에서 도출됩니다. `Agent` 도구에서 `subagent_type`으로 호출합니다.
++
++<!-- AUTO:BEGIN plugin-agents -->
++#### `code-simplifier` (claude-plugins-official)
++| 에이전트 | 설명 |
++|---|---|
++| code-simplifier | Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise. |
++
++#### `feature-dev` (claude-plugins-official)
++| 에이전트 | 설명 |
++|---|---|
++| code-architect | Designs feature architectures by analyzing existing codebase patterns and conventions, then providing comprehensive implementation blueprints with specific files to create/modify, component designs, data flows, and build sequences |
++| code-explorer | Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, understanding patterns and abstractions, and documenting dependencies to inform new development |
++| code-reviewer | Reviews code for bugs, logic errors, security vulnerabilities, code quality issues, and adherence to project conventions, using confidence-based filtering to report only high-priority issues that truly matter |
++
++<!-- AUTO:END plugin-agents -->
+ 
+ ---
+ 
+-## 훅 (Hooks)
++## 플러그인 제공 MCP 서버
++
++<!-- AUTO:BEGIN plugin-mcps -->
++#### `chrome-devtools-mcp` (chrome-devtools-plugins)
++| MCP 서버 | 실행 명령 |
++|---|---|
++| chrome-devtools | npx chrome-devtools-mcp@latest |
++
++#### `atlassian` (claude-plugins-official)
++| MCP 서버 | 실행 명령 |
++|---|---|
++| atlassian |  |
++
++#### `context7` (claude-plugins-official)
++| MCP 서버 | 실행 명령 |
++|---|---|
++| context7 | npx -y @upstash/context7-mcp |
++
++#### `notion` (claude-plugins-official)
++| MCP 서버 | 실행 명령 |
++|---|---|
++| notion |  |
+ 
+-| 이벤트 | 실행 명령 | 비동기 | 설명 |
+-|--------|-----------|--------|------|
+-| `ConfigChange` | `node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"` | ✅ | 설정 변경 시 자동으로 git commit + push 동기화 (플랫폼에 맞는 .sh/.ps1로 라우팅) |
++#### `playwright` (claude-plugins-official)
++| MCP 서버 | 실행 명령 |
++|---|---|
++| playwright | npx @playwright/mcp@latest |
++
++#### `slack` (claude-plugins-official)
++| MCP 서버 | 실행 명령 |
++|---|---|
++| slack |  |
++
++<!-- AUTO:END plugin-mcps -->
+ 
+ ---
+ 
+-## 권한 (Permissions)
++## 빌트인 스킬 (수동 유지)
++
++Claude Code 런타임이 직접 제공하므로 로컬 파일로 노출되지 않습니다. 새 빌트인 스킬이 추가되면 직접 갱신하세요.
++
++| 스킬 | 트리거 | 설명 |
++|------|--------|------|
++| `review` | `/review` | PR 리뷰 |
++| `security-review` | `/security-review` | 현재 브랜치 변경분 보안 리뷰 |
++| `simplify` | `/simplify` | 변경된 코드 재사용/품질/효율 검토 후 수정 |
++| `find-skills` | 스킬 검색/설치 요청 시 | 설치 가능한 스킬 발견 |
++| `init` | `/init` | CLAUDE.md 초기 생성 |
++| `claude-api` | Anthropic SDK 코드 작업 시 | Claude API/Anthropic SDK 앱 구축·디버깅·최적화 |
++| `update-config` | settings.json 변경 요청 시 | 권한, 환경 변수, 훅 등 settings 구성 |
++| `keybindings-help` | 키바인딩 커스터마이즈 요청 시 | `~/.claude/keybindings.json` 수정 |
++| `fewer-permission-prompts` | 권한 프롬프트 최소화 요청 시 | 자주 쓰는 read-only 명령을 allowlist로 추가 |
++| `loop` | 반복 실행 요청 시 | 프롬프트/슬래시 명령을 주기적으로 실행 |
++
++---
+ 
+-### 허용 (Allow)
++## 훅 (Hooks)
++
++`settings.json` 및 활성 플러그인이 등록한 훅의 통합 목록입니다.
+ 
+-| 도구/명령 | 설명 |
+-|-----------|------|
+-| `Read`, `Edit`, `Write`, `Glob`, `Grep` | 기본 파일 조작 도구 |
+-| `Bash(find/ls/cat/cd/npm/pnpm/grep/xargs grep)` | 셸 명령 (제한적) |
+-| `mcp__plugin_playwright_*` | Playwright 브라우저 도구 전체 |
+-| `mcp__plugin_chrome-devtools-mcp_chrome-devtools*` | Chrome DevTools MCP 도구 전체 |
++<!-- AUTO:BEGIN hooks -->
++| 이벤트 | 타입 | 명령 | 모드 | 출처 |
++|---|---|---|---|---|
++| ConfigChange | command | `node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"` | sync | settings.json |
++| ConfigChange | command | `node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"` | async | settings.json |
++| PreToolUse | command | `python3 ${CLAUDE_PLUGIN_ROOT}/hooks/security_reminder_hook.py` |  | security-guidance |
++| SessionStart | command | `"${CLAUDE_PLUGIN_ROOT}/hooks/run-hook.cmd" session-start` |  | superpowers |
++<!-- AUTO:END hooks -->
+ 
+-### 거부 (Deny)
++---
+ 
+-| 패턴 | 설명 |
+-|------|------|
+-| `Write(./.env)` | 환경 변수 파일 쓰기 금지 |
+-| `Write(./node_modules/**)` | node_modules 쓰기 금지 |
+-| `Bash(* deploy/publish *)` | 배포/퍼블리시 명령 금지 |
+-| `Bash(git push/pull *)` | git push/pull 자동 실행 금지 |
++## 권한 (Permissions)
++
++<!-- AUTO:BEGIN permissions -->
++**허용 (Allow)**
++
++| 패턴 |
++|---|
++| `Read` |
++| `Edit` |
++| `Write` |
++| `Glob` |
++| `Grep` |
++| `Bash(find *)` |
++| `Bash(ls *)` |
++| `Bash(cat *)` |
++| `Bash(cd *)` |
++| `Bash(npm *)` |
++| `Bash(pnpm *)` |
++| `Bash(grep *)` |
++| `mcp__plugin_playwright_*` |
++| `Bash(xargs grep *)` |
++| `mcp__plugin_chrome-devtools-mcp_chrome-devtools*` |
++| `mcp__plugin_context7*` |
++| `mcp__aws-knowledge*` |
++
++**거부 (Deny)**
++
++| 패턴 |
++|---|
++| `Write(./.env)` |
++| `Write(./node_modules/**)` |
++| `Bash(* deploy *)` |
++| `Bash(* publish *)` |
++| `Bash(git push *)` |
++| `Bash(git pull *)` |
++<!-- AUTO:END permissions -->
+ 
+ ---
+ 
+-## 글로벌 인스트럭션 (CLAUDE.md)
++## 글로벌 인스트럭션 (`~/.claude/CLAUDE.md`)
+ 
+-```
++<!-- AUTO:BEGIN global-instructions -->
++```markdown
++# Global Instructions
++
++## Skill Creation
+ - 스킬 생성 시 `--path`는 항상 `~/.claude/skills`를 사용할 것
+ ```
++<!-- AUTO:END global-instructions -->
+diff --git a/scripts/harness-sync/harness-sync.mjs b/scripts/harness-sync/harness-sync.mjs
+new file mode 100644
+index 0000000..3a385a9
+--- /dev/null
++++ b/scripts/harness-sync/harness-sync.mjs
+@@ -0,0 +1,463 @@
++#!/usr/bin/env node
++// Regenerates auto-managed sections of HARNESS.md from settings.json,
++// local skills, and the Claude Code plugin cache.
++// Marker format in HARNESS.md: <!-- AUTO:BEGIN <id> --> ... <!-- AUTO:END <id> -->
++
++import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from "node:fs";
++import { homedir } from "node:os";
++import { dirname, join, resolve } from "node:path";
++import { fileURLToPath } from "node:url";
++
++const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
++const REPO_ROOT = process.env.DOTCLAUDE_DIR
++  ? resolve(process.env.DOTCLAUDE_DIR)
++  : resolve(SCRIPT_DIR, "..", "..");
++const PLUGINS_ROOT = join(homedir(), ".claude", "plugins");
++const PLUGIN_CACHE = join(PLUGINS_ROOT, "cache");
++const MARKETPLACES_DIR = join(PLUGINS_ROOT, "marketplaces");
++const HARNESS_PATH = join(REPO_ROOT, "HARNESS.md");
++const SETTINGS_PATH = join(REPO_ROOT, "settings.json");
++const GLOBAL_CLAUDE_MD = join(homedir(), ".claude", "CLAUDE.md");
++
++// ---------- utilities ----------
++
++function readJsonSafe(path) {
++  try {
++    return JSON.parse(readFileSync(path, "utf8"));
++  } catch {
++    return null;
++  }
++}
++
++function readTextSafe(path) {
++  try {
++    return readFileSync(path, "utf8");
++  } catch {
++    return null;
++  }
++}
++
++function lsDirs(path) {
++  try {
++    return readdirSync(path, { withFileTypes: true })
++      .filter((d) => d.isDirectory())
++      .map((d) => d.name);
++  } catch {
++    return [];
++  }
++}
++
++function lsFiles(path) {
++  try {
++    return readdirSync(path, { withFileTypes: true })
++      .filter((d) => d.isFile())
++      .map((d) => d.name);
++  } catch {
++    return [];
++  }
++}
++
++function pickLatestVersionDir(parentDir) {
++  const subs = lsDirs(parentDir);
++  if (subs.length === 0) return null;
++  let best = null;
++  let bestMtime = -1;
++  for (const sub of subs) {
++    try {
++      const m = statSync(join(parentDir, sub)).mtimeMs;
++      if (m > bestMtime) {
++        bestMtime = m;
++        best = sub;
++      }
++    } catch {
++      /* ignore */
++    }
++  }
++  return best ? join(parentDir, best) : null;
++}
++
++// Minimal YAML frontmatter parser. Handles simple `key: value` lines and
++// block scalars (`key: >` folded / `key: |` literal) with indented continuations.
++function parseFrontmatter(content) {
++  if (!content) return {};
++  const m = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
++  if (!m) return {};
++  const fields = {};
++  const lines = m[1].split(/\r?\n/);
++  let i = 0;
++  while (i < lines.length) {
++    const line = lines[i];
++    const kv = line.match(/^([A-Za-z][\w-]*)\s*:\s*(.*)$/);
++    if (!kv) {
++      i++;
++      continue;
++    }
++    const key = kv[1];
++    let val = kv[2].trim();
++    if (val === ">" || val === "|" || val === ">-" || val === "|-") {
++      const literal = val.startsWith("|");
++      const parts = [];
++      i++;
++      while (i < lines.length) {
++        const next = lines[i];
++        if (/^\S/.test(next)) break; // dedented = end of block
++        parts.push(next.replace(/^\s+/, ""));
++        i++;
++      }
++      val = literal ? parts.join("\n").trim() : parts.join(" ").trim();
++    } else {
++      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
++        val = val.slice(1, -1);
++      }
++      i++;
++    }
++    fields[key] = val;
++  }
++  return fields;
++}
++
++function escapeCell(s) {
++  if (s == null) return "";
++  return String(s).replace(/\r?\n/g, " ").replace(/\|/g, "\\|").trim();
++}
++
++function renderTable(headers, rows) {
++  if (rows.length === 0) {
++    return `_(none)_`;
++  }
++  const head = `| ${headers.join(" | ")} |`;
++  const sep = `|${headers.map(() => "---").join("|")}|`;
++  const body = rows.map((r) => `| ${r.map(escapeCell).join(" | ")} |`).join("\n");
++  return `${head}\n${sep}\n${body}`;
++}
++
++function replaceMarker(content, sectionId, newBody) {
++  const re = new RegExp(
++    `(<!-- AUTO:BEGIN ${sectionId} -->)[\\s\\S]*?(<!-- AUTO:END ${sectionId} -->)`,
++    "m",
++  );
++  if (!re.test(content)) {
++    process.stderr.write(`harness-sync: marker '${sectionId}' not found in HARNESS.md\n`);
++    return content;
++  }
++  return content.replace(re, `$1\n${newBody}\n$2`);
++}
++
++// ---------- plugin discovery ----------
++
++function enumeratePluginKeys(settings) {
++  const result = [];
++  for (const [key, enabled] of Object.entries(settings.enabledPlugins ?? {})) {
++    const at = key.lastIndexOf("@");
++    if (at < 0) continue;
++    result.push({ key, plugin: key.slice(0, at), marketplace: key.slice(at + 1), enabled: !!enabled });
++  }
++  return result.sort((a, b) =>
++    a.marketplace === b.marketplace ? a.plugin.localeCompare(b.plugin) : a.marketplace.localeCompare(b.marketplace),
++  );
++}
++
++function loadMarketplaceManifests() {
++  const out = {};
++  for (const name of lsDirs(MARKETPLACES_DIR)) {
++    const manifest = readJsonSafe(join(MARKETPLACES_DIR, name, ".claude-plugin", "marketplace.json"));
++    if (manifest) out[name] = manifest;
++  }
++  return out;
++}
++
++function findPluginDir(marketplace, plugin) {
++  const parent = join(PLUGIN_CACHE, marketplace, plugin);
++  return pickLatestVersionDir(parent);
++}
++
++// Find a skill directory inside the plugin: look at a small set of conventional paths.
++function findSkillRoots(pluginDir) {
++  const candidates = [
++    join(pluginDir, "skills"),
++    join(pluginDir, ".claude", "skills"),
++    join(pluginDir, "src", "skills"),
++  ];
++  // ui-ux-pro-max nests under src/<plugin-name>/<...> with skill files at any depth;
++  // we treat its top SKILL.md (if present) as a single skill via a separate path scan.
++  return candidates.filter((p) => existsSync(p));
++}
++
++function collectSkillsFromRoot(skillsRoot) {
++  const out = [];
++  for (const dir of lsDirs(skillsRoot)) {
++    const skillMd = join(skillsRoot, dir, "SKILL.md");
++    const content = readTextSafe(skillMd);
++    if (!content) continue;
++    const fm = parseFrontmatter(content);
++    out.push({ name: fm.name || dir, description: fm.description || "" });
++  }
++  return out;
++}
++
++function collectPluginSkills(pluginDir) {
++  const roots = findSkillRoots(pluginDir);
++  const found = [];
++  for (const r of roots) found.push(...collectSkillsFromRoot(r));
++  return found;
++}
++
++function collectPluginAgents(pluginDir) {
++  const dir = join(pluginDir, "agents");
++  if (!existsSync(dir)) return [];
++  const out = [];
++  for (const file of lsFiles(dir)) {
++    if (!file.endsWith(".md")) continue;
++    const content = readTextSafe(join(dir, file));
++    if (!content) continue;
++    const fm = parseFrontmatter(content);
++    out.push({ name: fm.name || file.replace(/\.md$/, ""), description: fm.description || "" });
++  }
++  return out;
++}
++
++function collectPluginCommands(pluginDir) {
++  const dir = join(pluginDir, "commands");
++  if (!existsSync(dir)) return [];
++  const out = [];
++  for (const file of lsFiles(dir)) {
++    if (!file.endsWith(".md")) continue;
++    const content = readTextSafe(join(dir, file));
++    if (!content) continue;
++    const fm = parseFrontmatter(content);
++    out.push({ name: file.replace(/\.md$/, ""), description: fm.description || "" });
++  }
++  return out;
++}
++
++function collectPluginMcps(pluginDir) {
++  const cfg = readJsonSafe(join(pluginDir, ".mcp.json"));
++  if (!cfg) return [];
++  const servers = cfg.mcpServers && typeof cfg.mcpServers === "object" ? cfg.mcpServers : cfg;
++  return Object.entries(servers).map(([name, def]) => ({
++    name,
++    command: def?.command ? `${def.command} ${(def.args ?? []).join(" ")}`.trim() : "",
++  }));
++}
++
++function collectPluginHooks(pluginDir) {
++  const cfg = readJsonSafe(join(pluginDir, "hooks", "hooks.json"));
++  if (!cfg || !cfg.hooks || typeof cfg.hooks !== "object") return [];
++  const out = [];
++  for (const [event, groups] of Object.entries(cfg.hooks)) {
++    if (!Array.isArray(groups)) continue;
++    for (const g of groups) {
++      for (const h of g.hooks ?? []) {
++        out.push({ event, command: h.command ?? "", type: h.type ?? "" });
++      }
++    }
++  }
++  return out;
++}
++
++function loadPluginManifest(pluginDir) {
++  return readJsonSafe(join(pluginDir, ".claude-plugin", "plugin.json")) ?? {};
++}
++
++function descriptionFromMarketplace(manifests, marketplace, plugin) {
++  const m = manifests[marketplace];
++  if (!m || !Array.isArray(m.plugins)) return "";
++  const entry = m.plugins.find((p) => p.name === plugin);
++  return entry?.description ?? "";
++}
++
++// ---------- section renderers ----------
++
++function renderModel(settings) {
++  const rows = [
++    ["모델", `\`${settings.model ?? ""}\``],
++    ["Effort Level", `\`${settings.effortLevel ?? ""}\``],
++    ["Auto Updates", `\`${settings.autoUpdatesChannel ?? ""}\``],
++    ["Plans Directory", `\`${settings.plansDirectory ?? ""}\``],
++  ];
++  return renderTable(["항목", "값"], rows);
++}
++
++function renderMarketplaces(settings, manifests) {
++  const rows = [];
++  const seen = new Set();
++  for (const name of Object.keys(manifests)) {
++    seen.add(name);
++    const extra = settings.extraKnownMarketplaces?.[name];
++    const source = extra?.source
++      ? `${extra.source.source}:${extra.source.repo ?? extra.source.url ?? ""}`
++      : "official";
++    rows.push([name, source, manifests[name]?.description ?? ""]);
++  }
++  for (const [name, def] of Object.entries(settings.extraKnownMarketplaces ?? {})) {
++    if (seen.has(name)) continue;
++    const source = def.source ? `${def.source.source}:${def.source.repo ?? def.source.url ?? ""}` : "";
++    rows.push([name, source, ""]);
++  }
++  return renderTable(["마켓플레이스", "출처", "설명"], rows);
++}
++
++function renderPlugins(pluginEntries, pluginData) {
++  const byMarket = new Map();
++  for (const e of pluginEntries) {
++    if (!byMarket.has(e.marketplace)) byMarket.set(e.marketplace, []);
++    byMarket.get(e.marketplace).push(e);
++  }
++  const parts = [];
++  for (const [market, entries] of byMarket) {
++    parts.push(`#### \`${market}\``);
++    const rows = entries.map((e) => {
++      const data = pluginData.get(e.key);
++      const status = e.enabled ? "✅" : "❌";
++      const version = data?.manifest?.version ?? "";
++      const desc = data?.manifest?.description ?? data?.marketplaceDescription ?? "";
++      const note = data?.pluginDir ? "" : "(metadata unavailable)";
++      return [e.plugin, status, version, [desc, note].filter(Boolean).join(" ")];
++    });
++    parts.push(renderTable(["플러그인", "상태", "버전", "설명"], rows));
++    parts.push("");
++  }
++  return parts.join("\n");
++}
++
++function renderPluginContent(pluginEntries, pluginData, collectorKey, headers) {
++  const parts = [];
++  for (const e of pluginEntries) {
++    if (!e.enabled) continue;
++    const data = pluginData.get(e.key);
++    const items = data?.[collectorKey] ?? [];
++    if (items.length === 0) continue;
++    parts.push(`#### \`${e.plugin}\` (${e.marketplace})`);
++    const rows = items.map((it) => headers.map((h) => it[h.key] ?? ""));
++    parts.push(renderTable(headers.map((h) => h.label), rows));
++    parts.push("");
++  }
++  return parts.length > 0 ? parts.join("\n") : "_(none)_";
++}
++
++function renderCustomSkills() {
++  const skillsDir = join(REPO_ROOT, "skills");
++  const rows = [];
++  for (const dir of lsDirs(skillsDir)) {
++    const content = readTextSafe(join(skillsDir, dir, "SKILL.md"));
++    if (!content) continue;
++    const fm = parseFrontmatter(content);
++    rows.push([fm.name || dir, fm.description || ""]);
++  }
++  rows.sort((a, b) => a[0].localeCompare(b[0]));
++  return renderTable(["스킬", "설명"], rows);
++}
++
++function renderHooks(settings, pluginEntries, pluginData) {
++  const rows = [];
++  for (const [event, groups] of Object.entries(settings.hooks ?? {})) {
++    if (!Array.isArray(groups)) continue;
++    for (const g of groups) {
++      for (const h of g.hooks ?? []) {
++        rows.push([event, h.type ?? "", `\`${h.command ?? ""}\``, h.async ? "async" : "sync", "settings.json"]);
++      }
++    }
++  }
++  for (const e of pluginEntries) {
++    if (!e.enabled) continue;
++    const data = pluginData.get(e.key);
++    for (const h of data?.hooks ?? []) {
++      rows.push([h.event, h.type, `\`${h.command}\``, "", `${e.plugin}`]);
++    }
++  }
++  return renderTable(["이벤트", "타입", "명령", "모드", "출처"], rows);
++}
++
++function renderPermissions(settings) {
++  const allow = (settings.permissions?.allow ?? []).map((p) => [`\`${p}\``]);
++  const deny = (settings.permissions?.deny ?? []).map((p) => [`\`${p}\``]);
++  return [
++    "**허용 (Allow)**",
++    "",
++    renderTable(["패턴"], allow),
++    "",
++    "**거부 (Deny)**",
++    "",
++    renderTable(["패턴"], deny),
++  ].join("\n");
++}
++
++function renderGlobalInstructions() {
++  const content = readTextSafe(GLOBAL_CLAUDE_MD);
++  if (!content) return "_(no global CLAUDE.md found)_";
++  return ["```markdown", content.trimEnd(), "```"].join("\n");
++}
++
++// ---------- main ----------
++
++function main() {
++  const settings = readJsonSafe(SETTINGS_PATH);
++  if (!settings) {
++    process.stderr.write(`harness-sync: cannot read ${SETTINGS_PATH}\n`);
++    return;
++  }
++  let harness = readTextSafe(HARNESS_PATH);
++  if (!harness) {
++    process.stderr.write(`harness-sync: cannot read ${HARNESS_PATH}\n`);
++    return;
++  }
++
++  const manifests = loadMarketplaceManifests();
++  const pluginEntries = enumeratePluginKeys(settings);
++  const pluginData = new Map();
++  for (const e of pluginEntries) {
++    const pluginDir = findPluginDir(e.marketplace, e.plugin);
++    const data = {
++      pluginDir,
++      manifest: pluginDir ? loadPluginManifest(pluginDir) : null,
++      marketplaceDescription: descriptionFromMarketplace(manifests, e.marketplace, e.plugin),
++      skills: pluginDir ? collectPluginSkills(pluginDir) : [],
++      agents: pluginDir ? collectPluginAgents(pluginDir) : [],
++      commands: pluginDir ? collectPluginCommands(pluginDir) : [],
++      mcps: pluginDir ? collectPluginMcps(pluginDir) : [],
++      hooks: pluginDir ? collectPluginHooks(pluginDir) : [],
++    };
++    pluginData.set(e.key, data);
++  }
++
++  const sections = {
++    model: renderModel(settings),
++    marketplaces: renderMarketplaces(settings, manifests),
++    plugins: renderPlugins(pluginEntries, pluginData),
++    "custom-skills": renderCustomSkills(),
++    "plugin-skills": renderPluginContent(pluginEntries, pluginData, "skills", [
++      { key: "name", label: "스킬" },
++      { key: "description", label: "설명" },
++    ]),
++    "plugin-commands": renderPluginContent(pluginEntries, pluginData, "commands", [
++      { key: "name", label: "명령" },
++      { key: "description", label: "설명" },
++    ]),
++    "plugin-agents": renderPluginContent(pluginEntries, pluginData, "agents", [
++      { key: "name", label: "에이전트" },
++      { key: "description", label: "설명" },
++    ]),
++    "plugin-mcps": renderPluginContent(pluginEntries, pluginData, "mcps", [
++      { key: "name", label: "MCP 서버" },
++      { key: "command", label: "실행 명령" },
++    ]),
++    hooks: renderHooks(settings, pluginEntries, pluginData),
++    permissions: renderPermissions(settings),
++    "global-instructions": renderGlobalInstructions(),
++  };
++
++  let next = harness;
++  for (const [id, body] of Object.entries(sections)) {
++    next = replaceMarker(next, id, body);
++  }
++
++  if (next !== harness) {
++    writeFileSync(HARNESS_PATH, next, "utf8");
++  }
++}
++
++try {
++  main();
++} catch (err) {
++  process.stderr.write(`harness-sync: ${err?.stack ?? err}\n`);
++}
+diff --git a/settings.json b/settings.json
+index 5a17855..586e424 100644
+--- a/settings.json
++++ b/settings.json
+@@ -33,6 +33,11 @@
+     "ConfigChange": [
+       {
+         "hooks": [
++          {
++            "type": "command",
++            "command": "node \"$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs\"",
++            "async": false
++          },
+           {
+             "type": "command",
+             "command": "node \"$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs\"",
+diff --git a/skills/custom-skill-creator/SKILL.md b/skills/custom-skill-creator/SKILL.md
+index 0112377..9027bcf 100644
+--- a/skills/custom-skill-creator/SKILL.md
++++ b/skills/custom-skill-creator/SKILL.md
+@@ -417,6 +417,18 @@ After packaging, direct the user to the resulting `.skill` file path so they can
+ 
+ ---
+ 
++### Sync HARNESS.md
++
++After creating, modifying, or removing a skill, regenerate the HARNESS.md catalog so the auto-managed tables reflect the new state:
++
++```bash
++node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"
++```
++
++The `ConfigChange` hook runs this automatically when `settings.json` changes, but skill edits alone don't trigger that hook — run it explicitly after `skills/` changes so the next `dotfiles-sync` commit picks up the updated HARNESS.md.
++
++---
++
+ ### Sync Dotfiles
+ 
+ After completing skill creation, modification, or packaging, run the dotfiles sync to push changes to the remote repository:
+@@ -494,6 +506,7 @@ Repeating one more time the core loop here for emphasis:
+   - Run quantitative evals
+ - Repeat until you and the user are satisfied
+ - Package the final skill and return it to the user.
++- Run `node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"` to refresh the HARNESS.md catalog.
+ - Run `node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"` to sync changes to remote.
+ 
+ Please add steps to your TodoList, if you have such a thing, to make sure you don't forget. If you're in Cowork, please specifically put "Create evals JSON and run `eval-viewer/generate_review.py` so human can review test cases" in your TodoList to make sure it happens.
