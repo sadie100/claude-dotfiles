@@ -3,7 +3,7 @@
 // Routes to .ps1 on Windows, .sh on Linux/Mac
 
 import { execFileSync } from "child_process";
-import { dirname } from "path";
+import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
 const dir = dirname(fileURLToPath(import.meta.url));

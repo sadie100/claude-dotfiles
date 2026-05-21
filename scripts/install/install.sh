@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
 echo "=== Claude Code Dotfiles Installer ==="
@@ -114,7 +114,7 @@ fi
 DOTCLAUDE_SOURCE_MARKER="# dotclaude-start"
 DOTCLAUDE_SOURCE_BLOCK="$DOTCLAUDE_SOURCE_MARKER
 export DOTCLAUDE_DIR=\"$DOTFILES_DIR\"
-source \"\$DOTCLAUDE_DIR/scripts/dotclaude-func.sh\"
+source \"\$DOTCLAUDE_DIR/scripts/dotclaude-func/dotclaude-func.sh\"
 # dotclaude-end"
 
 SHELL_PROFILE=""
@@ -148,13 +148,13 @@ else
 fi
 
 # Make sync script executable
-chmod +x "$DOTFILES_DIR/scripts/dotfiles-sync.sh"
+chmod +x "$DOTFILES_DIR/scripts/dotfiles-sync/dotfiles-sync.sh"
 
 # --- Sync dotfiles repo if there are changes ---
 if [ -n "$(git -C "$DOTFILES_DIR" status --porcelain)" ]; then
   echo ""
   echo "[sync]   Pushing merged changes..."
-  bash "$DOTFILES_DIR/scripts/dotfiles-sync.sh"
+  bash "$DOTFILES_DIR/scripts/dotfiles-sync/dotfiles-sync.sh"
   echo "[sync]   Done"
 fi
 

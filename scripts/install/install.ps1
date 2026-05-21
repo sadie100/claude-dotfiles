@@ -8,7 +8,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
 $ErrorActionPreference = "Stop"
 
-$DotfilesDir = Split-Path $PSScriptRoot -Parent
+$DotfilesDir = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $ClaudeDir = Join-Path $env:USERPROFILE ".claude"
 
 Write-Host "=== Claude Code Dotfiles Installer ===" -ForegroundColor Cyan
@@ -166,7 +166,7 @@ $SourceBlock = @"
 
 $SourceMarker
 `$env:DOTCLAUDE_DIR = "$DotfilesDir"
-. "`$env:DOTCLAUDE_DIR\scripts\dotclaude-func.ps1"
+. "`$env:DOTCLAUDE_DIR\scripts\dotclaude-func\dotclaude-func.ps1"
 # dotclaude-end
 "@
 
