@@ -19,6 +19,18 @@
 5. **`dotclaude` 함수** — 셸 프로필에 `dotclaude-func/dotclaude-func.{sh,ps1}` source 두 줄 추가
 6. **변경사항 자동 sync** — merge 결과 등 변경분이 있으면 `dotfiles-sync`로 commit + push
 
+## Symlink 방향
+
+원본은 이 레포. `~/.claude/`의 파일은 레포를 가리키는 symlink가 되며 설치 이후 모든 편집은 레포에서 일어난다.
+
+| 링크 | 원본 |
+|------|------|
+| `~/.claude/settings.json` | `<repo>/settings.json` |
+| `~/.claude/skills/` | `<repo>/skills/` |
+| `~/.claude/CLAUDE.md` | `<repo>/CLAUDE.md` |
+
+단, 최초 설치 시점에는 symlink를 걸기 전에 기존 `~/.claude` 내용을 레포로 흡수한다 (위 1, 2번). 즉 `settings.json`은 사용자 설정이 레포 파일에 merge되고, `skills/`는 레포에 없는 항목만 레포로 copy된다.
+
 ## 수동 실행
 
 ```bash
