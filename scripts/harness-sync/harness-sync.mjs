@@ -9,7 +9,7 @@
 // 3) Serializes a JSON payload and pipes it to `claude -p` so an LLM
 //    re-renders the markered sections in HARNESS.md.
 
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -29,6 +29,8 @@ const GLOBAL_CLAUDE_MD = join(homedir(), ".claude", "CLAUDE.md");
 
 const FORCE = process.argv.includes("--force");
 const SECTION_IDS = ["plugins", "skills", "hooks"];
+const LOCK_FILE = join(REPO_ROOT, ".git", "harness-sync.lock");
+const DIRTY_FILE = join(REPO_ROOT, ".git", "harness-sync.dirty");
 
 // ---------- utilities ----------
 
@@ -391,6 +393,54 @@ function runDotfilesSync() {
   spawnSync("node", [script], { stdio: "inherit" });
 }
 
+// ---------- concurrency: lock + dirty flag + rerun loop ----------
+
+function isProcessAlive(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (err) {
+    // EPERM means the process exists but we lack permission (still alive).
+    return err.code === "EPERM";
+  }
+}
+
+function tryAcquireLock() {
+  try {
+    writeFileSync(LOCK_FILE, String(process.pid), { flag: "wx" });
+    return true;
+  } catch {
+    const stale = readFileSync(LOCK_FILE, "utf8").trim();
+    const stalePid = Number.parseInt(stale, 10);
+    if (!isProcessAlive(stalePid)) {
+      try { unlinkSync(LOCK_FILE); } catch {}
+      try {
+        writeFileSync(LOCK_FILE, String(process.pid), { flag: "wx" });
+        return true;
+      } catch {}
+    }
+    return false;
+  }
+}
+
+function releaseLock() {
+  try { unlinkSync(LOCK_FILE); } catch {}
+}
+
+function markDirty() {
+  try { writeFileSync(DIRTY_FILE, ""); } catch {}
+}
+
+function consumeDirty() {
+  try {
+    unlinkSync(DIRTY_FILE);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function sanityCheckMarkers(harness) {
   for (const id of SECTION_IDS) {
     const begin = `<!-- AUTO:BEGIN ${id} -->`;
@@ -477,10 +527,27 @@ function main() {
   }
 }
 
+if (!tryAcquireLock()) {
+  // Another harness-sync is running. Leave a dirty marker so it reruns,
+  // and bail out fast so the ConfigChange hook doesn't block.
+  markDirty();
+  process.exit(0);
+}
+
 try {
-  main();
-} catch (err) {
-  process.stderr.write(`harness-sync: ${err?.stack ?? err}\n`);
+  // Rerun loop: if anyone marks dirty while we're working, do another pass.
+  // Consume the marker *before* each pass so a marker set during the pass
+  // triggers exactly one more round, not an infinite loop.
+  let safety = 5;
+  do {
+    consumeDirty();
+    try {
+      main();
+    } catch (err) {
+      process.stderr.write(`harness-sync: ${err?.stack ?? err}\n`);
+    }
+    runDotfilesSync();
+  } while (consumeDirty() && --safety > 0);
 } finally {
-  runDotfilesSync();
+  releaseLock();
 }

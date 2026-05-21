@@ -88,6 +88,15 @@ node scripts/harness-sync/harness-sync.mjs --force
 - 변경 시: Opus 호출 1회당 약 10–30초 / 수십 센트
 - 발생 빈도: 플러그인 토글, 훅 변경, 스킬 추가 — 주당 몇 회 수준
 
+## 동시성 (lock + dirty flag + rerun)
+
+`claude -p` 호출이 수십 초 걸리는 동안 또 다른 ConfigChange/`dotclaude sync`가 들어올 수 있으므로 다음 방식으로 보호한다:
+
+- **락 파일**: `.git/harness-sync.lock` 에 PID를 `wx`(O_EXCL) 플래그로 기록. 다른 인스턴스는 락을 못 잡으면 `.git/harness-sync.dirty` 마커만 찍고 즉시 종료 → 훅이 블로킹되지 않음.
+- **재실행 루프**: 락을 잡은 인스턴스는 작업 직전에 dirty 마커를 클리어하고 한 사이클 실행. 작업 중 마커가 다시 찍혀 있으면 한 바퀴 더 돌아 누락된 변경분을 흡수 (최대 5회로 무한 루프 방어).
+- **stale lock 강탈**: 락이 이미 있어도 락 안에 적힌 PID가 죽은 프로세스면 `process.kill(pid, 0)` 검사로 판정해 강제 해제 후 재획득.
+- 락 파일은 `.git/` 안에 있어 git 트래킹에서 자동 제외됨.
+
 ## 엣지 케이스
 
 - **`claude` CLI 미설치/PATH 누락**: spawn 실패 → stderr 메시지 후 silent exit. HARNESS.md 보존
@@ -95,3 +104,4 @@ node scripts/harness-sync/harness-sync.mjs --force
 - **fingerprint 주석이 없는 첫 실행**: 빈 hex로 간주 → 무조건 호출
 - **여러 버전 디렉토리 공존**: mtime 최신 선택
 - **권한 프롬프트**: `--permission-mode acceptEdits` + `--allowed-tools` 명시로 우회
+- **동시 실행 충돌**: 위 "동시성" 섹션 참고
