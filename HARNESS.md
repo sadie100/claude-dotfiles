@@ -92,7 +92,7 @@
 
 | 이벤트 | 실행 명령 | 비동기 | 설명 |
 |--------|-----------|--------|------|
-| `ConfigChange` | `bash "$HOME/claude-dotfiles/scripts/dotfiles-sync.sh"` | ✅ | 설정 변경 시 자동으로 git commit + push 동기화 |
+| `ConfigChange` | `node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"` | ✅ | 설정 변경 시 자동으로 git commit + push 동기화 (플랫폼에 맞는 .sh/.ps1로 라우팅) |
 
 ---
 

@@ -19,16 +19,16 @@
 # 레포를 ~/claude-dotfiles에 clone (이미 있으면 pull) 후 install 스크립트 실행
 
 # Linux / macOS
-curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap/bootstrap.sh | bash
 
 # Windows (PowerShell, 관리자 권한 자동 요청)
-irm https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.ps1 | iex
+irm https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap/bootstrap.ps1 | iex
 ```
 
 기본 클론 위치는 `~/claude-dotfiles`. 변경하려면 다음과 같이 DOTFILES_DIR 수동 설정:
 
 ```bash
-DOTFILES_DIR=~/my-claude curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.sh | bash
+DOTFILES_DIR=~/my-claude curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap/bootstrap.sh | bash
 ```
 
 ### 수동 설치
@@ -38,10 +38,10 @@ git clone https://github.com/sadie100/claude-dotfiles.git ~/claude-dotfiles
 cd ~/claude-dotfiles
 
 # Linux / macOS
-./scripts/install.sh
+./scripts/install/install.sh
 
 # Windows (관리자 권한 자동 요청)
-.\scripts\install.bat
+.\scripts\install\install.bat
 ```
 
 ## install 스크립트 동작
@@ -80,7 +80,7 @@ cd ~/claude-dotfiles
 ### 5. dotclaude 함수 등록
 셸 프로필(`~/.zshrc`, `~/.bashrc`, 또는 PowerShell `$PROFILE`)에 `dotclaude` 함수를 등록합니다.
 
-함수 본문은 레포의 `scripts/dotclaude-func.sh` (Bash) / `scripts/dotclaude-func.ps1` (PowerShell)에 있고, 프로필에는 환경변수 설정 + source 두 줄만 추가됩니다. 따라서 `git pull`만 하면 모든 머신에서 함수가 즉시 업데이트됩니다.
+함수 본문은 레포의 `scripts/dotclaude-func/dotclaude-func.sh` (Bash) / `scripts/dotclaude-func/dotclaude-func.ps1` (PowerShell)에 있고, 프로필에는 환경변수 설정 + source 두 줄만 추가됩니다. 따라서 `git pull`만 하면 모든 머신에서 함수가 즉시 업데이트됩니다.
 
 ```bash
 dotclaude --help      # 지원하는 모든 커맨드 보기
