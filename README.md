@@ -1,6 +1,6 @@
 # Claude Code Dotfiles
 
-여러 환경에서 동일한 Claude Code 전역 설정을 유지하기 위한 dotfiles 레포.
+여러 환경에서 동일한 Claude Code 전역 설정을 유지하기 위한 개인 하네스 레포
 
 ## 관리 대상
 
@@ -12,7 +12,12 @@
 
 ## 새 환경에서 설치 (원라이너)
 
+> [!Note]
+> 아래 원라이너 스크립트 실행 시 실행된 컴퓨터 환경의 전역 클로드 설정값이 해당 하네스로 덮어씌워짐.
+
 ```bash
+# 레포를 ~/claude-dotfiles에 clone (이미 있으면 pull) 후 install 스크립트 실행
+
 # Linux / macOS
 curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.sh | bash
 
@@ -20,7 +25,7 @@ curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scr
 irm https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.ps1 | iex
 ```
 
-기본 클론 위치는 `~/claude-dotfiles`. 변경하려면:
+기본 클론 위치는 `~/claude-dotfiles`. 변경하려면 다음과 같이 DOTFILES_DIR 수동 설정:
 
 ```bash
 DOTFILES_DIR=~/my-claude curl -fsSL https://raw.githubusercontent.com/sadie100/claude-dotfiles/master/scripts/bootstrap.sh | bash
@@ -70,7 +75,7 @@ cd ~/claude-dotfiles
 - **Linux/macOS**: 셸 프로필(`~/.zshrc`, `~/.bashrc`)에 `export DOTCLAUDE_DIR=...` 추가
 - **Windows**: `[Environment]::SetEnvironmentVariable`로 **사용자 환경변수에 영구 등록** + PowerShell 프로필에도 `$env:DOTCLAUDE_DIR` 설정
 
-> Windows에서 시스템 환경변수로 등록하는 이유: PowerShell 프로필 변수는 해당 세션에서만 유효하지만, Claude Code 훅은 bash(Git Bash)로 실행되어 PowerShell 프로필을 읽지 못합니다. 시스템 환경변수는 모든 셸에서 접근 가능합니다.
+> Windows에서 사용자 환경변수로 등록하는 이유: PowerShell 프로필 변수는 해당 세션에서만 유효하지만, Claude Code 훅은 bash(Git Bash)로 실행되어 PowerShell 프로필을 읽지 못합니다. 사용자 환경변수로 등록하면 PowerShell, bash 등 모든 셸에서 접근 가능합니다.
 
 ### 5. dotclaude 함수 등록
 셸 프로필(`~/.zshrc`, `~/.bashrc`, 또는 PowerShell `$PROFILE`)에 `dotclaude` 함수를 등록합니다.
