@@ -53,7 +53,7 @@ function readTextSafe(path) {
 function lsDirs(path) {
   try {
     return readdirSync(path, { withFileTypes: true })
-      .filter((d) => d.isDirectory())
+      .filter((d) => d.isDirectory() || d.isSymbolicLink())
       .map((d) => d.name);
   } catch {
     return [];
