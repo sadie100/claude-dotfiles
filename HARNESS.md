@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 037ccf017bbb43d7e010d81dc8ebcd6950f966e75f477c37ec2269ff59506e4c -->
+<!-- harness-sync-fingerprint: 11f333975538ae994487e73f89c2f37b65c739011a24fd34b5da304449b8faea -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -27,7 +27,7 @@
 | `superpowers` | ✅ 활성 | 확장 기능 모음 |
 | `security-guidance` | ✅ 활성 | 보안 가이드라인 제공 |
 | `claude-md-management` | ✅ 활성 | CLAUDE.md 파일 관리/개선 |
-| `skill-creator` | ❌ 비활성 | 스킬 생성/수정/평가 |
+| `skill-creator` | ✅ 활성 | 스킬 생성/수정/평가 |
 | `atlassian` | ✅ 활성 | Jira/Confluence 연동 |
 | `notion` | ✅ 활성 | Notion 연동 |
 | `slack` | ✅ 활성 | Slack 연동 |
@@ -197,7 +197,8 @@
 |------|--------|------|------|
 | `claude-md-management:claude-md-improver` | CLAUDE.md 감사/개선 요청 시 | claude-md-management | 레포의 CLAUDE.md 파일 품질 평가 및 개선 |
 | `claude-md-management:revise-claude-md` | 세션 학습 반영 요청 시 | claude-md-management | 세션 학습을 CLAUDE.md에 반영 |
-| `custom-skill-creator` | 스킬 생성/수정/평가 요청 시 | custom | 스킬 생성, 편집, 성능 측정 |
+| `skill-creator:skill-creator` | 스킬 생성/수정/평가 요청 시 | skill-creator | 신규 스킬 작성, 기존 스킬 개선, 성능 벤치마크/평가 |
+| `skill-creator:skill-creator` | 스킬 생성/수정/평가 요청 시 | skill-creator | 신규 스킬 생성, 기존 스킬 개선, 변량 분석 기반 성능 벤치마크 |
 | `document-skills:skill-creator` | 스킬 생성/평가 요청 시 | document-skills | document-skills 마켓플레이스의 스킬 생성기 |
 | `find-skills` | 스킬 검색/설치 요청 시 | built-in | 설치 가능한 스킬 발견 |
 | `init` | `/init` | built-in | CLAUDE.md 초기 생성 |
