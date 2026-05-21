@@ -498,7 +498,7 @@ Repeating one more time the core loop here for emphasis:
   - Run quantitative evals
 - Repeat until you and the user are satisfied
 - Package the final skill and return it to the user.
-- Run `node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"` to sync changes to remote.
+- Run `node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs" --force` to refresh HARNESS.md, then `node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"` to push changes to remote.
 
 Please add steps to your TodoList, if you have such a thing, to make sure you don't forget. If you're in Cowork, please specifically put "Create evals JSON and run `eval-viewer/generate_review.py` so human can review test cases" in your TodoList to make sure it happens.
 
