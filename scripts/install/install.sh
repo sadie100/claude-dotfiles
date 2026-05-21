@@ -154,7 +154,7 @@ chmod +x "$DOTFILES_DIR/scripts/dotfiles-sync/dotfiles-sync.sh"
 if [ -n "$(git -C "$DOTFILES_DIR" status --porcelain)" ]; then
   echo ""
   echo "[sync]   Pushing merged changes..."
-  bash "$DOTFILES_DIR/scripts/dotfiles-sync/dotfiles-sync.sh"
+  node "$DOTFILES_DIR/scripts/harness-sync/harness-sync.mjs"
   echo "[sync]   Done"
 fi
 

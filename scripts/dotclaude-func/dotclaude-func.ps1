@@ -17,15 +17,7 @@ function dotclaude {
         Write-Host "  help, --help, -h  Show this help message"
         Write-Host "  <git-command>     Any other argument is passed to git"
     } elseif ($args[0] -eq 'sync') {
-        if (-not (git -C $d status --porcelain)) { Write-Host "No changes"; return }
-        git -C $d add -A
-        $changed = (git -C $d diff --cached --name-only) -join ", "
-        git -C $d commit -m "sync: $changed" --no-gpg-sign 2>$null
-        $b = git -C $d branch --show-current
-        if (-not (git -C $d push origin $b 2>$null)) {
-            git -C $d pull --rebase origin $b 2>$null
-            git -C $d push origin $b 2>$null
-        }
+        node "$d\scripts\harness-sync\harness-sync.mjs"
     } elseif ($args[0] -eq 'open') {
         explorer.exe $d
     } elseif ($args[0] -eq 'settings') {

@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 11f333975538ae994487e73f89c2f37b65c739011a24fd34b5da304449b8faea -->
+<!-- harness-sync-fingerprint: 9019c6c22b03c376f4924eba24e441773ee57e394f9d64381b3c406116af5c28 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -229,7 +229,6 @@
 | 이벤트 | 실행 명령 | 비동기 | 설명 |
 |--------|-----------|--------|------|
 | `ConfigChange` | `node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"` | ❌ (sync) | 설정 변경 시 HARNESS.md 자동 갱신 (fingerprint로 게이트) |
-| `ConfigChange` | `node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"` | ✅ (async) | 설정 변경 시 git commit + push 동기화 |
 <!-- AUTO:END hooks -->
 
 ---

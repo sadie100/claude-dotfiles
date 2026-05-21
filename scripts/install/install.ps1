@@ -213,22 +213,11 @@ if ($ProfileContent -match [regex]::Escape($SourceMarker)) {
 Add-Content -Path $ProfilePath -Value $SourceBlock
 Write-Host "[alias]  Registered dotclaude in $ProfilePath (sourced from repo)"
 
-# --- Sync dotfiles repo if there are changes ---
-$hasChanges = (git -C $DotfilesDir status --porcelain) -ne ""
-if ($hasChanges) {
-    Write-Host ""
-    Write-Host "[sync]   Pushing merged changes..." -ForegroundColor Yellow
-    git -C $DotfilesDir add -A
-    $changed = (git -C $DotfilesDir diff --cached --name-only) -join ", "
-    git -C $DotfilesDir commit -m "sync: $changed" --no-gpg-sign 2>$null
-    $branch = git -C $DotfilesDir branch --show-current
-    git -C $DotfilesDir push origin $branch 2>$null
-    if ($LASTEXITCODE -ne 0) {
-        git -C $DotfilesDir pull --rebase origin $branch 2>$null
-        git -C $DotfilesDir push origin $branch 2>$null
-    }
-    Write-Host "[sync]   Done" -ForegroundColor Yellow
-}
+# --- Refresh HARNESS.md and sync dotfiles repo ---
+Write-Host ""
+Write-Host "[sync]   Refreshing HARNESS.md and pushing merged changes..." -ForegroundColor Yellow
+node "$DotfilesDir\scripts\harness-sync\harness-sync.mjs"
+Write-Host "[sync]   Done" -ForegroundColor Yellow
 
 Write-Host ""
 Write-Host "Done! Restart PowerShell or run '. `$PROFILE' to use 'dotclaude'." -ForegroundColor Green

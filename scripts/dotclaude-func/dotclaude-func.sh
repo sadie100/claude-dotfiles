@@ -19,7 +19,7 @@ function dotclaude() {
       echo "  <git-command>     Any other argument is passed to git"
       ;;
     sync)
-      bash "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.sh"
+      node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"
       ;;
     open)
       if [[ "$OSTYPE" == darwin* ]]; then
