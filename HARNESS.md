@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 17d999f965eba7162b49e5a1b5354b80401fc7497a62a08f66072fca54629feb -->
+<!-- harness-sync-fingerprint: 86e15ec7169682928cecb22958fba6eee314ea79fde5174d96ce4ea1f8bb252d -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -237,7 +237,6 @@
 | 이벤트 | 실행 명령 | 비동기 | 설명 |
 |--------|-----------|--------|------|
 | `ConfigChange` | `node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"` | ❌ (sync) | 설정 변경 시 HARNESS.md 자동 갱신 (fingerprint로 게이트) |
-| `UserPromptSubmit` | `$DOTCLAUDE_DIR/scripts/_hooks/skill-activation-forced-eval.sh` | ❌ (sync) | 사용자 프롬프트 제출 시 스킬 활성화 평가를 강제 |
 <!-- AUTO:END hooks -->
 
 ---
