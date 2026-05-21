@@ -197,7 +197,6 @@
 |------|--------|------|------|
 | `claude-md-management:claude-md-improver` | CLAUDE.md 감사/개선 요청 시 | claude-md-management | 레포의 CLAUDE.md 파일 품질 평가 및 개선 |
 | `claude-md-management:revise-claude-md` | 세션 학습 반영 요청 시 | claude-md-management | 세션 학습을 CLAUDE.md에 반영 |
-| `skill-creator:skill-creator` | 스킬 생성/수정/평가 요청 시 | skill-creator | 신규 스킬 작성, 기존 스킬 개선, 성능 벤치마크/평가 |
 | `skill-creator:skill-creator` | 스킬 생성/수정/평가 요청 시 | skill-creator | 신규 스킬 생성, 기존 스킬 개선, 변량 분석 기반 성능 벤치마크 |
 | `document-skills:skill-creator` | 스킬 생성/평가 요청 시 | document-skills | document-skills 마켓플레이스의 스킬 생성기 |
 | `find-skills` | 스킬 검색/설치 요청 시 | built-in | 설치 가능한 스킬 발견 |

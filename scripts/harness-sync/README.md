@@ -12,7 +12,7 @@
 
 ## 트리거
 
-`settings.json`의 `ConfigChange` 훅에서 호출됨 (dotfiles-sync 앞단, 동기):
+`settings.json`의 `ConfigChange` 훅에서 호출됨:
 
 ```jsonc
 "hooks": {
@@ -22,18 +22,13 @@
         "type": "command",
         "command": "node \"$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs\"",
         "async": false
-      },
-      {
-        "type": "command",
-        "command": "node \"$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs\"",
-        "async": true
       }
     ]
   }]
 }
 ```
 
-`custom-skill-creator` 스킬의 워크플로 마지막에도 명시 호출 (로컬 스킬 변경은 `settings.json`을 안 건드려 ConfigChange가 발화하지 않으므로). fingerprint에 로컬 스킬 목록이 포함되어 있으므로 `--force` 없이도 변경분이 자동 감지됨.
+`dotclaude sync`, `install` 등 모든 동기화 진입점도 `harness-sync.mjs`로 일원화되어 있으며, 스크립트가 정상/실패/no-op 어느 경로로 끝나든 마지막에 내부적으로 `dotfiles-sync`를 체이닝해 git commit·push까지 한 번에 수행한다. fingerprint가 동일하면 HARNESS.md 갱신은 건너뛰지만, git 동기화는 항상 실행된다. fingerprint에는 로컬 스킬 목록도 포함되므로 `--force` 없이도 스킬 변경분이 자동 감지된다.
 
 ## 수동 실행
 
