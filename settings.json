@@ -40,6 +40,16 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$DOTCLAUDE_DIR/scripts/_hooks/skill-activation-forced-eval.sh"
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {
