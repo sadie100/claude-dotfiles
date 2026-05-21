@@ -386,6 +386,11 @@ function runClaude(prompt) {
   return true;
 }
 
+function runDotfilesSync() {
+  const script = join(REPO_ROOT, "scripts", "dotfiles-sync", "dotfiles-sync.mjs");
+  spawnSync("node", [script], { stdio: "inherit" });
+}
+
 function sanityCheckMarkers(harness) {
   for (const id of SECTION_IDS) {
     const begin = `<!-- AUTO:BEGIN ${id} -->`;
@@ -476,4 +481,6 @@ try {
   main();
 } catch (err) {
   process.stderr.write(`harness-sync: ${err?.stack ?? err}\n`);
+} finally {
+  runDotfilesSync();
 }

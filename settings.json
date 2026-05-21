@@ -37,11 +37,6 @@
             "type": "command",
             "command": "node \"$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs\"",
             "async": false
-          },
-          {
-            "type": "command",
-            "command": "node \"$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs\"",
-            "async": true
           }
         ]
       }
