@@ -33,7 +33,7 @@
 }
 ```
 
-`custom-skill-creator` 스킬의 워크플로 마지막에도 `--force`로 명시 호출 (로컬 스킬 변경은 `settings.json`을 안 건드려 ConfigChange가 발화하지 않으므로).
+`custom-skill-creator` 스킬의 워크플로 마지막에도 명시 호출 (로컬 스킬 변경은 `settings.json`을 안 건드려 ConfigChange가 발화하지 않으므로). fingerprint에 로컬 스킬 목록이 포함되어 있으므로 `--force` 없이도 변경분이 자동 감지됨.
 
 ## 수동 실행
 
@@ -49,7 +49,7 @@ node scripts/harness-sync/harness-sync.mjs --force
 
 ## 동작
 
-1. **fingerprint 계산**: `sha256({enabledPlugins, hooks})` (정렬된 키)
+1. **fingerprint 계산**: `sha256({enabledPlugins, hooks, localSkills})` (정렬된 키)
 2. **fingerprint 비교**: `HARNESS.md` 최상단 `<!-- harness-sync-fingerprint: <hex> -->` 와 일치하면 즉시 exit (수십 ms, 비용 0). `--force`면 건너뜀
 3. **데이터 수집** (`~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/`에서, 버전 디렉토리는 mtime 최신):
    - `.claude-plugin/plugin.json` — name / description / version

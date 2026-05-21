@@ -422,11 +422,11 @@ After packaging, direct the user to the resulting `.skill` file path so they can
 After completing skill creation, modification, or packaging, first refresh HARNESS.md, then push changes to the remote:
 
 ```bash
-node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs" --force
+node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"
 node "$DOTCLAUDE_DIR/scripts/dotfiles-sync/dotfiles-sync.mjs"
 ```
 
-- `harness-sync --force`: 로컬 스킬 변경은 `settings.json`을 건드리지 않아 ConfigChange 훅이 발화하지 않는다. `--force`로 fingerprint 게이트를 우회해 HARNESS.md를 즉시 갱신한다.
+- `harness-sync`: 로컬 스킬 변경은 `settings.json`을 건드리지 않아 ConfigChange 훅이 발화하지 않으므로 명시 호출이 필요하다. fingerprint에 로컬 스킬 목록이 포함되어 있어 변경분이 자동 감지되어 HARNESS.md가 갱신된다.
 - `dotfiles-sync`: 갱신된 HARNESS.md + 새 스킬 파일을 한 번에 커밋·푸시한다.
 
 Run this at any of these completion points:

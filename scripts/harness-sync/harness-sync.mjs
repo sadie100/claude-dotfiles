@@ -138,10 +138,11 @@ function stableStringify(value) {
   return "{" + keys.map((k) => JSON.stringify(k) + ":" + stableStringify(value[k])).join(",") + "}";
 }
 
-function computeFingerprint(settings) {
+function computeFingerprint(settings, localSkills) {
   const payload = {
     enabledPlugins: settings.enabledPlugins ?? {},
     hooks: settings.hooks ?? {},
+    localSkills: [...localSkills].sort((a, b) => a.name.localeCompare(b.name)),
   };
   return createHash("sha256").update(stableStringify(payload)).digest("hex");
 }
@@ -411,7 +412,8 @@ function main() {
     return;
   }
 
-  const newFingerprint = computeFingerprint(settings);
+  const localSkills = collectLocalSkills();
+  const newFingerprint = computeFingerprint(settings, localSkills);
   const oldFingerprint = readStoredFingerprint(harnessBefore);
 
   if (!FORCE && newFingerprint === oldFingerprint) {
@@ -444,7 +446,7 @@ function main() {
     ),
     extraKnownMarketplaces: settings.extraKnownMarketplaces ?? {},
     plugins,
-    localSkills: collectLocalSkills(),
+    localSkills,
     repoHooks: collectRepoHooks(settings),
     globalInstructions: readTextSafe(GLOBAL_CLAUDE_MD) ?? "",
   };
