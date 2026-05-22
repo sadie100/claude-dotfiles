@@ -72,9 +72,9 @@
 | `dev-testcase` | `/dev-testcase {기능명}` | custom | 테스트 케이스 자동 도출. 스펙의 AC에서 TC를 생성 |
 | `dev-process` | `/dev-process {기능명}` | custom | 위 4단계를 순차 실행하는 오케스트레이터 |
 | `feature-dev:feature-dev` | 기능 개발 요청 시 | feature-dev | 코드베이스 이해 기반 가이드형 기능 개발 |
-| `tdd` | TDD 기반 개발 요청 시 | custom | red-green-refactor 루프 기반 테스트 우선 개발 |
-| `grill-me` | 계획/설계 검증 요청 시 | custom | 계획·설계를 결정 트리 단위로 끝까지 질의하며 검증 |
-| `grill-with-docs` | 도메인 문서 기반 계획 검증 시 | custom | CONTEXT.md/ADR 기반으로 계획을 검증하고 문서 인라인 갱신 |
+| `tdd` | TDD 기반 개발 요청 시 | mattpocock/skills | red-green-refactor 루프 기반 테스트 우선 개발 |
+| `grill-me` | 계획/설계 검증 요청 시 | mattpocock/skills | 계획·설계를 결정 트리 단위로 끝까지 질의하며 검증 |
+| `grill-with-docs` | 도메인 문서 기반 계획 검증 시 | mattpocock/skills | CONTEXT.md/ADR 기반으로 계획을 검증하고 문서 인라인 갱신 |
 
 ### 문서/스펙 작성
 
@@ -84,8 +84,8 @@
 | `write-nestjs-spec` | `/write-nestjs-spec {모듈명}` | custom | NestJS 백엔드 모듈 API 스펙 문서 생성 |
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시 | document-skills | 구조화된 문서/제안서/스펙 공동 작성 워크플로우 |
 | `document-skills:internal-comms` | 사내 커뮤니케이션 작성 요청 시 | document-skills | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성 |
-| `to-prd` | 대화 컨텍스트 → PRD 변환 시 | custom | 현재 대화 맥락을 PRD로 정리하여 이슈 트래커에 게시 |
-| `handoff` | 다른 에이전트로 인계 시 | custom | 현재 대화를 핸드오프 문서로 압축 |
+| `to-prd` | 대화 컨텍스트 → PRD 변환 시 | mattpocock/skills | 현재 대화 맥락을 PRD로 정리하여 이슈 트래커에 게시 |
+| `handoff` | 다른 에이전트로 인계 시 | mattpocock/skills | 현재 대화를 핸드오프 문서로 압축 |
 
 ### 브라우저 테스트/검증
 
@@ -111,9 +111,9 @@
 | `security-review` | `/security-review` | built-in | 현재 브랜치의 변경사항 보안 리뷰 |
 | `simplify` | `/simplify` | built-in | 변경된 코드의 재사용/품질/효율 검토 후 수정 |
 | `front-execute` | `/front-execute` (프론트엔드 구현 + 검증 시) | custom | 문서/지시 입력 → 구현 → 타입체크/유닛테스트 → UI 검증 루프(최대 5회 자동 수정) → 최종 코드 리뷰 |
-| `diagnose` | 어려운 버그/성능 회귀 진단 시 | custom | 재현 → 최소화 → 가설 → 계측 → 수정 → 회귀 테스트 루프 |
-| `improve-codebase-architecture` | 아키텍처 개선/리팩토링 기회 탐색 시 | custom | CONTEXT.md/ADR 기반 deepening 기회 도출 |
-| `web-design-guidelines` | UI 코드 가이드라인 준수 리뷰 시 | custom | 웹 인터페이스 가이드라인(접근성/UX/디자인) 기준으로 UI 코드 감사 |
+| `diagnose` | 어려운 버그/성능 회귀 진단 시 | mattpocock/skills | 재현 → 최소화 → 가설 → 계측 → 수정 → 회귀 테스트 루프 |
+| `improve-codebase-architecture` | 아키텍처 개선/리팩토링 기회 탐색 시 | mattpocock/skills | CONTEXT.md/ADR 기반 deepening 기회 도출 |
+| `web-design-guidelines` | UI 코드 가이드라인 준수 리뷰 시 | vercel-labs/agent-skills | 웹 인터페이스 가이드라인(접근성/UX/디자인) 기준으로 UI 코드 감사 |
 
 ### UI/디자인 생성
 
@@ -130,9 +130,14 @@
 | `ui-ux-pro-max:ckm:slides` | 전략적 HTML 프레젠테이션 요청 시 | ui-ux-pro-max | Chart.js·디자인 토큰 기반 HTML 슬라이드 생성 |
 | `document-skills:theme-factory` | 아티팩트 테마 적용 요청 시 | document-skills | 슬라이드/문서/HTML 아티팩트에 사전 정의된 테마 적용 |
 | `document-skills:brand-guidelines` | 브랜드 가이드 적용 요청 시 | document-skills | Anthropic 공식 브랜드 색상/타이포 적용 |
-| `vercel-composition-patterns` | React 컴포넌트 합성 패턴 적용 시 | custom | 컴파운드 컴포넌트·render props·context provider 등 확장형 컴포넌트 API 설계 (React 19 포함) |
-| `vercel-react-best-practices` | React/Next.js 성능 작업 시 | custom | Vercel Engineering의 React/Next.js 성능 최적화 가이드라인 |
-| `vercel-react-view-transitions` | React View Transition API 사용 시 | custom | `<ViewTransition>`·`addTransitionType` 기반 페이지/요소 전환 애니메이션 구현 |
+
+### React 패턴·성능
+
+| 스킬 | 트리거 | 소속 | 설명 |
+|------|--------|------|------|
+| `vercel-composition-patterns` | React 컴포넌트 합성 패턴 적용 시 | vercel-labs/agent-skills | 컴파운드 컴포넌트·render props·context provider 등 확장형 컴포넌트 API 설계 (React 19 포함) |
+| `vercel-react-best-practices` | React/Next.js 성능 작업 시 | vercel-labs/agent-skills | Vercel Engineering의 React/Next.js 성능 최적화 가이드라인 |
+| `vercel-react-view-transitions` | React View Transition API 사용 시 | vercel-labs/agent-skills | `<ViewTransition>`·`addTransitionType` 기반 페이지/요소 전환 애니메이션 구현 |
 
 ### 문서 포맷 생성
 
@@ -212,7 +217,7 @@
 | `skill-creator:skill-creator` | 스킬 생성/수정/평가 요청 시 | skill-creator | 신규 스킬 생성, 기존 스킬 개선, 변량 분석 기반 성능 벤치마크 |
 | `document-skills:skill-creator` | 스킬 생성/평가 요청 시 | document-skills | document-skills 마켓플레이스의 스킬 생성기 |
 | `find-skills` | 스킬 검색/설치 요청 시 | custom | 설치 가능한 스킬 발견 |
-| `setup-matt-pocock-skills` | 엔지니어링 스킬 초기 설정 시 | custom | AGENTS.md/CLAUDE.md에 이슈 트래커·트리아지 라벨·도메인 문서 블록 셋업 |
+| `setup-matt-pocock-skills` | 엔지니어링 스킬 초기 설정 시 | mattpocock/skills | AGENTS.md/CLAUDE.md에 이슈 트래커·트리아지 라벨·도메인 문서 블록 셋업 |
 | `init` | `/init` | built-in | CLAUDE.md 초기 생성 |
 
 ### Claude API / MCP 빌드
@@ -231,7 +236,7 @@
 | `keybindings-help` | 키바인딩 커스터마이즈 요청 시 | built-in | `~/.claude/keybindings.json` 수정 |
 | `fewer-permission-prompts` | 권한 프롬프트 최소화 요청 시 | built-in | 자주 쓰는 read-only 명령을 allowlist로 추가 |
 | `loop` | 반복 실행 요청 시 | built-in | 프롬프트/슬래시 명령을 주기적으로 실행 |
-| `zoom-out` | 더 넓은 맥락 요청 시 | custom | 상위 관점에서 코드 구조와 맥락 설명 |
+| `zoom-out` | 더 넓은 맥락 요청 시 | mattpocock/skills | 상위 관점에서 코드 구조와 맥락 설명 |
 <!-- AUTO:END skills -->
 
 ---
