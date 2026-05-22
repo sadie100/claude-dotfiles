@@ -47,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell.exe -Command \"[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms'); [System.Windows.Forms.MessageBox]::Show('Claude Code needs your attention', 'Claude Code')\""
+            "command": "node \"$DOTCLAUDE_DIR/scripts/hooks/notify.mjs\""
           }
         ]
       }
