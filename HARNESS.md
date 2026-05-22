@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 610cb37986b9f5b20ab971c3ebfb4bb528c3754880aeb58b724787c8d3ff7389 -->
+<!-- harness-sync-fingerprint: 655f4cf8147f1f8fae2d8b4c773776fed6855151acd2449911a3df8708772db1 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -129,6 +129,9 @@
 | `ui-ux-pro-max:ckm:slides` | 전략적 HTML 프레젠테이션 요청 시 | ui-ux-pro-max | Chart.js·디자인 토큰 기반 HTML 슬라이드 생성 |
 | `document-skills:theme-factory` | 아티팩트 테마 적용 요청 시 | document-skills | 슬라이드/문서/HTML 아티팩트에 사전 정의된 테마 적용 |
 | `document-skills:brand-guidelines` | 브랜드 가이드 적용 요청 시 | document-skills | Anthropic 공식 브랜드 색상/타이포 적용 |
+| `vercel-composition-patterns` | React 컴포넌트 합성 패턴 적용 시 | custom | 컴파운드 컴포넌트·render props·context provider 등 확장형 컴포넌트 API 설계 (React 19 포함) |
+| `vercel-react-best-practices` | React/Next.js 성능 작업 시 | custom | Vercel Engineering의 React/Next.js 성능 최적화 가이드라인 |
+| `vercel-react-view-transitions` | React View Transition API 사용 시 | custom | `<ViewTransition>`·`addTransitionType` 기반 페이지/요소 전환 애니메이션 구현 |
 
 ### 문서 포맷 생성
 
