@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 655f4cf8147f1f8fae2d8b4c773776fed6855151acd2449911a3df8708772db1 -->
+<!-- harness-sync-fingerprint: d9432618d2588b2e9c2a8c0356b6397c4a97327af05a843a20f78441e825d2b2 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -113,6 +113,7 @@
 | `front-execute` | `/front-execute` (프론트엔드 구현 + 검증 시) | custom | 문서/지시 입력 → 구현 → 타입체크/유닛테스트 → UI 검증 루프(최대 5회 자동 수정) → 최종 코드 리뷰 |
 | `diagnose` | 어려운 버그/성능 회귀 진단 시 | custom | 재현 → 최소화 → 가설 → 계측 → 수정 → 회귀 테스트 루프 |
 | `improve-codebase-architecture` | 아키텍처 개선/리팩토링 기회 탐색 시 | custom | CONTEXT.md/ADR 기반 deepening 기회 도출 |
+| `web-design-guidelines` | UI 코드 가이드라인 준수 리뷰 시 | custom | 웹 인터페이스 가이드라인(접근성/UX/디자인) 기준으로 UI 코드 감사 |
 
 ### UI/디자인 생성
 
