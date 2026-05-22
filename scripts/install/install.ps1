@@ -108,6 +108,40 @@ if ((Test-Path $SkillsTarget) -and (Get-Item $SkillsTarget).Attributes.HasFlag([
     Write-Host "[link]   $SkillsTarget -> $SkillsSource"
 }
 
+# --- Agents & Commands: absorb existing + directory symlink ---
+foreach ($subdir in @("agents")) {
+    $target = Join-Path $ClaudeDir $subdir
+    $source = Join-Path $DotfilesDir $subdir
+
+    # Ensure source exists in repo (create empty if missing so symlink works)
+    if (!(Test-Path $source)) {
+        New-Item -ItemType Directory -Path $source -Force | Out-Null
+    }
+
+    if ((Test-Path $target) -and (Get-Item $target).Attributes.HasFlag([IO.FileAttributes]::ReparsePoint)) {
+        Write-Host "[skip]   $target (already linked)"
+        continue
+    }
+
+    if (Test-Path $target) {
+        foreach ($item in (Get-ChildItem -Path $target -ErrorAction SilentlyContinue)) {
+            $repoItem = Join-Path $source $item.Name
+
+            if (Test-Path $repoItem) {
+                Write-Host "[skip]   $($item.Name) already exists in dotfiles $subdir, backing up local copy"
+                Move-Item -Path $item.FullName -Destination "$($item.FullName).bak" -Force
+            } else {
+                Write-Host "[absorb] $($item.FullName) -> $repoItem"
+                Copy-Item -Path $item.FullName -Destination $repoItem -Recurse
+            }
+        }
+        Remove-Item -Path $target -Recurse -Force
+    }
+
+    New-Item -ItemType SymbolicLink -Path $target -Target $source -Force | Out-Null
+    Write-Host "[link]   $target -> $source"
+}
+
 # --- CLAUDE.md: symlink ---
 $DotfilesClaude = Join-Path $DotfilesDir "CLAUDE.md"
 $TargetClaude = Join-Path $ClaudeDir "CLAUDE.md"

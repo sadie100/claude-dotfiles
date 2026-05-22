@@ -95,6 +95,40 @@ else
   echo "[link]   $SKILLS_TARGET -> $SKILLS_SOURCE"
 fi
 
+# --- Agents & Commands: absorb existing + directory symlink ---
+for subdir in agents; do
+  target="$CLAUDE_DIR/$subdir"
+  source="$DOTFILES_DIR/$subdir"
+
+  # Ensure source exists in repo
+  mkdir -p "$source"
+
+  if [ -L "$target" ]; then
+    echo "[skip]   $target (already linked)"
+    continue
+  fi
+
+  if [ -d "$target" ]; then
+    for item in "$target"/*; do
+      [ -e "$item" ] || continue
+      name="$(basename "$item")"
+      repo_item="$source/$name"
+
+      if [ -e "$repo_item" ]; then
+        echo "[skip]   $name already exists in dotfiles $subdir, backing up local copy"
+        mv "$item" "${item}.bak"
+      else
+        echo "[absorb] $item -> $repo_item"
+        cp -r "$item" "$repo_item"
+      fi
+    done
+    rm -rf "$target"
+  fi
+
+  ln -s "$source" "$target"
+  echo "[link]   $target -> $source"
+done
+
 # --- CLAUDE.md: symlink ---
 DOTFILES_CLAUDE="$DOTFILES_DIR/CLAUDE.md"
 TARGET_CLAUDE="$CLAUDE_DIR/CLAUDE.md"
