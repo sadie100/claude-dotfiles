@@ -64,7 +64,7 @@ else:  # 5회 초과
 
 ### Phase 4: 최종 코드 리뷰 (1회, 병렬 아님)
 
-Task 도구로 `code-reviewer` 서브에이전트 호출.
+Task 도구로 `react-code-reviewer` 서브에이전트 호출.
 
 - base branch 와 변경 요약 전달
 - 결과 전문을 `.claude/front-execute/review-summary.md` 에 저장
