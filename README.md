@@ -8,7 +8,7 @@
 |------|------|-----------|-------------|
 | `settings.json` | 전역 permissions, 모델, 플러그인 활성화 등 | JSON 머지 + symlink | O |
 | `skills/` | 커스텀 스킬 디렉토리 | 스킬 폴더를 symlink | O |
-| `agents/` | 커스텀 서브에이전트 (code-reviewer, ui-validator 등) | 디렉토리 symlink | O |
+| `agents/` | 커스텀 서브에이전트 (react-code-reviewer, ui-validator 등) | 디렉토리 symlink | O |
 | `CLAUDE.md` | 전역 지시사항 | symlink | O |
 
 ## 새 환경에서 설치 (원라이너)
