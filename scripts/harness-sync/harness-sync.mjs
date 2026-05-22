@@ -376,6 +376,7 @@ function runClaude(prompt) {
     encoding: "utf8",
     stdio: ["pipe", "inherit", "inherit"],
     shell: process.platform === "win32",
+    cwd: REPO_ROOT,
   });
   if (result.error) {
     process.stderr.write(`harness-sync: failed to spawn claude: ${result.error.message}\n`);
