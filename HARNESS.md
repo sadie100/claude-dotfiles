@@ -62,84 +62,121 @@
 - 그 외: 해당 플러그인/마켓플레이스 이름
 
 <!-- AUTO:BEGIN skills -->
-### 개발 프로세스 (4단계 워크플로우)
+### 기획·설계
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
+| `superpowers:brainstorming` | 기능/컴포넌트 설계 시작 시 | superpowers | 구현 전 사용자 의도/요구사항/설계 탐색 |
+| `superpowers:writing-plans` | 멀티스텝 작업 계획 작성 시 | superpowers | 코드 작업 전 구현 계획 작성 |
 | `dev-prd` | `/dev-prd {기능명}` | custom | PRD(제품 요구사항 문서) 작성. 사용자와 협업하여 기능 기획 |
 | `dev-architecture` | `/dev-architecture {기능명}` | custom | 아키텍처 설계. 기술 옵션 분석 및 트레이드오프 제시 |
 | `dev-spec` | `/dev-spec {기능명}` | custom | 상세 구현 스펙 작성. 인수 조건(AC)을 Given-When-Then 형식으로 정의 |
 | `dev-testcase` | `/dev-testcase {기능명}` | custom | 테스트 케이스 자동 도출. 스펙의 AC에서 TC를 생성 |
-| `dev-process` | `/dev-process {기능명}` | custom | 위 4단계를 순차 실행하는 오케스트레이터 |
-| `feature-dev:feature-dev` | 기능 개발 요청 시 | feature-dev | 코드베이스 이해 기반 가이드형 기능 개발 |
-| `tdd` | TDD 기반 개발 요청 시 | mattpocock/skills | red-green-refactor 루프 기반 테스트 우선 개발 |
+| `to-prd` | 대화 컨텍스트 → PRD 변환 시 | mattpocock/skills | 현재 대화 맥락을 PRD로 정리하여 이슈 트래커에 게시 |
 | `grill-me` | 계획/설계 검증 요청 시 | mattpocock/skills | 계획·설계를 결정 트리 단위로 끝까지 질의하며 검증 |
 | `grill-with-docs` | 도메인 문서 기반 계획 검증 시 | mattpocock/skills | CONTEXT.md/ADR 기반으로 계획을 검증하고 문서 인라인 갱신 |
 
-### 문서/스펙 작성
+### 오케스트레이션·파이프라인
+
+여러 단계/에이전트/스킬을 묶어 한 호출로 자동 실행하는 메타 워크플로우.
+
+| 스킬 | 트리거 | 소속 | 설명 |
+|------|--------|------|------|
+| `front-execute` | `/front-execute` (프론트엔드 구현 + 검증 시) | custom | 문서/지시 입력 → 구현 → 타입체크/유닛테스트 → UI 검증 루프(최대 5회 자동 수정) → 최종 코드 리뷰 |
+| `dev-process` | `/dev-process {기능명}` | custom | PRD → 아키텍처 → 스펙 → TC 4단계 오케스트레이터 |
+| `feature-dev:feature-dev` | 기능 개발 요청 시 | feature-dev | 코드베이스 분석 → 설계 → 가이드형 구현을 묶는 멀티스텝 워크플로우 |
+| `superpowers:executing-plans` | 작성된 계획 실행 시 | superpowers | 리뷰 체크포인트 포함 별도 세션에서 계획 실행 |
+| `superpowers:subagent-driven-development` | 독립 작업이 있는 계획 실행 시 | superpowers | 현재 세션에서 서브에이전트로 독립 작업 실행 |
+| `superpowers:dispatching-parallel-agents` | 독립 작업 2개 이상 시 | superpowers | 공유 상태 없는 독립 작업 병렬 실행 |
+
+### 구현
+
+| 스킬 | 트리거 | 소속 | 설명 |
+|------|--------|------|------|
+| `superpowers:test-driven-development` | 기능/버그픽스 구현 시 | superpowers | 구현 코드 작성 전 TDD 적용 |
+| `tdd` | TDD 기반 개발 요청 시 | mattpocock/skills | red-green-refactor 루프 기반 테스트 우선 개발 |
+| `superpowers:using-git-worktrees` | 격리된 워크스페이스 필요 시 | superpowers | git worktree 기반 격리 워크스페이스 보장 |
+
+### 디버깅·진단
+
+| 스킬 | 트리거 | 소속 | 설명 |
+|------|--------|------|------|
+| `superpowers:systematic-debugging` | 버그/테스트 실패 시 | superpowers | 픽스 제안 전 체계적 디버깅 |
+| `diagnose` | 어려운 버그/성능 회귀 진단 시 | mattpocock/skills | 재현 → 최소화 → 가설 → 계측 → 수정 → 회귀 테스트 루프 |
+| `mobile-view-debugger` | 모바일 뷰 문제 진단 요청 시 | custom | 모바일 에뮬레이션 + 자동 진단(오버플로우, 터치 타겟 등) |
+| `measure-rerender` | 리렌더링 성능 측정 요청 시 | custom | React 컴포넌트 리렌더링 횟수 측정 및 비교 분석 |
+| `chrome-devtools-mcp:memory-leak-debugging` | 메모리 누수 진단 요청 시 | chrome-devtools-mcp | JS/Node.js 메모리 누수 진단 (heapsnapshot, memlab 활용) |
+| `chrome-devtools-mcp:debug-optimize-lcp` | LCP/Core Web Vitals 최적화 요청 시 | chrome-devtools-mcp | Largest Contentful Paint 디버깅 및 최적화 가이드 |
+| `chrome-devtools-mcp:a11y-debugging` | 접근성 진단 요청 시 | chrome-devtools-mcp | 시맨틱 HTML, ARIA, 키보드 네비게이션, 명도 대비 점검 |
+| `chrome-devtools-mcp:troubleshooting` | MCP 연결/타깃 문제 발생 시 | chrome-devtools-mcp | Chrome DevTools MCP 연결 문제 해결 |
+
+### 검증·완료
+
+| 스킬 | 트리거 | 소속 | 설명 |
+|------|--------|------|------|
+| `validate-ui` | UI 변경 후 검증 요청 시 | custom | Chrome DevTools MCP를 사용한 4계층 검증(A11y Snapshot, Screenshot, DOM Query, Runtime Logs) |
+| `verify` | PR/로컬 변경 동작 확인 시 | built-in | 앱을 실행해 코드 변경이 실제 의도대로 동작하는지 검증 |
+| `run` | 앱을 실행해 결과 확인 시 | built-in | 프로젝트 앱을 띄워 변경사항을 실 환경에서 확인 |
+| `superpowers:verification-before-completion` | 완료 선언 직전 | superpowers | 완료/통과 주장 전 검증 명령 실행 |
+| `document-skills:webapp-testing` | 로컬 웹앱 테스트 요청 시 | document-skills | Playwright 기반 로컬 웹앱 동작 검증 |
+| `chrome-devtools-mcp:chrome-devtools` | 브라우저 디버깅/자동화 시 | chrome-devtools-mcp | Chrome DevTools MCP 기반 범용 브라우저 디버깅 |
+| `chrome-devtools-mcp:chrome-devtools-cli` | 브라우저 자동화 스크립트 작성 시 | chrome-devtools-mcp | CLI에서 Chrome DevTools 자동화 |
+| `superpowers:requesting-code-review` | 작업 완료/머지 직전 | superpowers | 요구사항 충족 검증을 위한 코드 리뷰 요청 |
+| `superpowers:receiving-code-review` | 코드 리뷰 피드백 수신 시 | superpowers | 피드백 검증 후 적용 (맹목적 동의 금지) |
+| `superpowers:finishing-a-development-branch` | 구현 완료 후 브랜치 정리 시 | superpowers | 머지/PR/정리 옵션 제시 |
+
+### 코드 리뷰·리팩토링
+
+| 스킬 | 트리거 | 소속 | 설명 |
+|------|--------|------|------|
+| `review` | `/review` | built-in | PR 리뷰 |
+| `code-review:code-review` | `/code-review` | code-review | PR 코드 리뷰 수행 |
+| `code-review` | `/code-review` (현재 diff 대상) | built-in | 현재 변경 diff를 effort 수준별로 검토 |
+| `security-review` | `/security-review` | built-in | 현재 브랜치의 변경사항 보안 리뷰 |
+| `simplify` | `/simplify` | built-in | 변경된 코드의 재사용/품질/효율 검토 후 수정 |
+| `web-design-guidelines` | UI 코드 가이드라인 준수 리뷰 시 | vercel-labs/agent-skills | 웹 인터페이스 가이드라인(접근성/UX/디자인) 기준으로 UI 코드 감사 |
+| `improve-codebase-architecture` | 아키텍처 개선/리팩토링 기회 탐색 시 | mattpocock/skills | CONTEXT.md/ADR 기반 deepening 기회 도출 |
+| `zoom-out` | 더 넓은 맥락 요청 시 | mattpocock/skills | 상위 관점에서 코드 구조와 맥락 설명 |
+
+### 문서화 (코드→문서)
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
 | `write-app-spec` | `/write-app-spec` | custom | 프론트엔드/풀스택 앱의 코드베이스를 분석하여 화면, 라우팅, 핵심 로직, 데이터 모델을 문서화한 SPEC.md 생성 |
 | `write-nestjs-spec` | `/write-nestjs-spec {모듈명}` | custom | NestJS 백엔드 모듈 API 스펙 문서 생성 |
+| `handoff` | 다른 에이전트로 인계 시 | mattpocock/skills | 현재 대화를 핸드오프 문서로 압축 |
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시 | document-skills | 구조화된 문서/제안서/스펙 공동 작성 워크플로우 |
 | `document-skills:internal-comms` | 사내 커뮤니케이션 작성 요청 시 | document-skills | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성 |
-| `to-prd` | 대화 컨텍스트 → PRD 변환 시 | mattpocock/skills | 현재 대화 맥락을 PRD로 정리하여 이슈 트래커에 게시 |
-| `handoff` | 다른 에이전트로 인계 시 | mattpocock/skills | 현재 대화를 핸드오프 문서로 압축 |
 
-### 브라우저 테스트/검증
-
-| 스킬 | 트리거 | 소속 | 설명 |
-|------|--------|------|------|
-| `validate-ui` | UI 변경 후 검증 요청 시 | custom | Chrome DevTools MCP를 사용한 4계층 검증(A11y Snapshot, Screenshot, DOM Query, Runtime Logs) |
-| `measure-rerender` | 리렌더링 성능 측정 요청 시 | custom | React 컴포넌트 리렌더링 횟수 측정 및 비교 분석 |
-| `mobile-view-debugger` | 모바일 뷰 문제 진단 요청 시 | custom | 모바일 에뮬레이션 + 자동 진단(오버플로우, 터치 타겟 등) |
-| `chrome-devtools-mcp:chrome-devtools` | 브라우저 디버깅/자동화 시 | chrome-devtools-mcp | Chrome DevTools MCP 기반 범용 브라우저 디버깅 |
-| `chrome-devtools-mcp:a11y-debugging` | 접근성 진단 요청 시 | chrome-devtools-mcp | 시맨틱 HTML, ARIA, 키보드 네비게이션, 명도 대비 점검 |
-| `chrome-devtools-mcp:debug-optimize-lcp` | LCP/Core Web Vitals 최적화 요청 시 | chrome-devtools-mcp | Largest Contentful Paint 디버깅 및 최적화 가이드 |
-| `chrome-devtools-mcp:memory-leak-debugging` | 메모리 누수 진단 요청 시 | chrome-devtools-mcp | JS/Node.js 메모리 누수 진단 (heapsnapshot, memlab 활용) |
-| `chrome-devtools-mcp:chrome-devtools-cli` | 브라우저 자동화 스크립트 작성 시 | chrome-devtools-mcp | CLI에서 Chrome DevTools 자동화 |
-| `chrome-devtools-mcp:troubleshooting` | MCP 연결/타깃 문제 발생 시 | chrome-devtools-mcp | Chrome DevTools MCP 연결 문제 해결 |
-| `document-skills:webapp-testing` | 로컬 웹앱 테스트 요청 시 | document-skills | Playwright 기반 로컬 웹앱 동작 검증 |
-
-### 코드 리뷰/품질
-
-| 스킬 | 트리거 | 소속 | 설명 |
-|------|--------|------|------|
-| `code-review:code-review` | `/code-review` | code-review | PR 코드 리뷰 수행 |
-| `review` | `/review` | built-in | PR 리뷰 |
-| `security-review` | `/security-review` | built-in | 현재 브랜치의 변경사항 보안 리뷰 |
-| `simplify` | `/simplify` | built-in | 변경된 코드의 재사용/품질/효율 검토 후 수정 |
-| `front-execute` | `/front-execute` (프론트엔드 구현 + 검증 시) | custom | 문서/지시 입력 → 구현 → 타입체크/유닛테스트 → UI 검증 루프(최대 5회 자동 수정) → 최종 코드 리뷰 |
-| `diagnose` | 어려운 버그/성능 회귀 진단 시 | mattpocock/skills | 재현 → 최소화 → 가설 → 계측 → 수정 → 회귀 테스트 루프 |
-| `improve-codebase-architecture` | 아키텍처 개선/리팩토링 기회 탐색 시 | mattpocock/skills | CONTEXT.md/ADR 기반 deepening 기회 도출 |
-| `web-design-guidelines` | UI 코드 가이드라인 준수 리뷰 시 | vercel-labs/agent-skills | 웹 인터페이스 가이드라인(접근성/UX/디자인) 기준으로 UI 코드 감사 |
-
-### UI/디자인 생성
+### UI 컴포넌트·페이지 빌드
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
 | `frontend-design:frontend-design` | 프론트엔드 UI 생성 요청 시 | frontend-design | 프로덕션급 디자인 품질의 프론트엔드 인터페이스 생성 |
 | `document-skills:frontend-design` | 웹 컴포넌트/페이지 빌드 요청 시 | document-skills | 동일 계열의 frontend-design 스킬 (document-skills 마켓플레이스 버전) |
-| `ui-ux-pro-max:ui-ux-pro-max` | UI/UX 설계/구현 요청 시 | ui-ux-pro-max | 50+ 스타일, 161 컬러 팔레트, 57 폰트 페어링 등 디자인 인텔리전스 |
-| `ui-ux-pro-max:ckm:design` | 로고/CIP/슬라이드/배너/아이콘 등 디자인 요청 시 | ui-ux-pro-max | 통합 디자인 스킬 (로고 55스타일, CIP 50종, 배너 22스타일, 아이콘 15스타일 등) |
-| `ui-ux-pro-max:ckm:brand` | 브랜드 보이스/아이덴티티 작업 시 | ui-ux-pro-max | 브랜드 보이스·비주얼 아이덴티티·메시징 프레임워크 |
-| `ui-ux-pro-max:ckm:design-system` | 디자인 토큰/시스템 구축 시 | ui-ux-pro-max | 3계층 토큰 아키텍처, 컴포넌트 스펙, 전략적 슬라이드 |
+| `document-skills:web-artifacts-builder` | 복잡한 HTML 아티팩트 빌드 시 | document-skills | React/Tailwind/shadcn 기반 다중 컴포넌트 아티팩트 |
 | `ui-ux-pro-max:ckm:ui-styling` | shadcn/ui·Tailwind UI 스타일링 시 | ui-ux-pro-max | shadcn/ui + Tailwind 기반 UI 컴포넌트/테마/다크모드 구현 |
-| `ui-ux-pro-max:ckm:banner-design` | 배너 디자인 요청 시 | ui-ux-pro-max | SNS·광고·웹 히어로·인쇄용 배너 (다양한 아트 디렉션) |
-| `ui-ux-pro-max:ckm:slides` | 전략적 HTML 프레젠테이션 요청 시 | ui-ux-pro-max | Chart.js·디자인 토큰 기반 HTML 슬라이드 생성 |
-| `document-skills:theme-factory` | 아티팩트 테마 적용 요청 시 | document-skills | 슬라이드/문서/HTML 아티팩트에 사전 정의된 테마 적용 |
-| `document-skills:brand-guidelines` | 브랜드 가이드 적용 요청 시 | document-skills | Anthropic 공식 브랜드 색상/타이포 적용 |
-
-### React 패턴·성능
-
-| 스킬 | 트리거 | 소속 | 설명 |
-|------|--------|------|------|
 | `vercel-composition-patterns` | React 컴포넌트 합성 패턴 적용 시 | vercel-labs/agent-skills | 컴파운드 컴포넌트·render props·context provider 등 확장형 컴포넌트 API 설계 (React 19 포함) |
 | `vercel-react-best-practices` | React/Next.js 성능 작업 시 | vercel-labs/agent-skills | Vercel Engineering의 React/Next.js 성능 최적화 가이드라인 |
 | `vercel-react-view-transitions` | React View Transition API 사용 시 | vercel-labs/agent-skills | `<ViewTransition>`·`addTransitionType` 기반 페이지/요소 전환 애니메이션 구현 |
 
-### 문서 포맷 생성
+### 디자인 시스템·브랜드·시각물
+
+| 스킬 | 트리거 | 소속 | 설명 |
+|------|--------|------|------|
+| `ui-ux-pro-max:ui-ux-pro-max` | UI/UX 설계/구현 요청 시 | ui-ux-pro-max | 50+ 스타일, 161 컬러 팔레트, 57 폰트 페어링 등 디자인 인텔리전스 |
+| `ui-ux-pro-max:ckm:design` | 로고/CIP/슬라이드/배너/아이콘 등 디자인 요청 시 | ui-ux-pro-max | 통합 디자인 스킬 (로고 55스타일, CIP 50종, 배너 22스타일, 아이콘 15스타일 등) |
+| `ui-ux-pro-max:ckm:brand` | 브랜드 보이스/아이덴티티 작업 시 | ui-ux-pro-max | 브랜드 보이스·비주얼 아이덴티티·메시징 프레임워크 |
+| `ui-ux-pro-max:ckm:design-system` | 디자인 토큰/시스템 구축 시 | ui-ux-pro-max | 3계층 토큰 아키텍처, 컴포넌트 스펙, 전략적 슬라이드 |
+| `ui-ux-pro-max:ckm:banner-design` | 배너 디자인 요청 시 | ui-ux-pro-max | SNS·광고·웹 히어로·인쇄용 배너 (다양한 아트 디렉션) |
+| `ui-ux-pro-max:ckm:slides` | 전략적 HTML 프레젠테이션 요청 시 | ui-ux-pro-max | Chart.js·디자인 토큰 기반 HTML 슬라이드 생성 |
+| `document-skills:theme-factory` | 아티팩트 테마 적용 요청 시 | document-skills | 슬라이드/문서/HTML 아티팩트에 사전 정의된 테마 적용 |
+| `document-skills:brand-guidelines` | 브랜드 가이드 적용 요청 시 | document-skills | Anthropic 공식 브랜드 색상/타이포 적용 |
+| `document-skills:canvas-design` | 포스터/시각 아트 생성 요청 시 | document-skills | .png/.pdf 기반 비주얼 아트 생성 |
+| `document-skills:algorithmic-art` | 알고리즈믹 아트 요청 시 | document-skills | p5.js 기반 제너러티브 아트 생성 |
+| `document-skills:slack-gif-creator` | Slack용 GIF 생성 요청 시 | document-skills | Slack 최적화 애니메이션 GIF 생성 |
+
+### 오피스 문서 생성
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
@@ -147,12 +184,10 @@
 | `document-skills:pptx` | .pptx 파일 작업 요청 시 | document-skills | PowerPoint 슬라이드 덱 생성/편집 |
 | `document-skills:xlsx` | 스프레드시트 작업 요청 시 | document-skills | Excel(.xlsx/.csv 등) 생성/편집/정제 |
 | `document-skills:pdf` | PDF 작업 요청 시 | document-skills | PDF 읽기/병합/분할/OCR 등 |
-| `document-skills:canvas-design` | 포스터/시각 아트 생성 요청 시 | document-skills | .png/.pdf 기반 비주얼 아트 생성 |
-| `document-skills:algorithmic-art` | 알고리즈믹 아트 요청 시 | document-skills | p5.js 기반 제너러티브 아트 생성 |
-| `document-skills:slack-gif-creator` | Slack용 GIF 생성 요청 시 | document-skills | Slack 최적화 애니메이션 GIF 생성 |
-| `document-skills:web-artifacts-builder` | 복잡한 HTML 아티팩트 빌드 시 | document-skills | React/Tailwind/shadcn 기반 다중 컴포넌트 아티팩트 |
 
-### Slack 연동
+### 외부 도구 연동
+
+#### Slack
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
@@ -164,7 +199,7 @@
 | `slack:draft-announcement` | 공지 초안 작성 요청 시 | slack | 잘 포맷팅된 공지 초안 작성 후 저장 |
 | `slack:standup` | 스탠드업 업데이트 요청 시 | slack | 최근 Slack 활동 기반 스탠드업 생성 |
 
-### Notion 연동
+#### Notion
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
@@ -179,7 +214,7 @@
 | `Notion:tasks:build` | 태스크 빌드 요청 시 | Notion | Notion 페이지 URL 기반 태스크 구축 |
 | `Notion:tasks:explain-diff` | 코드 변경 설명 문서 작성 시 | Notion | 코드 변경 내용을 설명하는 Notion 문서 생성 |
 
-### Atlassian 연동 (Jira/Confluence)
+#### Atlassian (Jira/Confluence)
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
@@ -189,29 +224,20 @@
 | `atlassian:spec-to-backlog` | 스펙 → Jira 백로그 변환 시 | atlassian | Confluence 스펙 문서를 Epic + 구현 티켓으로 변환 |
 | `atlassian:triage-issue` | 버그 트리아지 요청 시 | atlassian | Jira에서 중복 검색 후 신규 이슈 생성/기존 이슈 코멘트 |
 
-### Superpowers (개발 워크플로우)
+### Claude API·MCP 빌드
+
+| 스킬 | 트리거 | 소속 | 설명 |
+|------|--------|------|------|
+| `claude-api` | Anthropic SDK 코드 작업 시 | built-in | Claude API/Anthropic SDK 앱 구축·디버깅·최적화 |
+| `document-skills:claude-api` | 동일 | document-skills | 동일 스킬의 document-skills 마켓플레이스 버전 |
+| `document-skills:mcp-builder` | MCP 서버 구축 요청 시 | document-skills | 고품질 MCP 서버 생성 가이드 |
+
+### 하네스·스킬 관리
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
 | `superpowers:using-superpowers` | 모든 대화 시작 시 | superpowers | superpowers 스킬 사용법 안내 |
-| `superpowers:brainstorming` | 기능/컴포넌트 설계 시작 시 | superpowers | 구현 전 사용자 의도/요구사항/설계 탐색 |
-| `superpowers:writing-plans` | 멀티스텝 작업 계획 작성 시 | superpowers | 코드 작업 전 구현 계획 작성 |
 | `superpowers:writing-skills` | 스킬 작성/편집/검증 시 | superpowers | 신규 스킬 작성/편집 가이드 |
-| `superpowers:executing-plans` | 작성된 계획 실행 시 | superpowers | 리뷰 체크포인트 포함 별도 세션에서 계획 실행 |
-| `superpowers:test-driven-development` | 기능/버그픽스 구현 시 | superpowers | 구현 코드 작성 전 TDD 적용 |
-| `superpowers:systematic-debugging` | 버그/테스트 실패 시 | superpowers | 픽스 제안 전 체계적 디버깅 |
-| `superpowers:verification-before-completion` | 완료 선언 직전 | superpowers | 완료/통과 주장 전 검증 명령 실행 |
-| `superpowers:subagent-driven-development` | 독립 작업이 있는 계획 실행 시 | superpowers | 현재 세션에서 서브에이전트로 독립 작업 실행 |
-| `superpowers:dispatching-parallel-agents` | 독립 작업 2개 이상 시 | superpowers | 공유 상태 없는 독립 작업 병렬 실행 |
-| `superpowers:requesting-code-review` | 작업 완료/머지 직전 | superpowers | 요구사항 충족 검증을 위한 코드 리뷰 요청 |
-| `superpowers:receiving-code-review` | 코드 리뷰 피드백 수신 시 | superpowers | 피드백 검증 후 적용 (맹목적 동의 금지) |
-| `superpowers:finishing-a-development-branch` | 구현 완료 후 브랜치 정리 시 | superpowers | 머지/PR/정리 옵션 제시 |
-| `superpowers:using-git-worktrees` | 격리된 워크스페이스 필요 시 | superpowers | git worktree 기반 격리 워크스페이스 보장 |
-
-### CLAUDE.md / 스킬 관리
-
-| 스킬 | 트리거 | 소속 | 설명 |
-|------|--------|------|------|
 | `claude-md-management:claude-md-improver` | CLAUDE.md 감사/개선 요청 시 | claude-md-management | 레포의 CLAUDE.md 파일 품질 평가 및 개선 |
 | `claude-md-management:revise-claude-md` | 세션 학습 반영 요청 시 | claude-md-management | 세션 학습을 CLAUDE.md에 반영 |
 | `skill-creator:skill-creator` | 스킬 생성/수정/평가 요청 시 | skill-creator | 신규 스킬 생성, 기존 스킬 개선, 변량 분석 기반 성능 벤치마크 |
@@ -220,15 +246,7 @@
 | `setup-matt-pocock-skills` | 엔지니어링 스킬 초기 설정 시 | mattpocock/skills | AGENTS.md/CLAUDE.md에 이슈 트래커·트리아지 라벨·도메인 문서 블록 셋업 |
 | `init` | `/init` | built-in | CLAUDE.md 초기 생성 |
 
-### Claude API / MCP 빌드
-
-| 스킬 | 트리거 | 소속 | 설명 |
-|------|--------|------|------|
-| `claude-api` | Anthropic SDK 코드 작업 시 | built-in | Claude API/Anthropic SDK 앱 구축·디버깅·최적화 |
-| `document-skills:claude-api` | 동일 | document-skills | 동일 스킬의 document-skills 마켓플레이스 버전 |
-| `document-skills:mcp-builder` | MCP 서버 구축 요청 시 | document-skills | 고품질 MCP 서버 생성 가이드 |
-
-### 환경/설정
+### 환경·자동화
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
@@ -236,7 +254,6 @@
 | `keybindings-help` | 키바인딩 커스터마이즈 요청 시 | built-in | `~/.claude/keybindings.json` 수정 |
 | `fewer-permission-prompts` | 권한 프롬프트 최소화 요청 시 | built-in | 자주 쓰는 read-only 명령을 allowlist로 추가 |
 | `loop` | 반복 실행 요청 시 | built-in | 프롬프트/슬래시 명령을 주기적으로 실행 |
-| `zoom-out` | 더 넓은 맥락 요청 시 | mattpocock/skills | 상위 관점에서 코드 구조와 맥락 설명 |
 <!-- AUTO:END skills -->
 
 ---

@@ -344,20 +344,42 @@ __PAYLOAD__
 ## 변경 최소화 원칙 (중요)
 - **기존 HARNESS.md에 이미 존재하는 항목(플러그인/스킬/훅)은 카테고리·순서·문구·소속을 그대로 유지**한다. 사용자가 수동 조정한 분류일 수 있으므로 임의로 재분류하지 말 것.
 - 입력 JSON과 비교해서 **새로 추가된 항목만 추가**, **사라진 항목만 제거**한다.
-  - 추가 시: 가장 적합한 기존 카테고리에 끼워 넣는다. 마땅한 카테고리가 없을 때만 새 \`### <도메인명>\` 헤더를 만든다.
+  - 추가 시: 아래 reference 카테고리(스킬 14종 / 플러그인은 마켓플레이스별) 중 가장 적합한 곳에 끼워 넣는다. 마땅한 곳이 없을 때만 새 헤더를 만든다.
   - 제거 시: 해당 행만 삭제. 카테고리가 비면 헤더도 함께 제거.
-- 상태(✅/❌) 같은 메타데이터는 입력 JSON 기준으로 최신화하되, 다른 정보는 건드리지 않는다.
+- 상태(✅/❌) 같은 메타데이터는 입력 JSON 기준으로 최신화.
 
 ## 작성 스타일 (기존 HARNESS.md 톤 유지)
 - **한국어**, 카테고리화된 마크다운 표 형식.
 - **플러그인 섹션**: 마켓플레이스별로 \`### \\\`<marketplace>\\\`\` 헤더 + 표 (플러그인 / 상태(✅/❌) / 설명).
   - 설명은 manifest.description → marketplaceDescription 순으로 우선. 영어면 핵심을 1줄 한글로 의역.
-- **스킬 섹션**: 도메인별로 \`### <도메인명>\` 헤더 + 표 (스킬 / 트리거 / 소속 / 설명).
-  - 도메인 예시: 개발 프로세스 / 문서·스펙 작성 / 브라우저 테스트·검증 / 코드 리뷰·품질 / UI·디자인 생성 / React 패턴·성능 / 문서 포맷 생성 / Slack 연동 / Notion 연동 / Atlassian 연동 / Superpowers / CLAUDE.md·스킬 관리 / Claude API·MCP 빌드 / 환경·설정.
+- **스킬 섹션**: 아래 reference 카테고리 + 표 (스킬 / 트리거 / 소속 / 설명).
   - 소속: 로컬 스킬은 기본적으로 \`custom\`. 플러그인 스킬은 플러그인 이름.
   - 트리거: 슬래시 커맨드면 \`\\\`/name\\\`\`, 아니면 "<상황> 시" 형태.
   - 비활성 플러그인의 스킬은 제외.
 - **훅 섹션**: 표 (이벤트 / 실행 명령 / 비동기 / 설명). 설명은 명령에서 추론한 1줄 한글.
+
+## 스킬 reference 카테고리 (14종, 이 순서대로)
+사이클 흐름순. 각 카테고리의 정체성을 기준으로 신규/기존 스킬을 배치한다.
+
+1. **기획·설계** — 구현 전 의도/요구사항/계획/PRD/아키텍처/스펙/TC 작성. 예: brainstorming, writing-plans, dev-prd, dev-architecture, dev-spec, dev-testcase, to-prd, grill-me.
+2. **오케스트레이션·파이프라인** — *여러 단계/에이전트/스킬을 묶어 한 호출로 자동 실행하는 메타 워크플로우*. 단일 단계 스킬은 여기 두지 말 것. 예: front-execute, dev-process, feature-dev:feature-dev, superpowers:executing-plans, subagent-driven-development, dispatching-parallel-agents.
+3. **구현** — 가이드 없이 직접 코드를 쓰는 단일 단계. 예: tdd, superpowers:test-driven-development, using-git-worktrees.
+4. **디버깅·진단** — 버그/회귀/성능 문제의 원인 추적. 예: diagnose, systematic-debugging, mobile-view-debugger, measure-rerender, chrome-devtools-mcp:memory-leak-debugging, debug-optimize-lcp, a11y-debugging, troubleshooting.
+5. **검증·완료** — 변경이 실제로 동작하는지 확인, 완료 직전 게이트, 리뷰 요청·수신·머지. 예: validate-ui, verify, run, verification-before-completion, webapp-testing, chrome-devtools-mcp:chrome-devtools, chrome-devtools-cli, requesting-code-review, receiving-code-review, finishing-a-development-branch.
+6. **코드 리뷰·리팩토링** — diff/PR 검토와 구조 개선. 예: review, code-review:code-review, code-review, security-review, simplify, web-design-guidelines, improve-codebase-architecture, zoom-out.
+7. **문서화 (코드→문서)** — 코드/대화에서 산출물 문서 생성. 예: write-app-spec, write-nestjs-spec, handoff, document-skills:doc-coauthoring, internal-comms.
+8. **UI 컴포넌트·페이지 빌드** — React/Next/shadcn 기반 컴포넌트·페이지 구현. 예: frontend-design:frontend-design, document-skills:frontend-design, web-artifacts-builder, ui-ux-pro-max:ckm:ui-styling, vercel-composition-patterns, vercel-react-best-practices, vercel-react-view-transitions.
+9. **디자인 시스템·브랜드·시각물** — 디자인 토큰, 브랜드, 슬라이드, 배너, 시각 아트. 예: ui-ux-pro-max:ui-ux-pro-max, ckm:design, ckm:brand, ckm:design-system, ckm:banner-design, ckm:slides, document-skills:theme-factory, brand-guidelines, canvas-design, algorithmic-art, slack-gif-creator.
+10. **오피스 문서 생성** — docx/pptx/xlsx/pdf 파일 생성·편집.
+11. **외부 도구 연동** — Slack / Notion / Atlassian. 서브헤더 \`#### Slack\`, \`#### Notion\`, \`#### Atlassian (Jira/Confluence)\`로 구분. Notion:tasks:* 도 여기 포함.
+12. **Claude API·MCP 빌드** — Anthropic SDK·MCP 서버 구축. 예: claude-api, document-skills:claude-api, mcp-builder.
+13. **하네스·스킬 관리** — Claude Code 자체 설정/스킬 메타 작업. 예: using-superpowers, writing-skills, claude-md-improver, revise-claude-md, skill-creator, find-skills, setup-matt-pocock-skills, init.
+14. **환경·자동화** — settings.json, 키바인딩, 권한, 반복 실행 등 도메인 무관 자동화. 예: update-config, keybindings-help, fewer-permission-prompts, loop.
+
+신규 스킬 배치 시:
+- 파이프라인 판별 기준은 **"여러 스킬/에이전트/단계를 한 호출로 자동 묶음"**. 단일 단계 스킬은 절대 2번에 넣지 말 것.
+- chrome-devtools-mcp는 *디버깅 성격*이면 4번, *범용 자동화/검증*이면 5번.
+- 슬래시 커맨드 유무가 아닌 스킬의 목적으로 분류.
 
 ## 출력
 - HARNESS.md를 Edit으로 직접 수정한 뒤 작업 종료.
