@@ -9,7 +9,7 @@ description: 프론트엔드 구현 + UI 검증 루프 + 최종 코드 리뷰를
 
 ## 전제
 
-- `code-reviewer`, `ui-validator` 서브에이전트가 사용 가능해야 한다 (`~/.claude/agents/` 또는 프로젝트 `.claude/agents/`)
+- `react-code-reviewer`, `ui-validator` 서브에이전트가 사용 가능해야 한다 (`~/.claude/agents/` 또는 프로젝트 `.claude/agents/`)
 - 산출물은 `.claude/front-execute/` 아래에 저장 (없으면 생성)
 - 프론트엔드 변경이 전제. 백엔드 only 변경에는 이 스킬을 호출하지 말 것
 
