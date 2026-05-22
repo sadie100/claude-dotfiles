@@ -1,3 +1,2 @@
-- [ ] 지금 mcp 공유가 안됨. 루트폴더의 .claude.json의 mcpServers 키의 value를 가져와서 합치는 로직이 필요...
 - [ ] 랄프 좀 더 써먹도록 학습 내지 구체화하기
 - [ ] dotclaude-func.sh / dotclaude-func.ps1을 dotclaude.mjs 하나로 통합 (node CLI + npm link 방식으로 프로필 source 제거)

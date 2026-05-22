@@ -13,6 +13,9 @@ function dotclaude() {
       echo ""
       echo "Commands:"
       echo "  sync              Sync dotfiles (git add, commit, push)"
+      echo "  pull              git pull + apply repo's mcp-servers.json to ~/.claude.json"
+      echo "  mcp-sync          ~/.claude.json mcpServers -> repo mcp-servers.json (secrets stripped)"
+      echo "  mcp-pull          repo mcp-servers.json -> ~/.claude.json (machine tokens preserved)"
       echo "  open              Open dotfiles directory in file explorer"
       echo "  settings [--ed]   Edit settings.json (--vim, --vi, --nano, --code, --notepad)"
       echo "  help, --help, -h  Show this help message"
@@ -20,6 +23,16 @@ function dotclaude() {
       ;;
     sync)
       node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"
+      ;;
+    mcp-sync)
+      node "$DOTCLAUDE_DIR/scripts/mcp-sync/mcp-sync.mjs" sync
+      ;;
+    mcp-pull)
+      node "$DOTCLAUDE_DIR/scripts/mcp-sync/mcp-sync.mjs" pull
+      ;;
+    pull)
+      git -C "$DOTCLAUDE_DIR" pull "${@:2}" \
+        && node "$DOTCLAUDE_DIR/scripts/mcp-sync/mcp-sync.mjs" pull
       ;;
     open)
       if [[ "$OSTYPE" == darwin* ]]; then

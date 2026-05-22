@@ -12,12 +12,24 @@ function dotclaude {
         Write-Host ""
         Write-Host "Commands:"
         Write-Host "  sync              Sync dotfiles (git add, commit, push)"
+        Write-Host "  pull              git pull + apply repo's mcp-servers.json to ~/.claude.json"
+        Write-Host "  mcp-sync          ~/.claude.json mcpServers -> repo mcp-servers.json (secrets stripped)"
+        Write-Host "  mcp-pull          repo mcp-servers.json -> ~/.claude.json (machine tokens preserved)"
         Write-Host "  open              Open dotfiles directory in file explorer"
         Write-Host "  settings [--ed]   Edit settings.json (--vim, --vi, --nano, --code, --notepad)"
         Write-Host "  help, --help, -h  Show this help message"
         Write-Host "  <git-command>     Any other argument is passed to git"
     } elseif ($args[0] -eq 'sync') {
         node "$d\scripts\harness-sync\harness-sync.mjs"
+    } elseif ($args[0] -eq 'mcp-sync') {
+        node "$d\scripts\mcp-sync\mcp-sync.mjs" sync
+    } elseif ($args[0] -eq 'mcp-pull') {
+        node "$d\scripts\mcp-sync\mcp-sync.mjs" pull
+    } elseif ($args[0] -eq 'pull') {
+        git -C $d pull @($args | Select-Object -Skip 1)
+        if ($LASTEXITCODE -eq 0) {
+            node "$d\scripts\mcp-sync\mcp-sync.mjs" pull
+        }
     } elseif ($args[0] -eq 'open') {
         explorer.exe $d
     } elseif ($args[0] -eq 'settings') {

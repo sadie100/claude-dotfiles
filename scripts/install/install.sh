@@ -64,6 +64,9 @@ print(json.dumps(deep_merge(base, over), indent=2, ensure_ascii=False))
   echo "[link]   $SETTINGS_TARGET -> $SETTINGS_SOURCE"
 fi
 
+# --- mcp-servers.json: merge into ~/.claude.json (mcpServers key only) ---
+node "$DOTFILES_DIR/scripts/mcp-sync/mcp-sync.mjs" pull
+
 # --- Skills: absorb existing + directory symlink ---
 SKILLS_TARGET="$CLAUDE_DIR/skills"
 SKILLS_SOURCE="$DOTFILES_DIR/skills"

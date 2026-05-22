@@ -79,6 +79,9 @@ if ((Test-Path $SettingsTarget) -and (Get-Item $SettingsTarget).Attributes.HasFl
     Write-Host "[link]   $SettingsTarget -> $SettingsSource"
 }
 
+# --- mcp-servers.json: merge into ~/.claude.json (mcpServers key only) ---
+node "$DotfilesDir\scripts\mcp-sync\mcp-sync.mjs" pull
+
 # --- Skills: absorb existing + directory symlink ---
 $SkillsTarget = Join-Path $ClaudeDir "skills"
 $SkillsSource = Join-Path $DotfilesDir "skills"

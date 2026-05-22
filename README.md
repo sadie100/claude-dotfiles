@@ -10,6 +10,7 @@
 | `skills/` | 커스텀 스킬 디렉토리 | 스킬 폴더를 symlink | O |
 | `agents/` | 커스텀 서브에이전트 (react-code-reviewer, ui-validator 등) | 디렉토리 symlink | O |
 | `CLAUDE.md` | 전역 지시사항 | symlink | O |
+| `mcp-servers.json` | user-scope MCP 서버 (`~/.claude.json`의 `mcpServers` 키) | JSON 머지 (수동 / `dotclaude pull` 시 자동) | X |
 
 ## 새 환경에서 설치 (원라이너)
 
@@ -70,7 +71,16 @@ cd ~/claude-dotfiles
 
 직접 `~/.claude/CLAUDE.md`를 편집하면 레포의 파일이 수정되므로, 자동 동기화로 반영됩니다.
 
-### 4. `DOTCLAUDE_DIR` 환경변수 등록
+### 4. mcp-servers.json — `~/.claude.json` 머지
+기존 `~/.claude.json`의 최상위 `mcpServers` (user-scope MCP 서버) 를 이 레포의 `mcp-servers.json`과 머지. 첫 install이면 머신 서버를 레포로 흡수하고, 이후엔 레포의 mcp 서버를 `~/.claude.json`에 머지합니다.
+
+- **시크릿 stripping** — 레포 저장 시 `env`, `headers`, `oauth` value는 `{}`로 비워서 git에 토큰이 안 올라감
+- **머신 토큰 보존** — 머지 시 머신에 이미 채워진 토큰은 덮어쓰지 않음
+- 새 머신에서는 서버 등록은 자동, 토큰은 `claude mcp add` 또는 직접 `~/.claude.json` 편집으로 채워주세요
+
+`~/.claude.json`은 OAuth 세션·캐시 등 머신 고유 상태도 들고 있어 symlink가 불가능하고 Claude Code가 세션 중 계속 rewrite하므로 자동 동기화는 어렵다고 판단, mcpServers 키만 떼서 수동 방식으로 동기화합니다.
+
+### 5. `DOTCLAUDE_DIR` 환경변수 등록
 이 레포의 절대 경로를 `DOTCLAUDE_DIR` 환경변수로 등록합니다. 자동 동기화 훅 등에서 레포 위치를 참조할 때 사용됩니다.
 
 - **Linux/macOS**: 셸 프로필(`~/.zshrc`, `~/.bashrc`)에 `export DOTCLAUDE_DIR=...` 추가
@@ -78,7 +88,7 @@ cd ~/claude-dotfiles
 
 > Windows에서 사용자 환경변수로 등록하는 이유: PowerShell 프로필 변수는 해당 세션에서만 유효하지만, Claude Code 훅은 bash(Git Bash)로 실행되어 PowerShell 프로필을 읽지 못합니다. 사용자 환경변수로 등록하면 PowerShell, bash 등 모든 셸에서 접근 가능합니다.
 
-### 5. dotclaude 함수 등록
+### 6. dotclaude 함수 등록
 셸 프로필(`~/.zshrc`, `~/.bashrc`, 또는 PowerShell `$PROFILE`)에 `dotclaude` 함수를 등록합니다.
 
 함수 본문은 레포의 `scripts/dotclaude-func/dotclaude-func.sh` (Bash) / `scripts/dotclaude-func/dotclaude-func.ps1` (PowerShell)에 있고, 프로필에는 환경변수 설정 + source 두 줄만 추가됩니다. 따라서 `git pull`만 하면 모든 머신에서 함수가 즉시 업데이트됩니다.
@@ -86,11 +96,13 @@ cd ~/claude-dotfiles
 ```bash
 dotclaude --help      # 지원하는 모든 커맨드 보기
 dotclaude sync        # add -A + commit + push (한방)
+dotclaude pull        # git pull + mcp-servers.json 자동 머지 (양방향 흐름의 수신 쪽)
+dotclaude mcp-sync    # 머신 -> repo: ~/.claude.json의 mcpServers를 시크릿 stripped로 repo에 저장
+dotclaude mcp-pull    # repo -> 머신: repo의 mcp-servers.json을 ~/.claude.json에 머지 (토큰 보존)
 dotclaude open        # dotfiles 디렉토리 열기
 dotclaude settings    # settings.json 편집 (--vim, --code 등)
 dotclaude status      # git status (git 명령 패스스루)
 dotclaude log         # git log
-dotclaude pull        # git pull
 ```
 
 ## 동기화
@@ -109,4 +121,11 @@ dotclaude pull        # git pull
 
 ```bash
 dotclaude sync
+```
+
+MCP 서버는 자동 동기화 대상이 아니므로 다음 명령으로 동기화합니다:
+
+```bash
+dotclaude mcp-sync    # 머신->레포 동기화. (claude mcp add 후)
+dotclaude mcp-pull        # 레포->머신 동기화. (수동 git pull 후)
 ```
