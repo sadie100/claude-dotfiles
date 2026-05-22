@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 8edd4d96a7fa365fc1b849bfa2f95ebb21aaad972b303fbe09fb55b19598cf34 -->
+<!-- harness-sync-fingerprint: 610cb37986b9f5b20ab971c3ebfb4bb528c3754880aeb58b724787c8d3ff7389 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -110,7 +110,7 @@
 | `review` | `/review` | built-in | PR 리뷰 |
 | `security-review` | `/security-review` | built-in | 현재 브랜치의 변경사항 보안 리뷰 |
 | `simplify` | `/simplify` | built-in | 변경된 코드의 재사용/품질/효율 검토 후 수정 |
-| `ship` | `/ship` (구현 완료 후 마무리 시) | custom | 코드 리뷰 → UI 검증 파이프라인을 일괄 실행 |
+| `front-execute` | `/front-execute` (프론트엔드 구현 + 검증 시) | custom | 문서/지시 입력 → 구현 → 타입체크/유닛테스트 → UI 검증 루프(최대 5회 자동 수정) → 최종 코드 리뷰 |
 | `diagnose` | 어려운 버그/성능 회귀 진단 시 | custom | 재현 → 최소화 → 가설 → 계측 → 수정 → 회귀 테스트 루프 |
 | `improve-codebase-architecture` | 아키텍처 개선/리팩토링 기회 탐색 시 | custom | CONTEXT.md/ADR 기반 deepening 기회 도출 |
 
