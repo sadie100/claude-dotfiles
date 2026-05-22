@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: ae5f2e2db41b4201b00a79510ddc7ce9178867a9da2c20775c8653c782dee0fa -->
+<!-- harness-sync-fingerprint: 7130d5b728113c4158d969145442cd41a1f38fb386de800b617bb3ee62ba3d47 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -238,6 +238,7 @@
 |--------|-----------|--------|------|
 | `ConfigChange` | `node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"` | ❌ (sync) | 설정 변경 시 HARNESS.md 자동 갱신 (fingerprint로 게이트) |
 | `Notification` | `powershell.exe -Command "[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms'); [System.Windows.Forms.MessageBox]::Show('Claude Code needs your attention', 'Claude Code')"` | ❌ (sync) | Claude Code 알림 발생 시 Windows 메시지 박스 표시 |
+| `PostToolUse` | `jq -r '.tool_input.file_path' \| xargs npx prettier --write` | ❌ (sync) | 파일 수정 후 prettier로 자동 포맷팅 |
 <!-- AUTO:END hooks -->
 
 ---
