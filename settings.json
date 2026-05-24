@@ -19,9 +19,9 @@
       "mcp__plugin_context7*",
       "mcp__aws-knowledge*"
     ],
-    "deny": [
+    "deny": ["Write(./node_modules/**)"],
+    "ask": [
       "Write(./.env)",
-      "Write(./node_modules/**)",
       "Bash(* deploy *)",
       "Bash(* publish *)",
       "Bash(git push *)",
