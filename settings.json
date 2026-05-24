@@ -25,7 +25,9 @@
       "Bash(* deploy *)",
       "Bash(* publish *)",
       "Bash(git push *)",
-      "Bash(git pull *)"
+      "Bash(git pull *)",
+      "Bash(pnpm add *)",
+      "Bash(npm install *)"
     ]
   },
   "model": "opus[1m]",
