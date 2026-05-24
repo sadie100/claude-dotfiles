@@ -358,7 +358,7 @@ __PAYLOAD__
   - 비활성 플러그인의 스킬은 제외.
 - **훅 섹션**: 표 (이벤트 / 실행 명령 / 비동기 / 설명). 설명은 명령에서 추론한 1줄 한글.
 
-## 스킬 reference 카테고리 (14종, 이 순서대로)
+## 스킬 reference 카테고리 (13종, 이 순서대로)
 사이클 흐름순. 각 카테고리의 정체성을 기준으로 신규/기존 스킬을 배치한다.
 
 1. **기획·설계** — 구현 전 의도/요구사항/계획/PRD/아키텍처/스펙/TC 작성. 예: brainstorming, writing-plans, dev-prd, dev-architecture, dev-spec, dev-testcase, to-prd, grill-me.
@@ -366,15 +366,14 @@ __PAYLOAD__
 3. **구현** — 가이드 없이 직접 코드를 쓰는 단일 단계. 예: tdd, superpowers:test-driven-development, using-git-worktrees.
 4. **디버깅·진단** — 버그/회귀/성능 문제의 원인 추적. 예: diagnose, systematic-debugging, mobile-view-debugger, measure-rerender, chrome-devtools-mcp:memory-leak-debugging, debug-optimize-lcp, a11y-debugging, troubleshooting.
 5. **검증·완료** — 변경이 실제로 동작하는지 확인, 완료 직전 게이트, 리뷰 요청·수신·머지. 예: validate-ui, verify, run, verification-before-completion, webapp-testing, chrome-devtools-mcp:chrome-devtools, chrome-devtools-cli, requesting-code-review, receiving-code-review, finishing-a-development-branch.
-6. **코드 리뷰·리팩토링** — diff/PR 검토와 구조 개선. 예: review, code-review:code-review, code-review, security-review, simplify, web-design-guidelines, improve-codebase-architecture, zoom-out.
+6. **코드 리뷰·리팩토링** — diff/PR 검토, 구조 개선, 컴포넌트 API/성능 패턴 적용. 예: review, code-review:code-review, code-review, security-review, simplify, web-design-guidelines, vercel-composition-patterns, vercel-react-best-practices, vercel-react-view-transitions, improve-codebase-architecture, zoom-out.
 7. **문서화 (코드→문서)** — 코드/대화에서 산출물 문서 생성. 예: write-app-spec, write-nestjs-spec, handoff, document-skills:doc-coauthoring, internal-comms.
-8. **UI 컴포넌트·페이지 빌드** — React/Next/shadcn 기반 컴포넌트·페이지 구현. 예: frontend-design:frontend-design, document-skills:frontend-design, web-artifacts-builder, ui-ux-pro-max:ckm:ui-styling, vercel-composition-patterns, vercel-react-best-practices, vercel-react-view-transitions.
-9. **디자인 시스템·브랜드·시각물** — 디자인 토큰, 브랜드, 슬라이드, 배너, 시각 아트. 예: ui-ux-pro-max:ui-ux-pro-max, ckm:design, ckm:brand, ckm:design-system, ckm:banner-design, ckm:slides, document-skills:theme-factory, brand-guidelines, canvas-design, algorithmic-art, slack-gif-creator.
-10. **오피스 문서 생성** — docx/pptx/xlsx/pdf 파일 생성·편집.
-11. **외부 도구 연동** — Slack / Notion / Atlassian. 서브헤더 \`#### Slack\`, \`#### Notion\`, \`#### Atlassian (Jira/Confluence)\`로 구분. Notion:tasks:* 도 여기 포함.
-12. **Claude API·MCP 빌드** — Anthropic SDK·MCP 서버 구축. 예: claude-api, document-skills:claude-api, mcp-builder.
-13. **하네스·스킬 관리** — Claude Code 자체 설정/스킬 메타 작업. 예: using-superpowers, writing-skills, claude-md-improver, revise-claude-md, skill-creator, find-skills, setup-matt-pocock-skills, init.
-14. **환경·자동화** — settings.json, 키바인딩, 권한, 반복 실행 등 도메인 무관 자동화. 예: update-config, keybindings-help, fewer-permission-prompts, loop.
+8. **디자인·UI 생성** — 프론트엔드 UI 빌드 + 디자인 시스템/브랜드/시각물 산출물 생성. 예: frontend-design:frontend-design, document-skills:frontend-design, document-skills:web-artifacts-builder, ui-ux-pro-max:ui-ux-pro-max, ui-ux-pro-max:ckm:ui-styling, ckm:design, ckm:brand, ckm:design-system, ckm:banner-design, ckm:slides, document-skills:theme-factory, brand-guidelines, canvas-design, algorithmic-art, slack-gif-creator.
+9. **오피스 문서 생성** — docx/pptx/xlsx/pdf 파일 생성·편집.
+10. **외부 도구 연동** — Slack / Notion / Atlassian. 서브헤더 \`#### Slack\`, \`#### Notion\`, \`#### Atlassian (Jira/Confluence)\`로 구분. Notion:tasks:* 도 여기 포함.
+11. **Claude API·MCP 빌드** — Anthropic SDK·MCP 서버 구축. 예: claude-api, document-skills:claude-api, mcp-builder.
+12. **하네스·스킬 관리** — Claude Code 자체 설정/스킬 메타 작업. 예: using-superpowers, writing-skills, claude-md-improver, revise-claude-md, skill-creator, find-skills, setup-matt-pocock-skills, init.
+13. **환경·자동화** — settings.json, 키바인딩, 권한, 반복 실행 등 도메인 무관 자동화. 예: update-config, keybindings-help, fewer-permission-prompts, loop.
 
 신규 스킬 배치 시:
 - 파이프라인 판별 기준은 **"여러 스킬/에이전트/단계를 한 호출로 자동 묶음"**. 단일 단계 스킬은 절대 2번에 넣지 말 것.

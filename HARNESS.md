@@ -135,6 +135,9 @@
 | `security-review` | `/security-review` | built-in | 현재 브랜치의 변경사항 보안 리뷰 |
 | `simplify` | `/simplify` | built-in | 변경된 코드의 재사용/품질/효율 검토 후 수정 |
 | `web-design-guidelines` | UI 코드 가이드라인 준수 리뷰 시 | vercel-labs/agent-skills | 웹 인터페이스 가이드라인(접근성/UX/디자인) 기준으로 UI 코드 감사 |
+| `vercel-composition-patterns` | React 컴포넌트 합성 패턴 적용 시 | vercel-labs/agent-skills | 컴파운드 컴포넌트·render props·context provider 등 확장형 컴포넌트 API 설계 (React 19 포함) |
+| `vercel-react-best-practices` | React/Next.js 성능 작업 시 | vercel-labs/agent-skills | Vercel Engineering의 React/Next.js 성능 최적화 가이드라인 |
+| `vercel-react-view-transitions` | React View Transition API 사용 시 | vercel-labs/agent-skills | `<ViewTransition>`·`addTransitionType` 기반 페이지/요소 전환 애니메이션 구현 |
 | `improve-codebase-architecture` | 아키텍처 개선/리팩토링 기회 탐색 시 | mattpocock/skills | CONTEXT.md/ADR 기반 deepening 기회 도출 |
 | `zoom-out` | 더 넓은 맥락 요청 시 | mattpocock/skills | 상위 관점에서 코드 구조와 맥락 설명 |
 
@@ -148,23 +151,15 @@
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시 | document-skills | 구조화된 문서/제안서/스펙 공동 작성 워크플로우 |
 | `document-skills:internal-comms` | 사내 커뮤니케이션 작성 요청 시 | document-skills | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성 |
 
-### UI 컴포넌트·페이지 빌드
+### 디자인·UI 생성
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
 | `frontend-design:frontend-design` | 프론트엔드 UI 생성 요청 시 | frontend-design | 프로덕션급 디자인 품질의 프론트엔드 인터페이스 생성 |
 | `document-skills:frontend-design` | 웹 컴포넌트/페이지 빌드 요청 시 | document-skills | 동일 계열의 frontend-design 스킬 (document-skills 마켓플레이스 버전) |
 | `document-skills:web-artifacts-builder` | 복잡한 HTML 아티팩트 빌드 시 | document-skills | React/Tailwind/shadcn 기반 다중 컴포넌트 아티팩트 |
-| `ui-ux-pro-max:ckm:ui-styling` | shadcn/ui·Tailwind UI 스타일링 시 | ui-ux-pro-max | shadcn/ui + Tailwind 기반 UI 컴포넌트/테마/다크모드 구현 |
-| `vercel-composition-patterns` | React 컴포넌트 합성 패턴 적용 시 | vercel-labs/agent-skills | 컴파운드 컴포넌트·render props·context provider 등 확장형 컴포넌트 API 설계 (React 19 포함) |
-| `vercel-react-best-practices` | React/Next.js 성능 작업 시 | vercel-labs/agent-skills | Vercel Engineering의 React/Next.js 성능 최적화 가이드라인 |
-| `vercel-react-view-transitions` | React View Transition API 사용 시 | vercel-labs/agent-skills | `<ViewTransition>`·`addTransitionType` 기반 페이지/요소 전환 애니메이션 구현 |
-
-### 디자인 시스템·브랜드·시각물
-
-| 스킬 | 트리거 | 소속 | 설명 |
-|------|--------|------|------|
 | `ui-ux-pro-max:ui-ux-pro-max` | UI/UX 설계/구현 요청 시 | ui-ux-pro-max | 50+ 스타일, 161 컬러 팔레트, 57 폰트 페어링 등 디자인 인텔리전스 |
+| `ui-ux-pro-max:ckm:ui-styling` | shadcn/ui·Tailwind UI 스타일링 시 | ui-ux-pro-max | shadcn/ui + Tailwind 기반 UI 컴포넌트/테마/다크모드 구현 |
 | `ui-ux-pro-max:ckm:design` | 로고/CIP/슬라이드/배너/아이콘 등 디자인 요청 시 | ui-ux-pro-max | 통합 디자인 스킬 (로고 55스타일, CIP 50종, 배너 22스타일, 아이콘 15스타일 등) |
 | `ui-ux-pro-max:ckm:brand` | 브랜드 보이스/아이덴티티 작업 시 | ui-ux-pro-max | 브랜드 보이스·비주얼 아이덴티티·메시징 프레임워크 |
 | `ui-ux-pro-max:ckm:design-system` | 디자인 토큰/시스템 구축 시 | ui-ux-pro-max | 3계층 토큰 아키텍처, 컴포넌트 스펙, 전략적 슬라이드 |
