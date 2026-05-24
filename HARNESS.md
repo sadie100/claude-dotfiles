@@ -159,12 +159,6 @@
 | `document-skills:frontend-design` | 웹 컴포넌트/페이지 빌드 요청 시 | document-skills | 동일 계열의 frontend-design 스킬 (document-skills 마켓플레이스 버전) |
 | `document-skills:web-artifacts-builder` | 복잡한 HTML 아티팩트 빌드 시 | document-skills | React/Tailwind/shadcn 기반 다중 컴포넌트 아티팩트 |
 | `ui-ux-pro-max:ui-ux-pro-max` | UI/UX 설계/구현 요청 시 | ui-ux-pro-max | 50+ 스타일, 161 컬러 팔레트, 57 폰트 페어링 등 디자인 인텔리전스 |
-| `ui-ux-pro-max:ckm:ui-styling` | shadcn/ui·Tailwind UI 스타일링 시 | ui-ux-pro-max | shadcn/ui + Tailwind 기반 UI 컴포넌트/테마/다크모드 구현 |
-| `ui-ux-pro-max:ckm:design` | 로고/CIP/슬라이드/배너/아이콘 등 디자인 요청 시 | ui-ux-pro-max | 통합 디자인 스킬 (로고 55스타일, CIP 50종, 배너 22스타일, 아이콘 15스타일 등) |
-| `ui-ux-pro-max:ckm:brand` | 브랜드 보이스/아이덴티티 작업 시 | ui-ux-pro-max | 브랜드 보이스·비주얼 아이덴티티·메시징 프레임워크 |
-| `ui-ux-pro-max:ckm:design-system` | 디자인 토큰/시스템 구축 시 | ui-ux-pro-max | 3계층 토큰 아키텍처, 컴포넌트 스펙, 전략적 슬라이드 |
-| `ui-ux-pro-max:ckm:banner-design` | 배너 디자인 요청 시 | ui-ux-pro-max | SNS·광고·웹 히어로·인쇄용 배너 (다양한 아트 디렉션) |
-| `ui-ux-pro-max:ckm:slides` | 전략적 HTML 프레젠테이션 요청 시 | ui-ux-pro-max | Chart.js·디자인 토큰 기반 HTML 슬라이드 생성 |
 | `document-skills:theme-factory` | 아티팩트 테마 적용 요청 시 | document-skills | 슬라이드/문서/HTML 아티팩트에 사전 정의된 테마 적용 |
 | `document-skills:brand-guidelines` | 브랜드 가이드 적용 요청 시 | document-skills | Anthropic 공식 브랜드 색상/타이포 적용 |
 | `document-skills:canvas-design` | 포스터/시각 아트 생성 요청 시 | document-skills | .png/.pdf 기반 비주얼 아트 생성 |

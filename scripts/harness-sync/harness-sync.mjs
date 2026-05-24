@@ -368,7 +368,7 @@ __PAYLOAD__
 5. **검증·완료** — 변경이 실제로 동작하는지 확인, 완료 직전 게이트, 리뷰 요청·수신·머지. 예: validate-ui, verify, run, verification-before-completion, webapp-testing, chrome-devtools-mcp:chrome-devtools, chrome-devtools-cli, requesting-code-review, receiving-code-review, finishing-a-development-branch.
 6. **코드 리뷰·리팩토링** — diff/PR 검토, 구조 개선, 컴포넌트 API/성능 패턴 적용. 예: review, code-review:code-review, code-review, security-review, simplify, web-design-guidelines, vercel-composition-patterns, vercel-react-best-practices, vercel-react-view-transitions, improve-codebase-architecture, zoom-out.
 7. **문서화 (코드→문서)** — 코드/대화에서 산출물 문서 생성. 예: write-app-spec, write-nestjs-spec, handoff, document-skills:doc-coauthoring, internal-comms.
-8. **디자인·UI 생성** — 프론트엔드 UI 빌드 + 디자인 시스템/브랜드/시각물 산출물 생성. 예: frontend-design:frontend-design, document-skills:frontend-design, document-skills:web-artifacts-builder, ui-ux-pro-max:ui-ux-pro-max, ui-ux-pro-max:ckm:ui-styling, ckm:design, ckm:brand, ckm:design-system, ckm:banner-design, ckm:slides, document-skills:theme-factory, brand-guidelines, canvas-design, algorithmic-art, slack-gif-creator.
+8. **디자인·UI 생성** — 프론트엔드 UI 빌드 + 디자인 시스템/브랜드/시각물 산출물 생성. 예: frontend-design:frontend-design, document-skills:frontend-design, document-skills:web-artifacts-builder, ui-ux-pro-max:ui-ux-pro-max, document-skills:theme-factory, brand-guidelines, canvas-design, algorithmic-art, slack-gif-creator.
 9. **오피스 문서 생성** — docx/pptx/xlsx/pdf 파일 생성·편집.
 10. **외부 도구 연동** — Slack / Notion / Atlassian. 서브헤더 \`#### Slack\`, \`#### Notion\`, \`#### Atlassian (Jira/Confluence)\`로 구분. Notion:tasks:* 도 여기 포함.
 11. **Claude API·MCP 빌드** — Anthropic SDK·MCP 서버 구축. 예: claude-api, document-skills:claude-api, mcp-builder.
