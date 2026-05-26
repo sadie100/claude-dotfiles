@@ -20,9 +20,12 @@
       "mcp__plugin_context7",
       "mcp__plugin_context7_*",
       "mcp__context7",
-      "mcp__aws-knowledge"
+      "mcp__aws-knowledge",
+      "mcp__plugin_playwright_playwright__browser_console_messages"
     ],
-    "deny": ["Write(./node_modules/**)"],
+    "deny": [
+      "Write(./node_modules/**)"
+    ],
     "ask": [
       "Write(./.env)",
       "Bash(* deploy *)",
