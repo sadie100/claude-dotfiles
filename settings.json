@@ -19,7 +19,9 @@
       "mcp__plugin_context7",
       "mcp__aws-knowledge"
     ],
-    "deny": ["Write(./node_modules/**)"],
+    "deny": [
+      "Write(./node_modules/**)"
+    ],
     "ask": [
       "Write(./.env)",
       "Bash(* deploy *)",
@@ -30,7 +32,7 @@
       "Bash(npm install *)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "haiku",
   "hooks": {
     "ConfigChange": [
       {
