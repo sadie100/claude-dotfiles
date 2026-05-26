@@ -21,7 +21,8 @@
       "mcp__plugin_context7_*",
       "mcp__context7",
       "mcp__aws-knowledge",
-      "mcp__plugin_playwright_playwright__browser_console_messages"
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "mcp__plugin_playwright_playwright__browser_close"
     ],
     "deny": [
       "Write(./node_modules/**)"
