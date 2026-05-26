@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 4d1956ad77c9bb7f98bbf97b445e7e1a2fe27e762765a22a06f86e4fda2dc74a -->
+<!-- harness-sync-fingerprint: fc0590236949ccfd72d68f8f916ccff56c86db078e909664ae5c2e33d622e6ba -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -257,6 +257,23 @@
 | `Notification` | `node "$DOTCLAUDE_DIR/scripts/hooks/notify.mjs"` | ❌ (sync) | Claude Code 알림 발생 시 notify.mjs 실행 |
 | `PostToolUse` | `jq -r '.tool_input.file_path' \| xargs npx prettier --write` | ❌ (sync) | 파일 수정 후 prettier로 자동 포맷팅 |
 <!-- AUTO:END hooks -->
+
+---
+
+## MCP 서버 (MCP Servers)
+
+User-scope MCP 서버([`mcp-servers.json`](mcp-servers.json))와 활성 플러그인이 번들한 MCP 서버를 통합한 목록입니다.
+
+<!-- AUTO:BEGIN mcps -->
+| 서버 | 타입 | 엔드포인트 | 설명 |
+|------|------|------------|------|
+| `aws-knowledge` | http | `https://knowledge-mcp.global.api.aws` | AWS 공식 문서/지식 베이스 조회 |
+| `context7` | stdio | `npx -y @upstash/context7-mcp` | 라이브러리/프레임워크 최신 문서 조회 (context7 플러그인 번들) |
+| `playwright` | stdio | `npx @playwright/mcp@latest` | 브라우저 자동화 및 E2E 테스트 (playwright 플러그인 번들) |
+| `atlassian` | (번들) | — | Jira/Confluence 연동 (atlassian 플러그인 번들) |
+| `notion` | (번들) | — | Notion 워크스페이스 연동 (notion 플러그인 번들) |
+| `slack` | (번들) | — | Slack 워크스페이스 연동 (slack 플러그인 번들) |
+<!-- AUTO:END mcps -->
 
 ---
 

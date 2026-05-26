@@ -25,10 +25,11 @@ const PLUGIN_CACHE = join(PLUGINS_ROOT, "cache");
 const MARKETPLACES_DIR = join(PLUGINS_ROOT, "marketplaces");
 const HARNESS_PATH = join(REPO_ROOT, "HARNESS.md");
 const SETTINGS_PATH = join(REPO_ROOT, "settings.json");
+const MCP_SERVERS_PATH = join(REPO_ROOT, "mcp-servers.json");
 const GLOBAL_CLAUDE_MD = join(homedir(), ".claude", "CLAUDE.md");
 
 const FORCE = process.argv.includes("--force");
-const SECTION_IDS = ["plugins", "skills", "hooks"];
+const SECTION_IDS = ["plugins", "skills", "hooks", "mcps"];
 const LOCK_FILE = join(REPO_ROOT, ".git", "harness-sync.lock");
 const DIRTY_FILE = join(REPO_ROOT, ".git", "harness-sync.dirty");
 
@@ -140,11 +141,12 @@ function stableStringify(value) {
   return "{" + keys.map((k) => JSON.stringify(k) + ":" + stableStringify(value[k])).join(",") + "}";
 }
 
-function computeFingerprint(settings, localSkills) {
+function computeFingerprint(settings, localSkills, userMcps) {
   const payload = {
     enabledPlugins: settings.enabledPlugins ?? {},
     hooks: settings.hooks ?? {},
     localSkills: [...localSkills].sort((a, b) => a.name.localeCompare(b.name)),
+    userMcps: userMcps ?? {},
   };
   return createHash("sha256").update(stableStringify(payload)).digest("hex");
 }
@@ -300,6 +302,20 @@ function collectLocalSkills() {
   return out;
 }
 
+function collectUserMcps() {
+  const data = readJsonSafe(MCP_SERVERS_PATH);
+  const servers = data?.mcpServers && typeof data.mcpServers === "object" ? data.mcpServers : {};
+  const out = {};
+  for (const [name, cfg] of Object.entries(servers)) {
+    out[name] = {
+      type: cfg?.type ?? (cfg?.command ? "stdio" : ""),
+      command: cfg?.command ? `${cfg.command} ${(cfg.args ?? []).join(" ")}`.trim() : "",
+      url: cfg?.url ?? "",
+    };
+  }
+  return out;
+}
+
 function collectRepoHooks(settings) {
   const out = [];
   for (const [event, groups] of Object.entries(settings.hooks ?? {})) {
@@ -338,6 +354,7 @@ __PAYLOAD__
    - \`<!-- AUTO:BEGIN plugins -->\` ... \`<!-- AUTO:END plugins -->\`
    - \`<!-- AUTO:BEGIN skills -->\` ... \`<!-- AUTO:END skills -->\`
    - \`<!-- AUTO:BEGIN hooks -->\` ... \`<!-- AUTO:END hooks -->\`
+   - \`<!-- AUTO:BEGIN mcps -->\` ... \`<!-- AUTO:END mcps -->\`
 3. 최상단의 \`<!-- harness-sync-fingerprint: ... -->\` 주석을 새 값(__FINGERPRINT__)으로 갱신.
 4. 모든 마커(BEGIN/END 쌍)는 그대로 유지. 한 줄도 빠뜨리면 안 됨.
 
@@ -357,6 +374,7 @@ __PAYLOAD__
   - 트리거: 슬래시 커맨드면 \`\\\`/name\\\`\`, 아니면 "<상황> 시" 형태.
   - 비활성 플러그인의 스킬은 제외.
 - **훅 섹션**: 표 (이벤트 / 실행 명령 / 비동기 / 설명). 설명은 명령에서 추론한 1줄 한글.
+- **MCP 섹션**: 표 (서버 / 타입 / 엔드포인트 / 설명). 입력은 \`userMcps\` (user-scope, \`mcp-servers.json\`)와 \`plugins[].mcps\` (플러그인 번들). 두 출처를 한 표에 합치되 비활성 플러그인 MCP는 제외. 엔드포인트는 \`url\` 우선, 없으면 \`command\`. 설명은 서버 이름에서 1줄 한글로 의역.
 
 ## 스킬 reference 카테고리 (13종, 이 순서대로)
 사이클 흐름순. 각 카테고리의 정체성을 기준으로 신규/기존 스킬을 배치한다.
@@ -497,7 +515,8 @@ function main() {
   }
 
   const localSkills = collectLocalSkills();
-  const newFingerprint = computeFingerprint(settings, localSkills);
+  const userMcps = collectUserMcps();
+  const newFingerprint = computeFingerprint(settings, localSkills, userMcps);
   const oldFingerprint = readStoredFingerprint(harnessBefore);
 
   if (!FORCE && newFingerprint === oldFingerprint) {
@@ -531,6 +550,7 @@ function main() {
     extraKnownMarketplaces: settings.extraKnownMarketplaces ?? {},
     plugins,
     localSkills,
+    userMcps,
     repoHooks: collectRepoHooks(settings),
     globalInstructions: readTextSafe(GLOBAL_CLAUDE_MD) ?? "",
   };

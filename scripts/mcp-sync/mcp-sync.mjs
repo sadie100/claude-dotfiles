@@ -12,6 +12,7 @@ import { readFileSync, writeFileSync, renameSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { homedir } from "node:os";
+import { spawnSync } from "node:child_process";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_DIR = join(SCRIPT_DIR, "..", "..");
@@ -148,13 +149,21 @@ function cmdSync() {
   );
 }
 
+function runHarnessSync() {
+  const script = join(SCRIPT_DIR, "..", "harness-sync", "harness-sync.mjs");
+  if (!existsSync(script)) return;
+  spawnSync("node", [script], { stdio: "inherit" });
+}
+
 const cmd = process.argv[2];
 switch (cmd) {
   case "pull":
     cmdPull();
+    runHarnessSync();
     break;
   case "sync":
     cmdSync();
+    runHarnessSync();
     break;
   default:
     console.error("Usage: mcp-sync.mjs <pull|sync>");

@@ -1,6 +1,6 @@
 # harness-sync
 
-`HARNESS.md`의 자동 관리 섹션(플러그인 / 스킬 / 훅)을 `settings.json` + Claude Code 플러그인 캐시에서 추출한 데이터로 갱신하는 스크립트.
+`HARNESS.md`의 자동 관리 섹션(플러그인 / 스킬 / 훅 / MCP)을 `settings.json` + `mcp-servers.json` + Claude Code 플러그인 캐시에서 추출한 데이터로 갱신하는 스크립트.
 
 데이터 수집은 결정적 Node 코드, 마크다운 렌더링은 `claude -p`(headless LLM) 가 담당하는 하이브리드 구조.
 
@@ -44,7 +44,7 @@ node scripts/harness-sync/harness-sync.mjs --force
 
 ## 동작
 
-1. **fingerprint 계산**: `sha256({enabledPlugins, hooks, localSkills})` (정렬된 키)
+1. **fingerprint 계산**: `sha256({enabledPlugins, hooks, localSkills, userMcps})` (정렬된 키)
 2. **fingerprint 비교**: `HARNESS.md` 최상단 `<!-- harness-sync-fingerprint: <hex> -->` 와 일치하면 즉시 exit (수십 ms, 비용 0). `--force`면 건너뜀
 3. **데이터 수집** (`~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/`에서, 버전 디렉토리는 mtime 최신):
    - `.claude-plugin/plugin.json` — name / description / version
@@ -55,6 +55,7 @@ node scripts/harness-sync/harness-sync.mjs --force
    - `hooks/hooks.json` — 플러그인 자체 훅
    - 마켓플레이스 manifest (plugin.json 누락 시 fallback)
    - 레포 로컬 `skills/*/SKILL.md`
+   - 레포 `mcp-servers.json` — user-scope MCP 서버
    - `settings.json.hooks`
 4. **JSON 페이로드 직렬화** + 작성 가이드라인 prompt 구성
 5. **`claude -p` spawn**:
@@ -65,7 +66,7 @@ node scripts/harness-sync/harness-sync.mjs --force
             --add-dir <repo>
    ```
    `claude`가 markered 구역(`<!-- AUTO:BEGIN <id> -->` … `<!-- AUTO:END <id> -->`)만 Edit
-6. **sanity check**: 마커 4쌍 무결성 확인 → 깨졌으면 롤백
+6. **sanity check**: 모든 마커 쌍 무결성 확인 → 깨졌으면 롤백
 7. **fingerprint 주석 갱신** (claude가 빠뜨려도 스크립트가 안전망으로 덮어씀)
 
 ## 마커
@@ -75,6 +76,7 @@ node scripts/harness-sync/harness-sync.mjs --force
 - `<!-- AUTO:BEGIN plugins -->` … `<!-- AUTO:END plugins -->`
 - `<!-- AUTO:BEGIN skills -->` … `<!-- AUTO:END skills -->`
 - `<!-- AUTO:BEGIN hooks -->` … `<!-- AUTO:END hooks -->`
+- `<!-- AUTO:BEGIN mcps -->` … `<!-- AUTO:END mcps -->`
 
 ## 환경변수
 
@@ -100,7 +102,7 @@ node scripts/harness-sync/harness-sync.mjs --force
 ## 엣지 케이스
 
 - **`claude` CLI 미설치/PATH 누락**: spawn 실패 → stderr 메시지 후 silent exit. HARNESS.md 보존
-- **`claude -p`가 마커를 깨뜨림**: 실행 후 마커 4쌍 sanity check, 실패 시 원본으로 롤백
+- **`claude -p`가 마커를 깨뜨림**: 실행 후 모든 마커 쌍 sanity check, 실패 시 원본으로 롤백
 - **fingerprint 주석이 없는 첫 실행**: 빈 hex로 간주 → 무조건 호출
 - **여러 버전 디렉토리 공존**: mtime 최신 선택
 - **권한 프롬프트**: `--permission-mode acceptEdits` + `--allowed-tools` 명시로 우회
