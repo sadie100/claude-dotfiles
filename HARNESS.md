@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: fc0590236949ccfd72d68f8f916ccff56c86db078e909664ae5c2e33d622e6ba -->
+<!-- harness-sync-fingerprint: e685c1a2edcdab76a0e80ac849c485b1946490e0e85a63ac9da16e0b8d4412b8 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -24,6 +24,7 @@
 | `frontend-design` | ✅ 활성 | 프로덕션급 프론트엔드 UI 생성 |
 | `typescript-lsp` | ✅ 활성 | TypeScript 언어 서버 지원 |
 | `playwright` | ✅ 활성 | 브라우저 자동화 및 테스트 |
+| `chrome-devtools-mcp` | ✅ 활성 | Chrome 브라우저 제어/검사 MCP (공식 마켓플레이스 버전) |
 | `superpowers` | ✅ 활성 | 확장 기능 모음 |
 | `security-guidance` | ✅ 활성 | 보안 가이드라인 제공 |
 | `claude-md-management` | ✅ 활성 | CLAUDE.md 파일 관리/개선 |
@@ -165,6 +166,12 @@
 | `document-skills:canvas-design` | 포스터/시각 아트 생성 요청 시 | document-skills | .png/.pdf 기반 비주얼 아트 생성 |
 | `document-skills:algorithmic-art` | 알고리즈믹 아트 요청 시 | document-skills | p5.js 기반 제너러티브 아트 생성 |
 | `document-skills:slack-gif-creator` | Slack용 GIF 생성 요청 시 | document-skills | Slack 최적화 애니메이션 GIF 생성 |
+| `ui-ux-pro-max:ckm:design` | 로고/CIP/슬라이드/배너/아이콘 등 종합 디자인 요청 시 | ui-ux-pro-max | 브랜드 아이덴티티·디자인 토큰·UI 스타일링·로고·CIP·HTML 슬라이드·배너·아이콘·소셜 이미지 통합 디자인 |
+| `ui-ux-pro-max:ckm:design-system` | 디자인 토큰/시스템 구축 요청 시 | ui-ux-pro-max | 3계층 토큰(primitive→semantic→component), 컴포넌트 스펙, 전략적 슬라이드 생성 |
+| `ui-ux-pro-max:ckm:ui-styling` | shadcn/ui + Tailwind UI 구현 시 | ui-ux-pro-max | shadcn/ui·Tailwind 기반 접근성 UI 및 캔버스 비주얼 디자인 |
+| `ui-ux-pro-max:ckm:brand` | 브랜드 보이스/가이드 작성 시 | ui-ux-pro-max | 브랜드 보이스·비주얼 아이덴티티·메시징 프레임워크·자산 일관성 |
+| `ui-ux-pro-max:ckm:banner-design` | 소셜/광고/웹 배너 디자인 시 | ui-ux-pro-max | 소셜미디어·광고·웹 히어로·인쇄용 배너를 다양한 아트 디렉션으로 생성 |
+| `ui-ux-pro-max:ckm:slides` | 전략적 HTML 프레젠테이션 생성 시 | ui-ux-pro-max | Chart.js·디자인 토큰·카피라이팅 공식 기반 반응형 HTML 슬라이드 |
 
 ### 오피스 문서 생성
 
