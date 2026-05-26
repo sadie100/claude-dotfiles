@@ -32,7 +32,7 @@
       "Bash(npm install *)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "hooks": {
     "ConfigChange": [
       {
