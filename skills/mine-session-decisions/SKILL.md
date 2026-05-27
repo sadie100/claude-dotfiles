@@ -1,6 +1,6 @@
 ---
 name: mine-session-decisions
-description: Mine past Claude Code sessions in this project to surface design decisions, requirement interpretations, and assumptions that should be captured in project docs (README, ADR, retrospective). Extracts user-only messages from session .jsonl files, anchors them to git commits, and produces a categorized candidate list with quotes — the user picks which ones become docs. Use whenever the user asks to recover or extract decisions/assumptions from past sessions ("세션에서 결정 뽑아줘", "이전 대화에서 의사결정 정리해줘", "/mine-session-decisions"). Also offer this skill proactively when the user is filling a "Design Decisions" / "요구사항 해석" / "가정" / "Why we chose" / ADR-style section of a doc and would benefit from past-session context.
+description: Mine past Claude Code sessions in this project to recover design decisions, requirement interpretations, and assumptions, then write them into the target doc (README, ADR, retrospective). Extracts user-only messages from session .jsonl files, anchors them to git commits, presents a categorized candidate list for the user to pick from, and writes the selected items into the doc in the doc's existing tone. Use whenever the user asks to recover or document decisions/assumptions from past sessions ("세션에서 결정 뽑아줘", "이전 대화에서 의사결정 정리해서 README에 넣어줘", "/mine-session-decisions"). Also offer this skill proactively when the user is filling a "Design Decisions" / "요구사항 해석" / "가정" / "Why we chose" / ADR-style section of a doc and would benefit from past-session context.
 ---
 
 # Mine Session Decisions
@@ -92,13 +92,29 @@ Ask the subagent for ~5-10 candidates per category and to drop weak ones rather 
 
 ### 5. Present to the user for selection
 
-Surface the candidate list as-is (don't pre-filter beyond what the subagent did). Let the user pick, drop, merge, or ask for more context on specific candidates before any doc gets edited.
+Surface the candidate list as-is (don't pre-filter beyond what the subagent did). Let the user pick, drop, merge, or ask for more context on specific candidates before anything gets written.
 
-Stop here unless the user explicitly asks for the next step (drafting doc text). This skill's scope ends at the curated candidate list — what to do with it is the user's call.
+If the doc has obviously dependent decisions (e.g., the user added a candidate that needs a new doc section to live in), surface that branch one question at a time rather than guessing.
+
+### 6. Write the selected candidates into the doc
+
+Before writing, **read 1-2 existing entries** in the target doc to lock in tone. The decisions live alongside whatever's already there, so they need to blend — a section that suddenly switches voice, length, or formatting reads like it was bolted on.
+
+Tone things to mirror:
+- Heading depth (e.g., `###` vs `####`)
+- Opening sentence shape — direct statement of the decision, or a question, or a context paragraph first?
+- Bullet style — bare bullets, bold lead-ins, or prose paragraphs?
+- Whether trade-offs sit in their own paragraph at the end or are inlined
+- Length per entry — match the existing entries' depth roughly, don't write twice as long
+
+**Important: write as prose, not as quoted dialogue.** The quotes captured in step 4 are *raw material* for your understanding, not the final form. A README entry should sound like "we chose X because Y", not like "the developer said 'let's do X'". The reader doesn't care that it came from a chat.
+
+After writing, briefly note which sections were touched and offer to trim or re-balance if the new content unbalances the doc.
 
 ## When the standard workflow needs to bend
 
 - **Tiny project, few sessions** — skip the subagent and just read the extracted text yourself.
 - **Sessions don't exist** (script reports "No session dir found") — surface this immediately. There's nothing to mine. Suggest the user manually narrate decisions instead.
 - **Output dir is huge (>2MB after extraction)** — narrow the scope before subagent dispatch: ask the user which date range / feature area matters, then pass only matching files.
-- **The doc has a unique tone** — read 1-2 existing entries before step 4 so the subagent's output style matches what the user will paste into.
+- **The doc has no existing entries to mirror tone from** — propose a tone (compact direct-statement bullets is a safe default) and write one entry as a sample before doing the rest, so the user can redirect early.
+- **The user explicitly asks to stop at the candidate list** — honor that and skip step 6. Save the candidate list as a standalone markdown file the user can act on later.
