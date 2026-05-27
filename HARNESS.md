@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: e685c1a2edcdab76a0e80ac849c485b1946490e0e85a63ac9da16e0b8d4412b8 -->
+<!-- harness-sync-fingerprint: 53996da2d4a810f237b68a16e00da6bb9980436be1315dfdf5a13bf1e5d0c02b -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -149,6 +149,7 @@
 | `write-app-spec` | `/write-app-spec` | custom | 프론트엔드/풀스택 앱의 코드베이스를 분석하여 화면, 라우팅, 핵심 로직, 데이터 모델을 문서화한 SPEC.md 생성 |
 | `write-nestjs-spec` | `/write-nestjs-spec {모듈명}` | custom | NestJS 백엔드 모듈 API 스펙 문서 생성 |
 | `handoff` | 다른 에이전트로 인계 시 | mattpocock/skills | 현재 대화를 핸드오프 문서로 압축 |
+| `mine-session-decisions` | `/mine-session-decisions` | custom | 과거 세션 .jsonl에서 설계 결정·요구사항 해석·가정을 마이닝하여 문서 후보 추출 |
 | `humanizer` | AI 작성 흔적 제거 요청 시 | custom | AI 생성 텍스트의 패턴(과장 상징, 홍보성 문구, em dash 남발 등)을 검출하고 자연스럽게 교정 |
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시 | document-skills | 구조화된 문서/제안서/스펙 공동 작성 워크플로우 |
 | `document-skills:internal-comms` | 사내 커뮤니케이션 작성 요청 시 | document-skills | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성 |
