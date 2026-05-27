@@ -103,9 +103,13 @@ Surface the candidate list as-is (don't pre-filter beyond what the subagent did)
 
 If the doc has obviously dependent decisions (e.g., the user added a candidate that needs a new doc section to live in), surface that branch one question at a time rather than guessing.
 
-### 6. Write the selected candidates into the doc
+### 6. Write the selected candidates to the target
 
-Before writing, **read 1-2 existing entries** in the target doc to lock in tone. The decisions live alongside whatever's already there, so they need to blend — a section that suddenly switches voice, length, or formatting reads like it was bolted on.
+Write to the location captured in step 1 — an existing doc section, a new file, or a scratch markdown file. The writing principles below apply in all three cases; only the destination differs.
+
+If the target is an **existing doc with prior entries**, **read 1-2 of those entries** first to lock in tone. The new content lives alongside whatever's already there, so it needs to blend — a section that suddenly switches voice, length, or formatting reads like it was bolted on.
+
+If the target is a **new file or scratch markdown**, there's nothing to mirror, so pick a tone deliberately. A safe default: `###` headers per item, one direct opening sentence stating the decision, bullets for rationale, trade-off in the final line. Write one sample item first and let the user redirect before doing the rest.
 
 Tone things to mirror:
 - Heading depth (e.g., `###` vs `####`)
