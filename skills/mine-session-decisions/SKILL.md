@@ -127,5 +127,4 @@ After writing, briefly note which sections were touched and offer to trim or re-
 - **Tiny project, few sessions** — skip the subagent and just read the extracted text yourself.
 - **Sessions don't exist** (script reports "No session dir found") — surface this immediately. There's nothing to mine. Suggest the user manually narrate decisions instead.
 - **Output dir is huge (>2MB after extraction)** — narrow the scope before subagent dispatch: ask the user which date range / feature area matters, then pass only matching files.
-- **The doc has no existing entries to mirror tone from** — propose a tone (compact direct-statement bullets is a safe default) and write one entry as a sample before doing the rest, so the user can redirect early.
-- **The user explicitly asks to stop at the candidate list** — honor that and skip step 6. Save the candidate list as a standalone markdown file the user can act on later.
+- **The user explicitly asks to stop at the candidate list** — honor that and skip step 6, or treat the candidate list itself as the deliverable file (still write it to the path they gave).
