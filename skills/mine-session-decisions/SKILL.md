@@ -19,13 +19,20 @@ Keep these in mind when adapting the workflow — for example, don't fall back t
 
 ## Workflow
 
-### 1. Confirm scope with the user
+### 1. Confirm target and scope with the user
 
-Before extracting, briefly confirm:
-- **Target doc/section** — what are they trying to fill? README "Design Decisions"? An ADR? A retrospective? Knowing this lets you tailor the extraction criteria and the final format. If they invoked the skill proactively, this may already be clear from context.
-- **Already-covered ground** — if the doc has existing entries, list them so the extraction step doesn't surface duplicates.
+Before extracting, nail down two things:
 
-Keep this short — one or two lines, not a formal interview.
+- **Target output location** — *where* should the result land? Use `AskUserQuestion` if it isn't already obvious from the request. Three common shapes:
+  - **Existing file + section** — e.g. "README.md의 '설계 결정과 이유' 섹션 뒤에", "docs/adr/0007-foo.md의 Decision 절"
+  - **New file** — e.g. "docs/decisions.md 새로 만들어서"
+  - **A scratch folder** — e.g. "/tmp/extracted-decisions.md, 보고 직접 옮길게"
+
+  If the user is ambiguous, infer from context (an open IDE file with an empty "Design Decisions" section is a strong signal) and confirm in one line before proceeding rather than asking a long-form question. Whatever the target is, remember it — step 6 will write there.
+
+- **Already-covered ground** — if the target file has existing entries in the relevant section, list them briefly so step 4 doesn't surface duplicates.
+
+Keep this short — one or two lines plus an `AskUserQuestion` if needed, not a formal interview.
 
 ### 2. Extract user messages
 
