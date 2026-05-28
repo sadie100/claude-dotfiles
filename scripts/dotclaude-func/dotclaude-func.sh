@@ -17,6 +17,7 @@ function dotclaude() {
       echo "  mcp-sync          ~/.claude.json mcpServers -> repo mcp-servers.json (secrets stripped)"
       echo "  mcp-pull          repo mcp-servers.json -> ~/.claude.json (machine tokens preserved)"
       echo "  open              Open dotfiles directory in file explorer"
+      echo "  code              Open dotfiles directory in editor linked to 'code'"
       echo "  settings [--ed]   Edit settings.json (--vim, --vi, --nano, --code, --notepad)"
       echo "  help, --help, -h  Show this help message"
       echo "  <git-command>     Any other argument is passed to git"
@@ -40,6 +41,13 @@ function dotclaude() {
       else
         xdg-open "$DOTCLAUDE_DIR"
       fi
+      ;;
+    code)
+      if ! command -v code >/dev/null 2>&1; then
+        echo "Error: 'code' command not found in PATH" >&2
+        return 1
+      fi
+      code "$DOTCLAUDE_DIR"
       ;;
     settings)
       local editor="${EDITOR:-vi}"

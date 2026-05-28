@@ -17,6 +17,7 @@
 dotclaude --help      # 도움말 출력
 dotclaude sync        # git add -A + commit + push (한방 동기화)
 dotclaude open        # dotfiles 디렉토리 파일 탐색기로 열기
+dotclaude code        # dotfiles 디렉토리를 code 명령에 연결된 에디터로 열기 (VSCode/Cursor 등)
 dotclaude settings    # settings.json 편집 (--vim, --vi, --nano, --code, --notepad)
 dotclaude <git-cmd>   # 그 외 인자는 모두 git에 패스스루 (status, log, pull 등)
 ```

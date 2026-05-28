@@ -16,6 +16,7 @@ function dotclaude {
         Write-Host "  mcp-sync          ~/.claude.json mcpServers -> repo mcp-servers.json (secrets stripped)"
         Write-Host "  mcp-pull          repo mcp-servers.json -> ~/.claude.json (machine tokens preserved)"
         Write-Host "  open              Open dotfiles directory in file explorer"
+        Write-Host "  code              Open dotfiles directory in editor linked to 'code'"
         Write-Host "  settings [--ed]   Edit settings.json (--vim, --vi, --nano, --code, --notepad)"
         Write-Host "  help, --help, -h  Show this help message"
         Write-Host "  <git-command>     Any other argument is passed to git"
@@ -32,6 +33,12 @@ function dotclaude {
         }
     } elseif ($args[0] -eq 'open') {
         explorer.exe $d
+    } elseif ($args[0] -eq 'code') {
+        if (-not (Get-Command code -ErrorAction SilentlyContinue)) {
+            Write-Host "Error: 'code' command not found in PATH" -ForegroundColor Red
+            return
+        }
+        & code $d
     } elseif ($args[0] -eq 'settings') {
         $editor = if ($env:EDITOR) { $env:EDITOR } else { 'notepad' }
         switch ($args[1]) {
