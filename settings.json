@@ -113,5 +113,6 @@
   },
   "effortLevel": "medium",
   "autoUpdatesChannel": "latest",
-  "plansDirectory": ".claude/plans"
+  "plansDirectory": ".claude/plans",
+  "skipAutoPermissionPrompt": true
 }
