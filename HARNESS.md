@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: ffa6b0f57e79524cf108dd4c3da41433f5a8b4d0f5ba9b6a1f5e5cfb7ae0818e -->
+<!-- harness-sync-fingerprint: fd3f60c1f8f0d9264e3280f1d1c22b6ccb1caa77a9e8dd3420bf22644013977d -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -166,6 +166,7 @@
 | `document-skills:brand-guidelines` | 브랜드 가이드 적용 요청 시 | document-skills | Anthropic 공식 브랜드 색상/타이포 적용 |
 | `document-skills:canvas-design` | 포스터/시각 아트 생성 요청 시 | document-skills | .png/.pdf 기반 비주얼 아트 생성 |
 | `document-skills:algorithmic-art` | 알고리즈믹 아트 요청 시 | document-skills | p5.js 기반 제너러티브 아트 생성 |
+| `excalidraw-diagram` | 워크플로우/아키텍처/개념 시각화 요청 시 | custom | 워크플로우·아키텍처·개념을 시각적으로 설명하는 Excalidraw 다이어그램 JSON 생성 |
 | `document-skills:slack-gif-creator` | Slack용 GIF 생성 요청 시 | document-skills | Slack 최적화 애니메이션 GIF 생성 |
 | `ui-ux-pro-max:ckm:design` | 로고/CIP/슬라이드/배너/아이콘 등 종합 디자인 요청 시 | ui-ux-pro-max | 브랜드 아이덴티티·디자인 토큰·UI 스타일링·로고·CIP·HTML 슬라이드·배너·아이콘·소셜 이미지 통합 디자인 |
 | `ui-ux-pro-max:ckm:design-system` | 디자인 토큰/시스템 구축 요청 시 | ui-ux-pro-max | 3계층 토큰(primitive→semantic→component), 컴포넌트 스펙, 전략적 슬라이드 생성 |
