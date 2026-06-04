@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: fd3f60c1f8f0d9264e3280f1d1c22b6ccb1caa77a9e8dd3420bf22644013977d -->
+<!-- harness-sync-fingerprint: 130de512678f195304008e8cb35a5a7873889e645a217750bcac3d322e2384cd -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -244,6 +244,29 @@
 | `find-skills` | 스킬 검색/설치 요청 시 | custom | 설치 가능한 스킬 발견 |
 | `setup-matt-pocock-skills` | 엔지니어링 스킬 초기 설정 시 | mattpocock/skills | AGENTS.md/CLAUDE.md에 이슈 트래커·트리아지 라벨·도메인 문서 블록 셋업 |
 | `init` | `/init` | built-in | CLAUDE.md 초기 생성 |
+
+### GEO·SEO 분석
+
+AI 검색(ChatGPT, Claude, Perplexity, Gemini, Google AI Overviews) 가시성 최적화 도메인 스킬 모음.
+
+| 스킬 | 트리거 | 소속 | 설명 |
+|------|--------|------|------|
+| `geo` | GEO/SEO/AI 가시성 분석 요청 시 | custom | GEO 우선 SEO 분석 도구. 풀 감사·인용성·크롤러·llms.txt·브랜드 멘션·플랫폼별 최적화 통합 진입점 |
+| `geo-audit` | 전체 GEO+SEO 감사 요청 시 | custom | 병렬 서브에이전트 기반 풀 감사. 합산 GEO Score(0-100) 및 우선순위 액션 플랜 생성 |
+| `geo-citability` | AI 인용 가능성 점수화 요청 시 | custom | 페이지 콘텐츠가 AI에 인용될 가능성을 점수화하고 리라이트 제안 |
+| `geo-brand-mentions` | 브랜드 멘션/권위 분석 요청 시 | custom | AI가 신뢰하는 플랫폼 전반의 브랜드 권위 스캐너 (Brand Authority Score) |
+| `geo-crawlers` | AI 크롤러 접근성 분석 요청 시 | custom | robots.txt/메타/헤더로 AI 크롤러 접근 가능성 매핑 |
+| `geo-llmstxt` | llms.txt 분석/생성 요청 시 | custom | llms.txt 유효성 검사 또는 사이트 크롤로 신규 생성 |
+| `geo-platform-optimizer` | 플랫폼별 AI 검색 최적화 요청 시 | custom | Google AI Overviews·ChatGPT·Perplexity·Gemini·Bing Copilot 개별 최적화 |
+| `geo-content` | E-E-A-T 콘텐츠 품질 평가 요청 시 | custom | Experience/Expertise/Authoritativeness/Trustworthiness 기준 콘텐츠 품질 평가 |
+| `geo-schema` | Schema.org 구조화 데이터 작업 시 | custom | AI 발견성을 위한 JSON-LD 마크업 감사·생성 |
+| `geo-technical` | 테크니컬 SEO 감사 요청 시 | custom | 크롤러빌리티·인덱서빌리티·보안·성능·SSR 등 GEO 특화 테크니컬 감사 |
+| `geo-compare` | 월간 GEO 진행 비교 요청 시 | custom | 베이스라인 vs 현재 감사 델타 추적 및 클라이언트 진행 리포트 |
+| `geo-report` | GEO 클라이언트 리포트 생성 시 | custom | 감사 결과 종합 클라이언트 대상 리포트(점수·발견·우선순위 액션) |
+| `geo-report-pdf` | GEO 리포트 PDF 변환 요청 시 | custom | pandoc + Chrome headless로 GEO-AUDIT-REPORT.md를 스타일 적용 PDF로 변환 |
+| `geo-proposal` | GEO 서비스 제안서 생성 요청 시 | custom | 감사 데이터에서 패키지·가격·일정 포함 클라이언트 제안서 자동 생성 |
+| `geo-prospect` | GEO 프로스펙트/CRM 관리 시 | custom | 리드→Qualified→제안→Won/Lost 파이프라인 CRM |
+| `geo-update` | GEO 스킬 업데이트 요청 시 | custom | 업스트림 레포에서 GEO 스킬·에이전트·스크립트 최신화 |
 
 ### 환경·자동화
 
