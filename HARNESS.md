@@ -142,7 +142,7 @@
 | `improve-codebase-architecture` | 아키텍처 개선/리팩토링 기회 탐색 시 | mattpocock/skills | CONTEXT.md/ADR 기반 deepening 기회 도출 |
 | `zoom-out` | 더 넓은 맥락 요청 시 | mattpocock/skills | 상위 관점에서 코드 구조와 맥락 설명 |
 
-### 문서화 (코드→문서)
+### 문서화·도식화
 
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
@@ -150,6 +150,7 @@
 | `write-nestjs-spec` | `/write-nestjs-spec {모듈명}` | custom | NestJS 백엔드 모듈 API 스펙 문서 생성 |
 | `handoff` | 다른 에이전트로 인계 시 | mattpocock/skills | 현재 대화를 핸드오프 문서로 압축 |
 | `mine-session-decisions` | `/mine-session-decisions` | custom | 과거 세션 .jsonl에서 설계 결정·요구사항 해석·가정을 마이닝하여 문서 후보 추출 |
+| `excalidraw-diagram` | 워크플로우/아키텍처/개념 시각화 요청 시 | custom | 워크플로우·아키텍처·개념을 시각적으로 설명하는 Excalidraw 다이어그램 JSON 생성 |
 | `humanizer` | AI 작성 흔적 제거 요청 시 | custom | AI 생성 텍스트의 패턴(과장 상징, 홍보성 문구, em dash 남발 등)을 검출하고 자연스럽게 교정 |
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시 | document-skills | 구조화된 문서/제안서/스펙 공동 작성 워크플로우 |
 | `document-skills:internal-comms` | 사내 커뮤니케이션 작성 요청 시 | document-skills | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성 |
@@ -166,7 +167,6 @@
 | `document-skills:brand-guidelines` | 브랜드 가이드 적용 요청 시 | document-skills | Anthropic 공식 브랜드 색상/타이포 적용 |
 | `document-skills:canvas-design` | 포스터/시각 아트 생성 요청 시 | document-skills | .png/.pdf 기반 비주얼 아트 생성 |
 | `document-skills:algorithmic-art` | 알고리즈믹 아트 요청 시 | document-skills | p5.js 기반 제너러티브 아트 생성 |
-| `excalidraw-diagram` | 워크플로우/아키텍처/개념 시각화 요청 시 | custom | 워크플로우·아키텍처·개념을 시각적으로 설명하는 Excalidraw 다이어그램 JSON 생성 |
 | `document-skills:slack-gif-creator` | Slack용 GIF 생성 요청 시 | document-skills | Slack 최적화 애니메이션 GIF 생성 |
 | `ui-ux-pro-max:ckm:design` | 로고/CIP/슬라이드/배너/아이콘 등 종합 디자인 요청 시 | ui-ux-pro-max | 브랜드 아이덴티티·디자인 토큰·UI 스타일링·로고·CIP·HTML 슬라이드·배너·아이콘·소셜 이미지 통합 디자인 |
 | `ui-ux-pro-max:ckm:design-system` | 디자인 토큰/시스템 구축 요청 시 | ui-ux-pro-max | 3계층 토큰(primitive→semantic→component), 컴포넌트 스펙, 전략적 슬라이드 생성 |
