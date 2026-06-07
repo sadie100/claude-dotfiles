@@ -13,6 +13,10 @@ allowed-tools: Read, Grep, Glob, Bash, WebFetch, Write
 
 This skill aggregates outputs from all GEO audit skills into a single, professional report that can be delivered directly to a client or stakeholder. The report is written for **business owners and marketing leaders**, not developers — technical findings are translated into business impact and clear action items with priority levels.
 
+## Output Language
+
+**The generated report (GEO-CLIENT-REPORT.md) MUST be written entirely in Korean (한국어).** All prose, section headings, table headers, labels, and recommendations should be in Korean. Keep the following as-is (do not translate): proper nouns and platform/product names (Google AI Overviews, ChatGPT, Perplexity, Gemini, Bing Copilot), file names (`robots.txt`, `sitemap.xml`, `llms.txt`), code identifiers, technical acronyms (GEO, E-E-A-T, SSR, SSG, CWV, LCP, INP, CLS, JSON-LD, sameAs, IndexNow, SERP), and URL paths. The English template below is for structural guidance only — translate all writeable content into natural, professional Korean when producing the report.
+
 ## How to Use This Skill
 
 1. Run the following audits first (or use existing report data):
