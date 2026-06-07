@@ -397,6 +397,7 @@ Be conservative with estimates. State assumptions clearly. Never guarantee speci
 ## Output
 
 Generate **GEO-CLIENT-REPORT.md** using the complete template above, filled with actual audit data. The report should be:
+- **Written entirely in Korean (한국어)** per the Output Language section above
 - 40-80 pages equivalent in detail (3,000-6,000 words)
 - Ready to send to a client without editing
 - Self-contained (no references to other report files — all relevant data is included)
