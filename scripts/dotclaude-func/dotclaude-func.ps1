@@ -18,6 +18,7 @@ function dotclaude {
         Write-Host "  open              Open dotfiles directory in file explorer"
         Write-Host "  code              Open dotfiles directory in editor linked to 'code'"
         Write-Host "  settings [--ed]   Edit settings.json (--vim, --vi, --nano, --code, --notepad)"
+        Write-Host "  unlink            Detach ~/.claude from dotfiles (symlinks -> real copies)"
         Write-Host "  help, --help, -h  Show this help message"
         Write-Host "  <git-command>     Any other argument is passed to git"
     } elseif ($args[0] -eq 'sync') {
@@ -49,6 +50,8 @@ function dotclaude {
             '--notepad' { $editor = 'notepad' }
         }
         & $editor "$d\settings.json"
+    } elseif ($args[0] -eq 'unlink') {
+        & "$d\scripts\unlink\unlink.ps1"
     } else {
         git -C $d @args
     }

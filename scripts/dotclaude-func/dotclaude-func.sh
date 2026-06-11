@@ -19,6 +19,7 @@ function dotclaude() {
       echo "  open              Open dotfiles directory in file explorer"
       echo "  code              Open dotfiles directory in editor linked to 'code'"
       echo "  settings [--ed]   Edit settings.json (--vim, --vi, --nano, --code, --notepad)"
+      echo "  unlink            Detach ~/.claude from dotfiles (symlinks -> real copies)"
       echo "  help, --help, -h  Show this help message"
       echo "  <git-command>     Any other argument is passed to git"
       ;;
@@ -59,6 +60,9 @@ function dotclaude() {
         --notepad) editor="notepad" ;;
       esac
       $editor "$DOTCLAUDE_DIR/settings.json"
+      ;;
+    unlink)
+      "$DOTCLAUDE_DIR/scripts/unlink/unlink.sh"
       ;;
     *)
       git -C "$DOTCLAUDE_DIR" "$@"
