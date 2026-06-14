@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 130de512678f195304008e8cb35a5a7873889e645a217750bcac3d322e2384cd -->
+<!-- harness-sync-fingerprint: ae649b5ca7764816129f774005cde3a2a24ae95975f2981774ac71e0766824a5 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -116,6 +116,7 @@
 | 스킬 | 트리거 | 소속 | 설명 |
 |------|--------|------|------|
 | `validate-ui` | UI 변경 후 검증 요청 시 | custom | Chrome DevTools MCP를 사용한 4계층 검증(A11y Snapshot, Screenshot, DOM Query, Runtime Logs) |
+| `gstack` | QA 테스트/사이트 도그푸딩 시 | custom | 빠른 헤드리스 브라우저로 QA 테스트 및 사이트 도그푸딩 수행 |
 | `verify` | PR/로컬 변경 동작 확인 시 | built-in | 앱을 실행해 코드 변경이 실제 의도대로 동작하는지 검증 |
 | `run` | 앱을 실행해 결과 확인 시 | built-in | 프로젝트 앱을 띄워 변경사항을 실 환경에서 확인 |
 | `superpowers:verification-before-completion` | 완료 선언 직전 | superpowers | 완료/통과 주장 전 검증 명령 실행 |
