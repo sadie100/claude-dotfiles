@@ -440,6 +440,18 @@ function runDotfilesSync() {
   spawnSync("node", [script], { stdio: "inherit" });
 }
 
+// Surface a failure to the user. harness-sync runs from the ConfigChange hook
+// in the background, so stderr goes nowhere visible — reuse the same native
+// desktop notification the Notification hook uses so failures aren't silent.
+function notifyUser(message) {
+  try {
+    const notify = join(REPO_ROOT, "scripts", "hooks", "notify.mjs");
+    spawnSync("node", [notify], { input: JSON.stringify({ message }), encoding: "utf8" });
+  } catch {
+    /* best-effort: never let a failed notification break the sync */
+  }
+}
+
 // ---------- concurrency: lock + dirty flag + rerun loop ----------
 
 function isProcessAlive(pid) {
@@ -557,7 +569,10 @@ function main() {
 
   const prompt = buildPrompt(payload, newFingerprint);
   const ok = runClaude(prompt);
-  if (!ok) return;
+  if (!ok) {
+    notifyUser("harness-sync: HARNESS.md 자동 갱신 실패 (claude 실행 오류). 직접 확인 필요.");
+    return;
+  }
 
   const harnessAfter = readTextSafe(HARNESS_PATH);
   if (harnessAfter == null) {
@@ -567,8 +582,31 @@ function main() {
   if (!sanityCheckMarkers(harnessAfter)) {
     writeFileSync(HARNESS_PATH, harnessBefore, "utf8");
     process.stderr.write(`harness-sync: rolled back HARNESS.md due to marker damage\n`);
+    notifyUser("harness-sync: HARNESS.md 마커 손상으로 롤백됨. 직접 확인 필요.");
     return;
   }
+  // Coverage check: if claude dropped any local skill from the skills section,
+  // notify the user so the drop isn't silent — but still advance the fingerprint
+  // and commit. Holding it would re-run claude on every config change (wasteful
+  // loop); a one-shot notification is enough. The user fixes the table by hand,
+  // and since that edit leaves the skill set unchanged the fingerprint stays put
+  // and their fix is preserved.
+  const skillsSection = harnessAfter.slice(
+    harnessAfter.indexOf("<!-- AUTO:BEGIN skills -->"),
+    harnessAfter.indexOf("<!-- AUTO:END skills -->"),
+  );
+  const missingSkills = [...new Set(localSkills.map((s) => s.name))].filter(
+    (name) => !skillsSection.includes(`\`${name}\``),
+  );
+  if (missingSkills.length) {
+    const preview = missingSkills.slice(0, 5).join(", ") + (missingSkills.length > 5 ? " …" : "");
+    process.stderr.write(
+      `harness-sync: ${missingSkills.length} skill(s) missing from HARNESS.md skills section: ` +
+        `${missingSkills.join(", ")}\n`,
+    );
+    notifyUser(`harness-sync: HARNESS.md에서 스킬 ${missingSkills.length}개 누락 (${preview}). 직접 확인 필요.`);
+  }
+
   // Ensure fingerprint comment is in sync even if claude forgot to update it.
   const stored = readStoredFingerprint(harnessAfter);
   if (stored !== newFingerprint) {
