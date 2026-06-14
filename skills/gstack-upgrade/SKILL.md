@@ -1,0 +1,1 @@
+/Users/sadie/claude-dotfiles/skills/gstack/gstack-upgrade/SKILL.md
