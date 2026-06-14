@@ -13,7 +13,7 @@ function dotclaude() {
       echo ""
       echo "Commands:"
       echo "  sync              Sync dotfiles (git add, commit, push)"
-      echo "  pull              git pull + apply repo's mcp-servers.json to ~/.claude.json"
+      echo "  pull              git pull --rebase --autostash + apply repo's mcp-servers.json to ~/.claude.json"
       echo "  mcp-sync          ~/.claude.json mcpServers -> repo mcp-servers.json (secrets stripped)"
       echo "  mcp-pull          repo mcp-servers.json -> ~/.claude.json (machine tokens preserved)"
       echo "  open              Open dotfiles directory in file explorer"
@@ -33,7 +33,10 @@ function dotclaude() {
       node "$DOTCLAUDE_DIR/scripts/mcp-sync/mcp-sync.mjs" pull
       ;;
     pull)
-      git -C "$DOTCLAUDE_DIR" pull "${@:2}" \
+      # --rebase: replay local commits on top of remote (cleanly absorbs
+      #   force-pushed history rewrites; old commits drop as empty).
+      # --autostash: don't choke on uncommitted working-tree changes.
+      git -C "$DOTCLAUDE_DIR" pull --rebase --autostash "${@:2}" \
         && node "$DOTCLAUDE_DIR/scripts/mcp-sync/mcp-sync.mjs" pull
       ;;
     open)
