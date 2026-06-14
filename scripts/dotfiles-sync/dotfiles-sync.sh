@@ -26,8 +26,14 @@ CHANGED=$(git diff --cached --name-only | tr '\n' ', ' | sed 's/,$//')
 git commit -m "sync: ${CHANGED}" --no-gpg-sign 2>/dev/null || exit 0
 
 # Push with pull-rebase retry on conflict
-if ! git push origin "$(git branch --show-current)" 2>/dev/null; then
-  git pull --rebase origin "$(git branch --show-current)" 2>/dev/null \
-    && git push origin "$(git branch --show-current)" 2>/dev/null \
-    || true  # silently fail if offline or unresolvable conflict
+BRANCH="$(git branch --show-current)"
+if ! git push origin "$BRANCH" 2>/dev/null; then
+  # Non-interactive editors so the rebase can never pause waiting for input.
+  if GIT_EDITOR=true GIT_SEQUENCE_EDITOR=true \
+       git pull --rebase origin "$BRANCH" 2>/dev/null; then
+    git push origin "$BRANCH" 2>/dev/null || true  # offline: retry next sync
+  else
+    # Real conflict: abort so we never leave a half-finished rebase behind.
+    git rebase --abort 2>/dev/null || true
+  fi
 fi

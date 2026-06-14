@@ -36,8 +36,16 @@ try {
     $branch = git branch --show-current
     git push origin $branch 2>$null
     if ($LASTEXITCODE -ne 0) {
+        # Non-interactive editors so the rebase can never pause waiting for input.
+        $env:GIT_EDITOR = "true"
+        $env:GIT_SEQUENCE_EDITOR = "true"
         git pull --rebase origin $branch 2>$null
-        git push origin $branch 2>$null
+        if ($LASTEXITCODE -eq 0) {
+            git push origin $branch 2>$null  # offline: retry next sync
+        } else {
+            # Real conflict: abort so we never leave a half-finished rebase behind.
+            git rebase --abort 2>$null
+        }
     }
 } finally {
     if ($mutex) {
