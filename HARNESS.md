@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 6becb39b36e097eec7edc52833f10c000e8747ce6756d44a034baf495c6afd02 -->
+<!-- harness-sync-fingerprint: 65e41ef08c5ee4c9731e2c4fb9b10d420197e99f250256dfac1d3f47ace8effa -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -82,7 +82,6 @@
 | `design-an-interface` | 모듈 API 디자인 비교 탐색 시 | mattpocock/skills | 병렬 서브에이전트로 동일 모듈의 급진적으로 다른 인터페이스 설계 다수 생성 |
 | `domain-modeling` | 도메인 용어/유비쿼터스 언어 정리 시 | mattpocock/skills | DDD 도메인 모델 구축·ADR 기록·도메인 모델 유지 |
 | `ubiquitous-language` | 도메인 용어집 작성 시 | mattpocock/skills | 대화에서 DDD 유비쿼터스 언어 추출·UBIQUITOUS_LANGUAGE.md 저장 |
-| `decision-mapping` | 느슨한 아이디어 → 조사 티켓 시퀀싱 시 | mattpocock/skills | 느슨한 아이디어를 순차적 조사 티켓 맵으로 변환 후 하나씩 해소 |
 | `to-issues` | 계획/스펙/PRD → 이슈 분해 시 | mattpocock/skills | 트레이서 불릿 버티컬 슬라이스 기준으로 독립 실행 가능한 이슈로 분해 |
 | `request-refactor-plan` | 리팩토링 RFC 작성 요청 시 | mattpocock/skills | 인터뷰 기반 작은 커밋 단위 리팩토링 계획 작성 후 GitHub 이슈로 등록 |
 | `spec` | `/spec` | gstack | 모호한 의도 → 5단계로 정밀 실행 가능한 스펙 작성 |
