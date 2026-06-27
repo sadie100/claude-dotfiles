@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 1ebc03c2f67fab007b04ab3e98402b5721ac759bd3c45e6b79b9f3b30412dae4 -->
+<!-- harness-sync-fingerprint: d1b1a1f65f455a8f3aa21f4b6c20cee5c1039c204c9d4ae8c1d873abdbabfbec -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -77,7 +77,6 @@
 | `grill-me` | 계획/설계 검증 요청 시 | mattpocock/skills | 계획·설계를 결정 트리 단위로 끝까지 질의하며 검증 |
 | `grill-with-docs` | 도메인 문서 기반 계획 검증 시 | mattpocock/skills | CONTEXT.md/ADR 기반으로 계획을 검증하고 문서 인라인 갱신 |
 | `grilling` | 계획/설계 스트레스 테스트 시 | mattpocock/skills | 'grill' 트리거 구문 기반 인터뷰형 계획 검증 |
-| `loop-me` | 워크스페이스 워크플로우 스펙 그릴링 시 | mattpocock/skills | 빌드하려는 워크플로우 스펙을 반복 인터뷰로 정리 |
 | `codebase-design` | 모듈 인터페이스 설계/개선 시 | mattpocock/skills | deep module 설계 공용 어휘 — 심화 기회 식별·심층 모듈 결정 보조 |
 | `design-an-interface` | 모듈 API 디자인 비교 탐색 시 | mattpocock/skills | 병렬 서브에이전트로 동일 모듈의 급진적으로 다른 인터페이스 설계 다수 생성 |
 | `domain-modeling` | 도메인 용어/유비쿼터스 언어 정리 시 | mattpocock/skills | DDD 도메인 모델 구축·ADR 기록·도메인 모델 유지 |
@@ -189,9 +188,6 @@
 | `make-pdf` | `/make-pdf` | gstack | 마크다운 파일 → 출판 품질 PDF |
 | `edit-article` | 아티클 편집/개선 요청 시 | mattpocock/skills | 섹션 재구성·명확성 개선·문장 다듬기로 아티클 초안 개선 |
 | `teach` | 새 스킬/개념 학습 요청 시 | mattpocock/skills | 워크스페이스 내에서 사용자에게 새 스킬/개념 교육 |
-| `writing-fragments` | 글쓰기 초기 자료 수집 시 | mattpocock/skills | 글쓰기 탐색 — 구조 없이 원자료 발굴 |
-| `writing-shape` | 글쓰기 단락 구성 시 | mattpocock/skills | 글쓰기 활용 — 원자료를 단락 단위 아티클로 정형화 |
-| `writing-beats` | 글쓰기 비트 조립 시 | mattpocock/skills | 글쓰기 활용 — 원자료를 비트(논리적 흐름) 단위로 조립, 사전 용어 정의 포함 |
 | `writing-great-skills` | 스킬 작성 가이드 참조 시 | mattpocock/skills | 좋은 스킬을 쓰기 위한 어휘·원칙 레퍼런스 |
 
 ### 디자인·UI 생성
@@ -263,6 +259,7 @@
 | `atlassian:generate-status-report` | 프로젝트 상태 보고서 작성 시 | atlassian | Jira 이슈 기반 상태 보고서 생성 및 Confluence 게시 |
 | `atlassian:search-company-knowledge` | 사내 지식 검색 요청 시 | atlassian | Confluence/Jira 등 사내 지식 베이스 통합 검색 |
 | `atlassian:spec-to-backlog` | 스펙 → Jira 백로그 변환 시 | atlassian | Confluence 스펙 문서를 Epic + 구현 티켓으로 변환 |
+| `atlassian:jira-sprint-dashboard-canvas` | Jira 스프린트 대시보드 생성 시 | atlassian | Jira 프로젝트·스프린트·보드·JQL 데이터로 시각적 스프린트 대시보드(캔버스/HTML/마크다운) 생성 |
 | `atlassian:triage-issue` | 버그 트리아지 요청 시 | atlassian | Jira에서 중복 검색 후 신규 이슈 생성/기존 이슈 코멘트 |
 
 #### Obsidian
