@@ -294,6 +294,7 @@ function collectLocalSkills() {
   const skillsDir = join(REPO_ROOT, "skills");
   const out = [];
   for (const dir of lsDirs(skillsDir)) {
+    if (dir === "ignore") continue; // company/local-only skills — never documented or synced
     const content = readTextSafe(join(skillsDir, dir, "SKILL.md"));
     if (!content) continue;
     const fm = parseFrontmatter(content);
