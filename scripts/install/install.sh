@@ -70,6 +70,7 @@ node "$DOTFILES_DIR/scripts/mcp-sync/mcp-sync.mjs" pull
 # --- Skills: absorb existing + directory symlink ---
 SKILLS_TARGET="$CLAUDE_DIR/skills"
 SKILLS_SOURCE="$DOTFILES_DIR/skills"
+SKILLS_BACKUP="$CLAUDE_DIR/skills.bak"
 
 if [ -L "$SKILLS_TARGET" ]; then
   echo "[skip]   $SKILLS_TARGET (already linked)"
@@ -79,11 +80,34 @@ else
     for skill in "$SKILLS_TARGET/"*/; do
       [ -d "$skill" ] || continue
       name="$(basename "$skill")"
+
+      if [ "$name" = "ignore" ]; then
+        # Container, not a single skill: reconcile each sub-skill by name
+        # instead of comparing the whole folder as one unit.
+        mkdir -p "$SKILLS_SOURCE/ignore"
+        for sub in "$skill"*/; do
+          [ -d "$sub" ] || continue
+          subname="$(basename "$sub")"
+          repo_sub="$SKILLS_SOURCE/ignore/$subname"
+
+          if [ -d "$repo_sub" ]; then
+            echo "[skip]   ignore/$subname already exists in dotfiles, backing up local copy"
+            mkdir -p "$SKILLS_BACKUP/ignore"
+            mv "$sub" "$SKILLS_BACKUP/ignore/$subname"
+          else
+            echo "[absorb] $sub -> $repo_sub"
+            cp -r "$sub" "$repo_sub"
+          fi
+        done
+        continue
+      fi
+
       repo_skill="$SKILLS_SOURCE/$name"
 
       if [ -d "$repo_skill" ]; then
         echo "[skip]   $name already exists in dotfiles, backing up local copy"
-        mv "$skill" "${skill%/}.bak"
+        mkdir -p "$SKILLS_BACKUP"
+        mv "$skill" "$SKILLS_BACKUP/$name"
       else
         echo "[absorb] $skill -> $repo_skill"
         cp -r "$skill" "$repo_skill"
