@@ -1,9 +1,9 @@
 ---
-name: spec-relay
-description: Runs a full requirement-to-implementation pipeline by chaining superpowers:brainstorming, grill-me (superpowers:grilling), superpowers:writing-plans, and superpowers:executing-plans as four independent subagents, handing off only the produced document between phases. Use this whenever the user wants to take a rough feature idea or requirement all the way through design, stress-testing, planning, and implementation in one go — phrases like "요구사항 하나 줄 테니 브레인스토밍부터 실행까지 쭉 돌려줘", "이 아이디어 기획-검증-계획-구현까지 자동으로 진행해줘", "풀 파이프라인으로 처리해줘", or "spec relay 돌려줘". Don't use this for a single-phase request (e.g. "그냥 계획만 짜줘" or "브레인스토밍만 해줘") — invoke that one skill directly instead.
+name: spec-pipeline
+description: Runs a full requirement-to-implementation pipeline by chaining superpowers:brainstorming, grill-me (superpowers:grilling), superpowers:writing-plans, and superpowers:executing-plans as four independent subagents, handing off only the produced document between phases. Use this whenever the user wants to take a rough feature idea or requirement all the way through design, stress-testing, planning, and implementation in one go — phrases like "요구사항 하나 줄 테니 브레인스토밍부터 실행까지 쭉 돌려줘", "이 아이디어 기획-검증-계획-구현까지 자동으로 진행해줘", "풀 파이프라인으로 처리해줘", or "spec pipeline 돌려줘". Don't use this for a single-phase request (e.g. "그냥 계획만 짜줘" or "브레인스토밍만 해줘") — invoke that one skill directly instead.
 ---
 
-# Spec Relay
+# Spec Pipeline
 
 Chains four superpowers skills — brainstorming → grill-me → writing-plans → executing-plans —
 into one pipeline, run as four separate subagents instead of one long conversation.

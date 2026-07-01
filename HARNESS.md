@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 4bc1dfbe054a570304cd2e5d26d596e6ede8b78367c7e83504ba9d6636c4baa5 -->
+<!-- harness-sync-fingerprint: c2477ab735469d0596306d896f95f9683dacdd90d1cfe39a0a8b8dbe982b7e95 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -101,7 +101,7 @@
 | `superpowers:executing-plans` | 작성된 계획 실행 시 | superpowers | 리뷰 체크포인트 포함 별도 세션에서 계획 실행 |
 | `superpowers:subagent-driven-development` | 독립 작업이 있는 계획 실행 시 | superpowers | 현재 세션에서 서브에이전트로 독립 작업 실행 |
 | `superpowers:dispatching-parallel-agents` | 독립 작업 2개 이상 시 | superpowers | 공유 상태 없는 독립 작업 병렬 실행 |
-| `spec-relay` | 요구사항→구현 풀 파이프라인 요청 시 | custom | brainstorming → grilling → writing-plans → executing-plans 4단계 서브에이전트 체인으로 요구사항→구현까지 자동 실행 |
+| `spec-pipeline` | 요구사항→구현 풀 파이프라인 요청 시 | custom | brainstorming → grilling → writing-plans → executing-plans 4단계 서브에이전트 체인으로 요구사항→구현까지 자동 실행 |
 | `autoplan` | `/autoplan` | gstack | CEO·디자인·엔지니어·DX 계획 리뷰를 순차 자동 실행하는 오토 리뷰 파이프라인 |
 | `ship` | `/ship` | gstack | 베이스 브랜치 머지·테스트·diff 리뷰·VERSION·CHANGELOG·커밋·푸시·PR을 한 번에 |
 | `land-and-deploy` | `/land-and-deploy` | gstack | 랜드 + 배포 워크플로우 |
