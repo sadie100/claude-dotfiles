@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: a0901bf29cc03fc97867dc2d23e3de97d8f5150994afde186986111a3f7d4f46 -->
+<!-- harness-sync-fingerprint: 43b3f67bbcad4c5386ac79740e64fa53bd7fcda7133e0215df36ac2c046e9f69 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
