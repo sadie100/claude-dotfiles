@@ -1,3 +1,4 @@
 *.bak
 .claude/plans/
 debug.log
+.DS_Store
