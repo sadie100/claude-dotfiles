@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/ship/SKILL.md
+../gstack/ship/SKILL.md

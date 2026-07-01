@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/office-hours/SKILL.md
+../gstack/office-hours/SKILL.md

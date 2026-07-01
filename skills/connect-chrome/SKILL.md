@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/connect-chrome/SKILL.md
+../gstack/connect-chrome/SKILL.md

@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/pair-agent/SKILL.md
+../gstack/pair-agent/SKILL.md

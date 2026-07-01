@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/skillify/SKILL.md
+../gstack/skillify/SKILL.md

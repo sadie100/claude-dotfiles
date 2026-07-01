@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/setup-browser-cookies/SKILL.md
+../gstack/setup-browser-cookies/SKILL.md

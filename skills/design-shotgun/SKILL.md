@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/design-shotgun/SKILL.md
+../gstack/design-shotgun/SKILL.md

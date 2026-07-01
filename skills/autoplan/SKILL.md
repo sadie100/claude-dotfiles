@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/autoplan/SKILL.md
+../gstack/autoplan/SKILL.md

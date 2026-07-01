@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/landing-report/SKILL.md
+../gstack/landing-report/SKILL.md

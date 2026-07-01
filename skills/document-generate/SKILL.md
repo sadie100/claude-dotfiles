@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/document-generate/SKILL.md
+../gstack/document-generate/SKILL.md

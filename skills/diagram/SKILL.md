@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/diagram/SKILL.md
+../gstack/diagram/SKILL.md

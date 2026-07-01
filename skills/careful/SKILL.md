@@ -1,1 +1,1 @@
-/Users/sadie/claude-dotfiles/skills/gstack/careful/SKILL.md
+../gstack/careful/SKILL.md
