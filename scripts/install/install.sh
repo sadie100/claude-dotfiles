@@ -174,41 +174,54 @@ else
   echo "[link]   $TARGET_CLAUDE -> $DOTFILES_CLAUDE"
 fi
 
-# Register dotclaude in shell profile (source from repo, not inline)
+# Register dotclaude in shell profile.
+#   DOTCLAUDE_DIR must be exported where a NON-interactive login zsh can read it,
+#   because that's the shell Claude Code uses to run hooks/tools — it sources
+#   .zshenv but skips .zshrc (interactive-only). Putting the export in .zshrc
+#   left DOTCLAUDE_DIR empty in hooks launched from GUI editors (e.g. VSCode),
+#   which silently broke harness-sync/auto-push. So:
+#     - export DOTCLAUDE_DIR  -> ~/.zshenv        (env, every zsh invocation)
+#     - source dotclaude-func -> interactive rc   (functions/aliases)
 DOTCLAUDE_SOURCE_MARKER="# dotclaude-start"
-DOTCLAUDE_SOURCE_BLOCK="$DOTCLAUDE_SOURCE_MARKER
+ENV_BLOCK="$DOTCLAUDE_SOURCE_MARKER
 export DOTCLAUDE_DIR=\"$DOTFILES_DIR\"
+# dotclaude-end"
+FUNC_BLOCK="$DOTCLAUDE_SOURCE_MARKER
 source \"\$DOTCLAUDE_DIR/scripts/dotclaude-func/dotclaude-func.sh\"
 # dotclaude-end"
 
-SHELL_PROFILE=""
-if [ -f "$HOME/.zshrc" ]; then
-  SHELL_PROFILE="$HOME/.zshrc"
-elif [ -f "$HOME/.bashrc" ]; then
-  SHELL_PROFILE="$HOME/.bashrc"
-fi
-
-if [ -n "$SHELL_PROFILE" ]; then
-  # Remove old inline function if present
-  if grep -qF "function dotclaude" "$SHELL_PROFILE"; then
-    sed -i.bak "/function dotclaude/,/^}/d" "$SHELL_PROFILE"
-    echo "[clean]  Removed old inline dotclaude function from $SHELL_PROFILE"
+# Idempotently replace a marked dotclaude block in $1 with the content in $2.
+write_dotclaude_block() {
+  local file="$1" block="$2"
+  touch "$file"
+  if grep -qF "$DOTCLAUDE_SOURCE_MARKER" "$file"; then
+    sed -i.bak "/# dotclaude-start/,/# dotclaude-end/d" "$file"
   fi
+  printf '\n%s\n' "$block" >> "$file"
+}
 
-  # Remove old source block if present, then re-add
-  if grep -qF "$DOTCLAUDE_SOURCE_MARKER" "$SHELL_PROFILE"; then
-    sed -i.bak "/# dotclaude-start/,/# dotclaude-end/d" "$SHELL_PROFILE"
-  fi
-
-  echo "" >> "$SHELL_PROFILE"
-  echo "$DOTCLAUDE_SOURCE_BLOCK" >> "$SHELL_PROFILE"
-  echo "[alias]  Registered dotclaude in $SHELL_PROFILE (sourced from repo)"
+if [ -n "${ZSH_VERSION:-}" ] || [ -f "$HOME/.zshrc" ] || [ "$(basename "${SHELL:-}")" = "zsh" ]; then
+  # zsh: env in .zshenv (read by CC's non-interactive login zsh), funcs in .zshrc
+  write_dotclaude_block "$HOME/.zshenv" "$ENV_BLOCK"
+  write_dotclaude_block "$HOME/.zshrc" "$FUNC_BLOCK"
+  echo "[env]    Exported DOTCLAUDE_DIR in ~/.zshenv (read by Claude Code hook shell)"
+  echo "[alias]  Registered dotclaude in ~/.zshrc"
   echo ""
-  echo "Done! Run 'source $SHELL_PROFILE' or restart your shell to use 'dotclaude'."
+  echo "Done! Restart your shell (or Claude Code) to pick up DOTCLAUDE_DIR."
+elif [ -f "$HOME/.bashrc" ]; then
+  # bash: keep both in one profile (bash has no .zshenv equivalent)
+  write_dotclaude_block "$HOME/.bashrc" "$DOTCLAUDE_SOURCE_MARKER
+export DOTCLAUDE_DIR=\"$DOTFILES_DIR\"
+source \"\$DOTCLAUDE_DIR/scripts/dotclaude-func/dotclaude-func.sh\"
+# dotclaude-end"
+  echo "[alias]  Registered dotclaude in ~/.bashrc"
+  echo ""
+  echo "Done! Run 'source ~/.bashrc' or restart your shell to use 'dotclaude'."
 else
   echo ""
-  echo "Done! Could not detect shell profile. Manually add these lines to your profile:"
-  echo "$DOTCLAUDE_SOURCE_BLOCK"
+  echo "Done! Could not detect shell profile. Add DOTCLAUDE_DIR to your shell env manually:"
+  echo "$ENV_BLOCK"
+  echo "$FUNC_BLOCK"
 fi
 
 # Make sync script executable
