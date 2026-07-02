@@ -94,7 +94,8 @@
     "playwright@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "notion@claude-plugins-official": true,
-    "chrome-devtools-mcp@claude-plugins-official": true
+    "chrome-devtools-mcp@claude-plugins-official": true,
+    "figma@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
@@ -108,10 +109,17 @@
         "source": "github",
         "repo": "spences10/claude-code-toolkit"
       }
+    },
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
     }
   },
   "effortLevel": "medium",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "theme": "light-daltonized"
 }

@@ -25,8 +25,9 @@ import json, sys
 def deep_merge(base, over):
     if isinstance(base, dict) and isinstance(over, dict):
         result = {}
-        for k in set(list(base.keys()) + list(over.keys())):
-            if k in base and k in over:
+        # base 키 순서를 그대로 유지 (충돌 시 base 우선, 배열은 합집합)
+        for k in base:
+            if k in over:
                 if isinstance(base[k], dict) and isinstance(over[k], dict):
                     result[k] = deep_merge(base[k], over[k])
                 elif isinstance(base[k], list) and isinstance(over[k], list):
@@ -37,9 +38,11 @@ def deep_merge(base, over):
                     result[k] = seen
                 else:
                     result[k] = base[k]
-            elif k in base:
-                result[k] = base[k]
             else:
+                result[k] = base[k]
+        # over 에만 있는 키는 뒤에 추가 (기존 순서 보존)
+        for k in over:
+            if k not in base:
                 result[k] = over[k]
         return result
     return base

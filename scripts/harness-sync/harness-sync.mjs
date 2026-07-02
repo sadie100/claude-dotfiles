@@ -569,6 +569,9 @@ function main() {
   };
 
   const prompt = buildPrompt(payload, newFingerprint);
+  process.stdout.write(
+    "[harness-sync] HARNESS.md를 재생성합니다 (claude 호출, 최대 1분 소요). 스크립트를 중단하지 말고 기다려 주세요...\n",
+  );
   const ok = runClaude(prompt);
   if (!ok) {
     notifyUser("harness-sync: HARNESS.md 자동 갱신 실패 (claude 실행 오류). 직접 확인 필요.");
