@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: bb8ac5c5acb33ff1e0d9f7b62b1219a1941684d1b475fe035c9787e20108b73e -->
+<!-- harness-sync-fingerprint: 4bdd1483bd7a6e9decfa399ec6c056cb2895830bde1fd7fcbf2b2e38316637f5 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -143,6 +143,8 @@
 | 스킬                                         | 트리거                           | 소속                | 설명                                                                                        |
 | -------------------------------------------- | -------------------------------- | ------------------- | ------------------------------------------------------------------------------------------- |
 | `validate-ui`                                | UI 변경 후 검증 요청 시          | custom              | Chrome DevTools MCP를 사용한 4계층 검증(A11y Snapshot, Screenshot, DOM Query, Runtime Logs) |
+| `cafe24-preview`                             | `/cafe24-preview`                | custom              | 배포 전 로컬 워킹트리 CSS/JS 변경을 라이브 Cafe24 페이지에 주입해 미리보기                  |
+| `cafe24-update`                              | `/cafe24-update`                 | custom              | Cafe24 프로젝트 UI를 Figma 시안과 비교·브라우저 검증 (테스트 서버 URL + Figma 노드)         |
 | `gstack`                                     | QA 테스트/사이트 도그푸딩 시     | custom              | 빠른 헤드리스 브라우저로 QA 테스트 및 사이트 도그푸딩 수행                                  |
 | `verify`                                     | PR/로컬 변경 동작 확인 시        | built-in            | 앱을 실행해 코드 변경이 실제 의도대로 동작하는지 검증                                       |
 | `run`                                        | 앱을 실행해 결과 확인 시         | built-in            | 프로젝트 앱을 띄워 변경사항을 실 환경에서 확인                                              |
