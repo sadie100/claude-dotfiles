@@ -1,6 +1,6 @@
 ---
-name: update-cafe24
-description: Use when updating or verifying UI of a Cafe24-based project against a Figma spec — user provides a test server URL and a Figma node link (or a textual spec/스크린샷) and wants the change verified in the browser before touching code. Triggers - "/update-cafe24", "피그마랑 다르게 나와", "테스트 서버랑 시안 비교", "디자인 반영해줘", styles not applying after deploy, layout mismatch vs Figma.
+name: cafe24-update
+description: Use when updating or verifying UI of a Cafe24-based project against a Figma spec — user provides a test server URL and a Figma node link (or a textual spec/스크린샷) and wants the change verified in the browser before touching code. Triggers - "/cafe24-update", "피그마랑 다르게 나와", "테스트 서버랑 시안 비교", "디자인 반영해줘", styles not applying after deploy, layout mismatch vs Figma.
 ---
 
 # Cafe24 UI 업데이트 (Figma → 브라우저 라이브 확정 → 코드 반영)
