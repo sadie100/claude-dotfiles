@@ -63,17 +63,6 @@
         ]
       }
     ]
-    // "PostToolUse": [
-    //   {
-    //     "matcher": "Edit|Write",
-    //     "hooks": [
-    //       {
-    //         "type": "command",
-    //         "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write"
-    //       }
-    //     ]
-    //   }
-    // ]
   },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
