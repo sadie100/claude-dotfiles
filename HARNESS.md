@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: aeb0a7b863891decf7724e3c5936d9f267c6416d84dd357b993b5ea753ee5bb9 -->
+<!-- harness-sync-fingerprint: e0183deb9baa8259da3ef128fc570ef5c4e13dd16a2db518ad5c788216a3668a -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -167,6 +167,7 @@
 | `code-review`                   | `/code-review` (현재 diff 대상)     | built-in                 | 현재 변경 diff를 effort 수준별로 검토                                                       |
 | `security-review`               | `/security-review`                  | built-in                 | 현재 브랜치의 변경사항 보안 리뷰                                                            |
 | `simplify`                      | `/simplify`                         | built-in                 | 변경된 코드의 재사용/품질/효율 검토 후 수정                                                 |
+| `safari-fix`                    | `/safari-fix`                       | custom                   | Safari/WebKit 호환성 정적 스캔 및 자동 수정 (100vh, svg width, date parsing 등)            |
 | `web-design-guidelines`         | UI 코드 가이드라인 준수 리뷰 시     | vercel-labs/agent-skills | 웹 인터페이스 가이드라인(접근성/UX/디자인) 기준으로 UI 코드 감사                            |
 | `vercel-composition-patterns`   | React 컴포넌트 합성 패턴 적용 시    | vercel-labs/agent-skills | 컴파운드 컴포넌트·render props·context provider 등 확장형 컴포넌트 API 설계 (React 19 포함) |
 | `vercel-react-best-practices`   | React/Next.js 성능 작업 시          | vercel-labs/agent-skills | Vercel Engineering의 React/Next.js 성능 최적화 가이드라인                                   |
