@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: e0183deb9baa8259da3ef128fc570ef5c4e13dd16a2db518ad5c788216a3668a -->
+<!-- harness-sync-fingerprint: b6f0efb59f7af553ccae7adda0152ea94999777aaf87c490fc6a83cbcf2f6b7a -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -152,6 +152,7 @@
 | `run`                                        | 앱을 실행해 결과 확인 시         | built-in            | 프로젝트 앱을 띄워 변경사항을 실 환경에서 확인                                              |
 | `superpowers:verification-before-completion` | 완료 선언 직전                   | superpowers         | 완료/통과 주장 전 검증 명령 실행                                                            |
 | `document-skills:webapp-testing`             | 로컬 웹앱 테스트 요청 시         | document-skills     | Playwright 기반 로컬 웹앱 동작 검증                                                         |
+| `playwright-cli`                             | Playwright 자동화/테스트 작업 시 | custom              | Playwright로 브라우저 상호작용 자동화 및 테스트 작성                                        |
 | `chrome-devtools-mcp:chrome-devtools`        | 브라우저 디버깅/자동화 시        | chrome-devtools-mcp | Chrome DevTools MCP 기반 범용 브라우저 디버깅                                               |
 | `chrome-devtools-mcp:chrome-devtools-cli`    | 브라우저 자동화 스크립트 작성 시 | chrome-devtools-mcp | CLI에서 Chrome DevTools 자동화                                                              |
 | `superpowers:requesting-code-review`         | 작업 완료/머지 직전              | superpowers         | 요구사항 충족 검증을 위한 코드 리뷰 요청                                                    |
