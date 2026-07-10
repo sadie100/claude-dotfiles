@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 43b52043019f03a78a0bbbdd9fd3f6c512dd43e43bd18c98af447891aa373db1 -->
+<!-- harness-sync-fingerprint: 7f9dfc8c39de1ddec1825de02c7bb488a4be843dc26f823da3682a7f96653ed5 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -132,6 +132,7 @@
 | `diagnosing-bugs`                           | 버그/성능 문제 진단 시             | mattpocock/skills   | "diagnose/debug this" 트리거형 진단 루프                |
 | `mobile-view-debugger`                      | 모바일 뷰 문제 진단 요청 시        | custom              | 모바일 에뮬레이션 + 자동 진단(오버플로우, 터치 타겟 등) |
 | `measure-rerender`                          | 리렌더링 성능 측정 요청 시         | custom              | React 컴포넌트 리렌더링 횟수 측정 및 비교 분석          |
+| `cafe24-find-source`                        | Cafe24 스타일/스크립트 원본 파일 역추적 시 | custom          | 옵티마이저 번들(optimizer.php)에 합쳐진 렌더 스타일/스크립트가 어느 원본 스킨 소스 파일에서 왔는지 역추적 |
 | `chrome-devtools-mcp:memory-leak-debugging` | 메모리 누수 진단 요청 시           | chrome-devtools-mcp | JS/Node.js 메모리 누수 진단 (heapsnapshot, memlab 활용) |
 | `chrome-devtools-mcp:debug-optimize-lcp`    | LCP/Core Web Vitals 최적화 요청 시 | chrome-devtools-mcp | Largest Contentful Paint 디버깅 및 최적화 가이드        |
 | `chrome-devtools-mcp:a11y-debugging`        | 접근성 진단 요청 시                | chrome-devtools-mcp | 시맨틱 HTML, ARIA, 키보드 네비게이션, 명도 대비 점검    |

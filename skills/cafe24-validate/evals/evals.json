@@ -3,20 +3,20 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "/cafe24-validate 배포했어, 정상 상품 순회 해봐",
-      "expected_output": "URL이 인자에 없으므로 어떤 페이지도 열지 않고 즉시 실패 처리하며, URL을 인자로 달라고 안내한다. 과거 대화나 추측으로 URL을 만들어내지 않는다.",
+      "prompt": "/cafe24-validate 배포했어, 정상 확인 해봐",
+      "expected_output": "test 스킨 URL이 인자에 없으므로 어떤 페이지도 열지 않고 즉시 실패 처리하며, 테스트 스킨 URL을 인자로 달라고 안내한다. 과거 대화나 추측으로 URL을 만들어내지 않는다.",
       "files": []
     },
     {
       "id": 2,
-      "prompt": "/cafe24-validate https://cloop.cafe24.com/skin-skin42/ 상세페이지 순회해줘",
-      "expected_output": "URL 유효성 확인 후 상품 링크를 수집하고, 골라담기/일반 상품을 섞어 5~8개를 순회하며 클룹 전용 체크(references/cloop.md)를 수행하고, 대표 페이지 스크린샷을 직접 확인한 뒤 표 형식으로 보고한다.",
+      "prompt": "/cafe24-validate https://cloop.cafe24.com/skin-skin42/ worked=/product/detail.html?product_no=123",
+      "expected_output": "test URL에서 스킨 경로를 떼어 라이브 baseline(https://cloop.cafe24.com/)을 유도해 확인받는다. 고정 6개 타입(메인/카테고리(GNB최상위)/상품상세(첫상품)/주문진입/로그인/마이페이지)을 PC와 모바일(390x844) 양쪽에서 돈다. worked path와 정확 일치하는 페이지는 라이브 비교 없이 변경 반영 여부(양성)만 확인하고, 나머지 unworked 페이지는 애니메이션을 멈춘 뒤 test와 live 스크린샷을 각각 찍어 Read로 나란히 대조해 사이드이펙트를 찾는다. 로그인 필요한 주문/마이페이지는 세션이 없으면 공개 페이지부터 보고하고 로그인 대기로 둔다. 클룹이므로 references/cloop.md도 추가 수행. 표로 보고한다.",
       "files": []
     },
     {
       "id": 3,
-      "prompt": "/cafe24-validate https://cloop.cafe24.com/skin-mobile30/ 모바일 골라담기 상품이랑 일반 상품 몇 개만 확인",
-      "expected_output": "모바일 뷰포트(390x844)로 전환하고, 모바일용 상태 점검 스니펫을 사용하며, 옵션 모달을 열어 스크린샷을 확인하고 표로 보고한다.",
+      "prompt": "/cafe24-validate https://cloop.cafe24.com/skin-skin42/ 배포했는데 다른 페이지 안 깨졌는지 봐줘",
+      "expected_output": "worked_paths가 없으므로 AskUserQuestion으로 이번에 의도적으로 바꾼 path를 물어보거나, 비워두면 6개 타입 전부를 unworked로 간주해 전부 라이브와 스크린샷 회귀 비교한다. DOM 구조 diff나 콘솔 에러만으로는 옵티마이저 순서 역전으로 조용히 스타일이 안 먹는 사고를 못 잡는다는 점을 이해하고, 렌더 결과를 라이브와 스크린샷으로 대조하는 방식을 쓴다. 사이드이펙트를 발견하면 나머지를 계속 돌기 전에 먼저 보고한다.",
       "files": []
     }
   ]
