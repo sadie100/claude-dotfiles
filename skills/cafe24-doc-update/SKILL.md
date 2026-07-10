@@ -1,5 +1,5 @@
 ---
-name: cafe24-capture-learnings
+name: cafe24-doc-update
 description: >-
   이번 대화 세션에서 새로 알게 된 Cafe24/SmartDesign 플랫폼의 특성·동작을 추려서, cafe24
   공용 CLAUDE.md(또는 몰 특정이면 해당 프로젝트 CLAUDE.md)에 그 문서의 기존 톤·구조에 맞춰
@@ -7,11 +7,11 @@ description: >-
   템플릿/모듈 특성 등)을 다음 세션이 재사용하도록 문서화하는 게 목적.
   Use this whenever the user wants to record/persist Cafe24 platform insights discovered
   during work — triggers like "이 세션에서 알게 된 카페24 특성 정리해서 CLAUDE.md에 넣어줘",
-  "방금 알아낸 거 카페24 문서에 업데이트", "카페24 인사이트 반영해줘", "/cafe24-capture-learnings",
+  "방금 알아낸 거 카페24 문서에 업데이트", "카페24 인사이트 반영해줘", "/cafe24-doc-update",
   "add what we learned about Cafe24 to the notes". 세션 끝/인사이트 발견 직후에 제안해도 좋다.
 ---
 
-# cafe24-capture-learnings
+# cafe24-doc-update
 
 ## 목적
 
