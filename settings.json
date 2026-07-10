@@ -111,6 +111,7 @@
   "effortLevel": "medium",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
+  "theme": "light-daltonized",
   "skipAutoPermissionPrompt": true,
-  "theme": "light-daltonized"
+  "advisorModel": "fable"
 }
