@@ -41,7 +41,7 @@
       "Bash(npm install *)"
     ]
   },
-  "model": "claude-fable-5[1m]",
+  "model": "opus[1m]",
   "hooks": {
     "ConfigChange": [
       {
@@ -109,9 +109,9 @@
     }
   },
   "effortLevel": "medium",
+  "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
   "theme": "light-daltonized",
-  "skipAutoPermissionPrompt": true,
-  "advisorModel": "fable"
+  "skipAutoPermissionPrompt": true
 }
