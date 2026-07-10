@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: b6f0efb59f7af553ccae7adda0152ea94999777aaf87c490fc6a83cbcf2f6b7a -->
+<!-- harness-sync-fingerprint: 43b52043019f03a78a0bbbdd9fd3f6c512dd43e43bd18c98af447891aa373db1 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -146,7 +146,7 @@
 | `cafe24-preview`                             | `/cafe24-preview`                | custom              | 배포 전 로컬 워킹트리 CSS/JS 변경을 라이브 Cafe24 페이지에 주입해 미리보기                  |
 | `cafe24-update`                              | `/cafe24-update`                 | custom              | Cafe24 프로젝트 UI를 Figma 시안과 비교·브라우저 검증 (테스트 서버 URL + Figma 노드)         |
 | `cafe24-figma-validate`                      | `/cafe24-figma-validate`         | custom              | Cafe24 테스트/라이브 페이지 컴포넌트가 Figma 시안과 일치하는지 검증하고 불일치 자동 수정 (Figma 노드 + 테스트 URL) |
-| `cafe24-validate`                            | 배포 후 회귀 점검/상품 순회 시   | custom              | Cafe24 라이브/테스트 스킨 페이지를 Playwright로 순회하며 렌더링·콘솔 에러·옵션 상태 검증 (URL 필수) |
+| `cafe24-validate`                            | `/cafe24-validate` (배포 후 회귀 점검)   | custom              | 배포 후 작업 path는 에러/렌더링 점검, 미작업 path는 라이브 대비 PC/모바일 스크린샷 회귀로 사이드이펙트 탐지 (고정 6개 페이지 타입, 테스트 스킨 URL 필수) |
 | `gstack`                                     | QA 테스트/사이트 도그푸딩 시     | custom              | 빠른 헤드리스 브라우저로 QA 테스트 및 사이트 도그푸딩 수행                                  |
 | `verify`                                     | PR/로컬 변경 동작 확인 시        | built-in            | 앱을 실행해 코드 변경이 실제 의도대로 동작하는지 검증                                       |
 | `run`                                        | 앱을 실행해 결과 확인 시         | built-in            | 프로젝트 앱을 띄워 변경사항을 실 환경에서 확인                                              |
