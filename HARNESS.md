@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: c506770eb307f3510bec1f40dce65efc04b13e0888d6c14fe33c22d8c2ce27e7 -->
+<!-- harness-sync-fingerprint: 0398e2d223c3638aa70fc4f850ed9d6d750fe8912b886184cd29428fd1a71a56 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -121,6 +121,7 @@
 | `implement`                           | PRD/이슈 기반 구현 요청 시       | mattpocock/skills | PRD나 이슈 묶음을 기반으로 작업 구현                           |
 | `prototype`                           | 디자인 탐색용 프로토타입 요청 시 | mattpocock/skills | 일회용 프로토타입(터미널 앱 또는 단일 라우트의 UI 변형들) 빌드 |
 | `resolving-merge-conflicts`           | 머지/리베이스 충돌 해결 시       | mattpocock/skills | 진행 중인 git 머지/리베이스 충돌 해소 가이드                   |
+| `cafe24-smart-design`                 | Cafe24 스킨 템플릿 작성/편집 시  | custom            | Cafe24 Smart Design 모듈·변수(`{$...}`)·모디파이어 레퍼런스    |
 | `codex`                               | `/codex`                         | gstack            | OpenAI Codex CLI 래퍼 — 3가지 모드                             |
 
 ### 디버깅·진단
