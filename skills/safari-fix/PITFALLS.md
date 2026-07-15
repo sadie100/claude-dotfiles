@@ -58,7 +58,13 @@ Severity ordering: §1 kills entire scripts, §2–3 break layout invisibly, the
 - **Verdict:** WebKit sometimes fails to clip children to the rounded corners during/after transforms. Cannot be confirmed statically — report as "verify visually in Safari".
 - **Fix:** `isolation: isolate` or `z-index: 0` on the clipping element.
 
-## 10. Newer JS APIs beyond the support floor [report-only]
+## 10. Composited transform/animation escapes z-order under an overlay — iOS only [report-only]
+
+- **Grep:** css rules applying `transform`, `animation`, or `transition` on transform (also `opacity < 1`) to elements that live inside sheets/modals which another layer (higher `z-index` positioned sibling in the same stacking context) covers while they stay rendered.
+- **Verdict:** iOS WebKit promotes such elements to their own compositing layer and can paint them **above** the covering layer, ignoring z-order — typically only the transformed fragments bleed through (e.g. rolling countdown digits over a button bar), not the parent's background or text. Does **not** reproduce in Chrome or macOS Safari — static analysis plus a real-iOS check is the only route; flag when a transformed/animated element remains `display: block` behind a covering layer. (Origin: LABNOSH time-sale banner digits bleeding through the flavor-select layer's confirm bar, 2026-07.)
+- **Fix:** hide the covered element while the overlay is open (`display: none` keyed on the overlay's state class) — removing it from rendering kills the compositing layer entirely. `isolation: isolate`/`translateZ(0)` on the overlay are unreliable on iOS. Needs the app's overlay state class, so report with the suggested rule.
+
+## 11. Newer JS APIs beyond the support floor [report-only]
 
 - **Grep:** `structuredClone(`, `.at(`, `Array.fromAsync`, `requestIdleCallback` in js.
 - **Verdict:** depends on the project's Safari support floor — `structuredClone` 15.4+, `.at()` 15.4+, `requestIdleCallback` unsupported before 18. Report with the required version so the user can judge against their floor.
