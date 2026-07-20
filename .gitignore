@@ -2,4 +2,4 @@
 .claude/plans/
 debug.log
 .DS_Store
-skills/ignore/
+skills/.ignore/

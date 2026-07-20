@@ -80,30 +80,30 @@ if [ -L "$SKILLS_TARGET" ]; then
 else
   # Absorb existing skills into dotfiles repo
   if [ -d "$SKILLS_TARGET" ]; then
+    # .ignore is a container, not a single skill: reconcile each sub-skill by
+    # name instead of comparing the whole folder as one unit. Handled outside
+    # the loop below because its glob does not match dot-directories.
+    if [ -d "$SKILLS_TARGET/.ignore" ]; then
+      mkdir -p "$SKILLS_SOURCE/.ignore"
+      for sub in "$SKILLS_TARGET/.ignore/"*/; do
+        [ -d "$sub" ] || continue
+        subname="$(basename "$sub")"
+        repo_sub="$SKILLS_SOURCE/.ignore/$subname"
+
+        if [ -d "$repo_sub" ]; then
+          echo "[skip]   .ignore/$subname already exists in dotfiles, backing up local copy"
+          mkdir -p "$SKILLS_BACKUP/.ignore"
+          mv "$sub" "$SKILLS_BACKUP/.ignore/$subname"
+        else
+          echo "[absorb] $sub -> $repo_sub"
+          cp -r "$sub" "$repo_sub"
+        fi
+      done
+    fi
+
     for skill in "$SKILLS_TARGET/"*/; do
       [ -d "$skill" ] || continue
       name="$(basename "$skill")"
-
-      if [ "$name" = "ignore" ]; then
-        # Container, not a single skill: reconcile each sub-skill by name
-        # instead of comparing the whole folder as one unit.
-        mkdir -p "$SKILLS_SOURCE/ignore"
-        for sub in "$skill"*/; do
-          [ -d "$sub" ] || continue
-          subname="$(basename "$sub")"
-          repo_sub="$SKILLS_SOURCE/ignore/$subname"
-
-          if [ -d "$repo_sub" ]; then
-            echo "[skip]   ignore/$subname already exists in dotfiles, backing up local copy"
-            mkdir -p "$SKILLS_BACKUP/ignore"
-            mv "$sub" "$SKILLS_BACKUP/ignore/$subname"
-          else
-            echo "[absorb] $sub -> $repo_sub"
-            cp -r "$sub" "$repo_sub"
-          fi
-        done
-        continue
-      fi
 
       repo_skill="$SKILLS_SOURCE/$name"
 
