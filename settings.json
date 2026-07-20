@@ -54,16 +54,6 @@
         ]
       }
     ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$DOTCLAUDE_DIR/scripts/local-skills-link/local-skills-link.sh\""
-          }
-        ]
-      }
-    ],
     "Notification": [
       {
         "matcher": "",
