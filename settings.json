@@ -48,8 +48,18 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs\"",
+            "command": "\"$DOTCLAUDE_DIR/scripts/local-skills-link/local-skills-link.sh\"; node \"$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs\"",
             "async": false
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$DOTCLAUDE_DIR/scripts/local-skills-link/local-skills-link.sh\""
           }
         ]
       }
