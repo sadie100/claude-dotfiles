@@ -9,7 +9,7 @@
 // 3) Serializes a JSON payload and pipes it to `claude -p` so an LLM
 //    re-renders the markered sections in HARNESS.md.
 
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync, lstatSync, realpathSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -295,6 +295,14 @@ function collectLocalSkills() {
   const out = [];
   for (const dir of lsDirs(skillsDir)) {
     if (dir === ".ignore") continue; // company/local-only skills — never documented or synced
+    // Top-level symlinks into .ignore/ (created by local-skills-link.sh) are
+    // local-only too — skip them the same way.
+    const full = join(skillsDir, dir);
+    try {
+      if (lstatSync(full).isSymbolicLink() && realpathSync(full).startsWith(realpathSync(join(skillsDir, ".ignore")) + "/")) continue;
+    } catch {
+      continue; // dangling symlink
+    }
     const content = readTextSafe(join(skillsDir, dir, "SKILL.md"));
     if (!content) continue;
     const fm = parseFrontmatter(content);
