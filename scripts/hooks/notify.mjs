@@ -24,13 +24,16 @@ function readStdin() {
 }
 
 function parseMessage(raw) {
-  if (!raw) return DEFAULT_MESSAGE;
+  // Optional CLI arg overrides the default (used by events like Stop whose
+  // payload has no `message` field).
+  const fallback = process.argv[2] || DEFAULT_MESSAGE;
+  if (!raw) return fallback;
   try {
     const payload = JSON.parse(raw);
     const message = typeof payload?.message === "string" ? payload.message.trim() : "";
-    return message || DEFAULT_MESSAGE;
+    return message || fallback;
   } catch {
-    return DEFAULT_MESSAGE;
+    return fallback;
   }
 }
 
