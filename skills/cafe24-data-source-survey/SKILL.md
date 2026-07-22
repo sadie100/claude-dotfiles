@@ -17,7 +17,7 @@ description: Use when surveying across the company's Cafe24 malls (자사몰) ho
 | 한끼통살 | https://hankkitongsal.com/ | `ftp/atem/` |
 | 랩노쉬 | https://labnosh.com/ | `ftp/labnosh/` |
 | 그로서리서울 | https://groceryseoul.com/ | 없음 (`ftp/groceryseoul`은 sftp 설정뿐) |
-| 메디리즈 | https://medileeds.com/ | `medileeds-cafe24/` |
+| 메디리즈 | https://medileeds.com/ | `medileeds-cafe24/` (일부 파일만, 전체 스킨 아님) |
 | BRAYE | https://braye.co.kr/ | 없음 |
 | 원데이원볼 | https://oneday1ball.com/ | 없음 |
 | 엑쎄라피 | https://exerapy.co.kr/ | `exerapy-cafe24/` |
