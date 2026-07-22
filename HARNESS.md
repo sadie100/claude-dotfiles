@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 9142e313c31d647509bd4b176e45ec53cbef762d34ae9d808931189bd009e760 -->
+<!-- harness-sync-fingerprint: e0bcd83172950edac32ac770b81588c9b6a4c810c01e1398a9fc1d876237e1dc -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -192,6 +192,7 @@
 | `handoff`                         | 다른 에이전트로 인계 시                 | mattpocock/skills | 현재 대화를 핸드오프 문서로 압축                                                                          |
 | `mine-session-decisions`          | `/mine-session-decisions`               | custom            | 과거 세션 .jsonl에서 설계 결정·요구사항 해석·가정을 마이닝하여 문서 후보 추출                             |
 | `cafe24-doc-update`               | `/cafe24-doc-update`                    | custom            | 세션에서 실측한 비자명한 Cafe24/SmartDesign 동작을 cafe24 공용/몰별 CLAUDE.md에 기존 톤·구조에 맞춰 반영 |
+| `cafe24-data-source-survey`       | 자사몰 데이터 출처 조사·문서화 요청 시  | custom            | 자사몰별 라이브 페이지의 특정 데이터가 어느 Cafe24 소스(모듈/변수·에디터 필드·스킨 JS·앱)에서 오는지 추적해 자사몰-데이터-활용양상 문서에 카테고리로 기록 |
 | `excalidraw-diagram`              | 워크플로우/아키텍처/개념 시각화 요청 시 | custom            | 워크플로우·아키텍처·개념을 시각적으로 설명하는 Excalidraw 다이어그램 JSON 생성                            |
 | `figma:figma-generate-diagram`    | Figma에 다이어그램 생성 요청 시         | figma             | `generate_diagram` 호출 전 필수 로드 — FigJam에 Mermaid 기반 플로우차트/아키텍처/시퀀스/ERD 생성          |
 | `humanizer`                       | AI 작성 흔적 제거 요청 시               | custom            | AI 생성 텍스트의 패턴(과장 상징, 홍보성 문구, em dash 남발 등)을 검출하고 자연스럽게 교정                 |
