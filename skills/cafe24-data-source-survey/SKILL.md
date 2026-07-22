@@ -15,7 +15,7 @@ description: Use when surveying across the company's Cafe24 malls (자사몰) ho
 | 몰 | 홈 URL | 로컬 스킨 소스 |
 |---|---|---|
 | 한끼통살 | https://hankkitongsal.com/ | `ftp/atem/` |
-| 랩노쉬 | https://labnosh.com/ | `ftp/labnosh/`, `labnosh-cafe24/` |
+| 랩노쉬 | https://labnosh.com/ | `ftp/labnosh/` |
 | 그로서리서울 | https://groceryseoul.com/ | 없음 (`ftp/groceryseoul`은 sftp 설정뿐) |
 | 메디리즈 | https://medileeds.com/ | `medileeds-cafe24/` |
 | BRAYE | https://braye.co.kr/ | 없음 |
