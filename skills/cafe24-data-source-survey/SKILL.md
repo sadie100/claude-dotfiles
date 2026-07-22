@@ -21,7 +21,7 @@ description: Use when surveying across the company's Cafe24 malls (자사몰) ho
 | BRAYE | https://braye.co.kr/ | 없음 |
 | 원데이원볼 | https://oneday1ball.com/ | 없음 |
 | 엑쎄라피 | https://exerapy.co.kr/ | `exerapy-cafe24/` |
-| 클룹 | https://cloop.co.kr/ | `ftp/cloop/`, `cloop-cafe24/` |
+| 클룹 | https://cloop.co.kr/ | `ftp/cloop/` |
 
 로컬 소스 루트: `/Users/sadie100/dev/works/cafe24/`. 미러는 부분/구버전일 수 있으니 라이브 실측과 대조해 쓴다.
 
