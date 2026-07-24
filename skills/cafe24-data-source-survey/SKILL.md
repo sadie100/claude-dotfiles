@@ -1,6 +1,6 @@
 ---
 name: cafe24-data-source-survey
-description: Use when surveying across the company's Cafe24 malls (자사몰) how a specific piece of page data is sourced/rendered — e.g. "자사몰들에서 X가 어디서 나오는지 조사해서 문서화해줘", "몰별로 데이터 소스 비교", "이 데이터 활용양상 정리". Traces each mall's live page to its Cafe24 source (module/variable, admin editor field, skin JS, third-party app) and records the findings as a category in the 자사몰-데이터-활용양상 doc.
+description: Use when surveying across the company's Cafe24 malls (자사몰) how a specific piece of page data is sourced/rendered — e.g. "자사몰들에서 X가 어디서 나오는지 조사해서 문서화해줘", "몰별로 데이터 소스 비교", "이 데이터 활용양상 정리". Traces each mall's live page to its Cafe24 source (module/variable, admin editor field, skin JS, third-party app) and records the findings as a category in the 자사몰-구현-현황 doc.
 ---
 
 # cafe24-data-source-survey
@@ -35,7 +35,7 @@ description: Use when surveying across the company's Cafe24 malls (자사몰) ho
    - JS 주입이면 주입 스크립트(스킨 JS / `appfiles` 앱 스크립트)를 특정
    - 완료 기준: **몰마다 "소스 유형 + 근거(DOM 체인, 파일:라인 또는 스크립트)"가 나오거나, "미확정 + 이유"가 기록된다.** 접속 불가·요소 없음도 그대로 기록하고 넘어간다.
 3. **소스 유형 분류.** 각 몰을 다음 중 하나(혼합이면 하이브리드로 명기)로 분류: ① 카페24 모듈·변수(표준 용도) ② 관리자 에디터 필드 전용/轉用(사이즈가이드 설명, 요약설명 등) ③ 스킨 JS 하드코딩 ④ 제3자 앱 콘텐츠.
-4. **문서화.** `docs/자사몰-데이터-활용양상.md`가 현재 저장소에 있으면 거기에 `##` 카테고리 하나를 추가한다 — **형식은 문서의 기존 카테고리(몰별 표 → 몰별 세부 → 표준 스킨 관점 정리)를 그대로 따르고 조사일을 명기**한다. 문서 경로가 없는 프로젝트면 같은 구조로 채팅에 답한다. 완료 기준: 요청된 몰 전부가 몰별 표에 등장한다.
+4. **문서화.** `docs/자사몰-구현-현황.md`가 현재 저장소에 있으면 거기에 `##` 카테고리 하나를 추가한다 — **형식은 문서의 기존 카테고리(몰별 표 → 몰별 세부 → 표준 스킨 관점 정리)를 그대로 따르고 조사일을 명기**한다. 문서 경로가 없는 프로젝트면 같은 구조로 채팅에 답한다. 완료 기준: 요청된 몰 전부가 몰별 표에 등장한다.
 5. **정리.** 이 조사에서 내가 연 브라우저 탭을 모두 닫는다.
 
 ## 함정 (실측 기반)
