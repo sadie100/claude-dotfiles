@@ -91,7 +91,7 @@
     "slack@claude-plugins-official": true,
     "atlassian@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": false,
     "code-review@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,

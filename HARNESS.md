@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: cfa390a02ea54515d4912610928cda491e39f55487d2388045e8e31f4e5ea77f -->
+<!-- harness-sync-fingerprint: ff1562d27f420990989f96897ccb0e49cab98901d136e2969808c79046d8c1fb -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -27,7 +27,7 @@
 | `typescript-lsp`       | ✅ 활성   | TypeScript 언어 서버 지원                              |
 | `playwright`           | ✅ 활성   | 브라우저 자동화 및 테스트                              |
 | `chrome-devtools-mcp`  | ✅ 활성   | Chrome 브라우저 제어/검사 MCP (공식 마켓플레이스 버전) |
-| `superpowers`          | ✅ 활성   | 확장 기능 모음                                         |
+| `superpowers`          | ❌ 비활성 | 확장 기능 모음                                         |
 | `security-guidance`    | ✅ 활성   | 보안 가이드라인 제공                                   |
 | `claude-md-management` | ✅ 활성   | CLAUDE.md 파일 관리/개선                               |
 | `skill-creator`        | ✅ 활성   | 스킬 생성/수정/평가                                    |
@@ -72,8 +72,6 @@
 
 | 스킬                        | 트리거                              | 소속              | 설명                                                                      |
 | --------------------------- | ----------------------------------- | ----------------- | ------------------------------------------------------------------------- |
-| `superpowers:brainstorming` | 기능/컴포넌트 설계 시작 시          | superpowers       | 구현 전 사용자 의도/요구사항/설계 탐색                                    |
-| `superpowers:writing-plans` | 멀티스텝 작업 계획 작성 시          | superpowers       | 코드 작업 전 구현 계획 작성                                               |
 | `dev-prd`                   | `/dev-prd {기능명}`                 | custom            | PRD(제품 요구사항 문서) 작성. 사용자와 협업하여 기능 기획                 |
 | `dev-architecture`          | `/dev-architecture {기능명}`        | custom            | 아키텍처 설계. 기술 옵션 분석 및 트레이드오프 제시                        |
 | `dev-spec`                  | `/dev-spec {기능명}`                | custom            | 상세 구현 스펙 작성. 인수 조건(AC)을 Given-When-Then 형식으로 정의        |
@@ -103,9 +101,6 @@
 | `front-execute`                           | `/front-execute` (프론트엔드 구현 + 검증 시) | custom      | 문서/지시 입력 → 구현 → 타입체크/유닛테스트 → UI 검증 루프(최대 5회 자동 수정) → 최종 코드 리뷰                    |
 | `dev-process`                             | `/dev-process {기능명}`                      | custom      | PRD → 아키텍처 → 스펙 → TC 4단계 오케스트레이터                                                                    |
 | `feature-dev:feature-dev`                 | 기능 개발 요청 시                            | feature-dev | 코드베이스 분석 → 설계 → 가이드형 구현을 묶는 멀티스텝 워크플로우                                                  |
-| `superpowers:executing-plans`             | 작성된 계획 실행 시                          | superpowers | 리뷰 체크포인트 포함 별도 세션에서 계획 실행                                                                       |
-| `superpowers:subagent-driven-development` | 독립 작업이 있는 계획 실행 시                | superpowers | 현재 세션에서 서브에이전트로 독립 작업 실행                                                                        |
-| `superpowers:dispatching-parallel-agents` | 독립 작업 2개 이상 시                        | superpowers | 공유 상태 없는 독립 작업 병렬 실행                                                                                 |
 | `spec-pipeline`                           | 요구사항→구현 풀 파이프라인 요청 시          | custom      | brainstorming → grilling → writing-plans → executing-plans 4단계 서브에이전트 체인으로 요구사항→구현까지 자동 실행 |
 | `autoplan`                                | `/autoplan`                                  | gstack      | CEO·디자인·엔지니어·DX 계획 리뷰를 순차 자동 실행하는 오토 리뷰 파이프라인                                         |
 | `ship`                                    | `/ship`                                      | gstack      | 베이스 브랜치 머지·테스트·diff 리뷰·VERSION·CHANGELOG·커밋·푸시·PR을 한 번에                                       |
@@ -115,9 +110,7 @@
 
 | 스킬                                  | 트리거                           | 소속              | 설명                                                           |
 | ------------------------------------- | -------------------------------- | ----------------- | -------------------------------------------------------------- |
-| `superpowers:test-driven-development` | 기능/버그픽스 구현 시            | superpowers       | 구현 코드 작성 전 TDD 적용                                     |
 | `tdd`                                 | TDD 기반 개발 요청 시            | mattpocock/skills | red-green-refactor 루프 기반 테스트 우선 개발                  |
-| `superpowers:using-git-worktrees`     | 격리된 워크스페이스 필요 시      | superpowers       | git worktree 기반 격리 워크스페이스 보장                       |
 | `implement`                           | PRD/이슈 기반 구현 요청 시       | mattpocock/skills | PRD나 이슈 묶음을 기반으로 작업 구현                           |
 | `prototype`                           | 디자인 탐색용 프로토타입 요청 시 | mattpocock/skills | 일회용 프로토타입(터미널 앱 또는 단일 라우트의 UI 변형들) 빌드 |
 | `resolving-merge-conflicts`           | 머지/리베이스 충돌 해결 시       | mattpocock/skills | 진행 중인 git 머지/리베이스 충돌 해소 가이드                   |
@@ -129,7 +122,6 @@
 
 | 스킬                                        | 트리거                             | 소속                | 설명                                                    |
 | ------------------------------------------- | ---------------------------------- | ------------------- | ------------------------------------------------------- |
-| `superpowers:systematic-debugging`          | 버그/테스트 실패 시                | superpowers         | 픽스 제안 전 체계적 디버깅                              |
 | `diagnose`                                  | 어려운 버그/성능 회귀 진단 시      | mattpocock/skills   | 재현 → 최소화 → 가설 → 계측 → 수정 → 회귀 테스트 루프   |
 | `diagnosing-bugs`                           | 버그/성능 문제 진단 시             | mattpocock/skills   | "diagnose/debug this" 트리거형 진단 루프                |
 | `mobile-view-debugger`                      | 모바일 뷰 문제 진단 요청 시        | custom              | 모바일 에뮬레이션 + 자동 진단(오버플로우, 터치 타겟 등) |
@@ -153,14 +145,10 @@
 | `gstack`                                     | QA 테스트/사이트 도그푸딩 시     | custom              | 빠른 헤드리스 브라우저로 QA 테스트 및 사이트 도그푸딩 수행                                  |
 | `verify`                                     | PR/로컬 변경 동작 확인 시        | built-in            | 앱을 실행해 코드 변경이 실제 의도대로 동작하는지 검증                                       |
 | `run`                                        | 앱을 실행해 결과 확인 시         | built-in            | 프로젝트 앱을 띄워 변경사항을 실 환경에서 확인                                              |
-| `superpowers:verification-before-completion` | 완료 선언 직전                   | superpowers         | 완료/통과 주장 전 검증 명령 실행                                                            |
 | `document-skills:webapp-testing`             | 로컬 웹앱 테스트 요청 시         | document-skills     | Playwright 기반 로컬 웹앱 동작 검증                                                         |
 | `playwright-cli`                             | Playwright 자동화/테스트 작업 시 | custom              | Playwright로 브라우저 상호작용 자동화 및 테스트 작성                                        |
 | `chrome-devtools-mcp:chrome-devtools`        | 브라우저 디버깅/자동화 시        | chrome-devtools-mcp | Chrome DevTools MCP 기반 범용 브라우저 디버깅                                               |
 | `chrome-devtools-mcp:chrome-devtools-cli`    | 브라우저 자동화 스크립트 작성 시 | chrome-devtools-mcp | CLI에서 Chrome DevTools 자동화                                                              |
-| `superpowers:requesting-code-review`         | 작업 완료/머지 직전              | superpowers         | 요구사항 충족 검증을 위한 코드 리뷰 요청                                                    |
-| `superpowers:receiving-code-review`          | 코드 리뷰 피드백 수신 시         | superpowers         | 피드백 검증 후 적용 (맹목적 동의 금지)                                                      |
-| `superpowers:finishing-a-development-branch` | 구현 완료 후 브랜치 정리 시      | superpowers         | 머지/PR/정리 옵션 제시                                                                      |
 
 ### 코드 리뷰·리팩토링
 
@@ -306,8 +294,6 @@
 
 | 스킬                                      | 트리거                            | 소속                 | 설명                                                                  |
 | ----------------------------------------- | --------------------------------- | -------------------- | --------------------------------------------------------------------- |
-| `superpowers:using-superpowers`           | 모든 대화 시작 시                 | superpowers          | superpowers 스킬 사용법 안내                                          |
-| `superpowers:writing-skills`              | 스킬 작성/편집/검증 시            | superpowers          | 신규 스킬 작성/편집 가이드                                            |
 | `claude-md-management:claude-md-improver` | CLAUDE.md 감사/개선 요청 시       | claude-md-management | 레포의 CLAUDE.md 파일 품질 평가 및 개선                               |
 | `claude-md-management:revise-claude-md`   | 세션 학습 반영 요청 시            | claude-md-management | 세션 학습을 CLAUDE.md에 반영                                          |
 | `skill-creator:skill-creator`             | 스킬 생성/수정/평가 요청 시       | skill-creator        | 신규 스킬 생성, 기존 스킬 개선, 변량 분석 기반 성능 벤치마크          |
