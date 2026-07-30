@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: ff1562d27f420990989f96897ccb0e49cab98901d136e2969808c79046d8c1fb -->
+<!-- harness-sync-fingerprint: 4743952aace96faa79ff968123e8d8552d71cee29ec76f149429552820f0321e -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -169,7 +169,7 @@
 | `triage`                        | 이슈/외부 PR 트리아지 시            | mattpocock/skills        | 트리아지 역할 상태머신으로 이슈/PR을 분류·검증·에이전트 브리프 작성                         |
 | `devex-review`                  | `/devex-review`                     | gstack                   | 라이브 개발자 경험(DX) 감사                                                                 |
 | `health`                        | `/health`                           | gstack                   | 코드 품질 대시보드                                                                          |
-| `retro`                         | `/retro`                            | gstack                   | 주간 엔지니어링 회고                                                                        |
+| `gstack-retro`                  | `/gstack-retro`                     | gstack                   | 주간 엔지니어링 회고                                                                        |
 
 ### 문서화·도식화
 
