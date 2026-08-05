@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: dab76a68bd50d413c2ff096b82073da3163c5bdad2ee3c9597f05657184014ac -->
+<!-- harness-sync-fingerprint: 4743952aace96faa79ff968123e8d8552d71cee29ec76f149429552820f0321e -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -255,7 +255,6 @@
 | `slack:slack-api`          | Slack Web API 호출 작업 시   | slack | Slack Web API 메서드 탐색·스코프 확인·호출/디버깅 |
 | `slack:slack-cli`          | Slack CLI 사용 시            | slack | Slack CLI로 앱 생성·로컬 실행·매니페스트 관리, 개발자 문서 검색 |
 | `slack:create-slack-app`   | Slack 앱/에이전트 생성 시    | slack | Slack CLI + Bolt(JS/Python) 기반 Slack 앱 생성 가이드 |
-| `release-note`             | `/release-note`              | custom | cafe24 FTP 레포 작업 세션 종료 후 작업 내역을 슬랙 릴리즈노트로 정리해 채널에 발송 (문제 설명 + 수정 위치 + 커밋 URL) |
 
 #### Notion
 
