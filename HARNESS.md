@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 35465112aed319dbbc47f56f2a558207d599572460b6e888fcaaf6819f1eb035 -->
+<!-- harness-sync-fingerprint: 4743952aace96faa79ff968123e8d8552d71cee29ec76f149429552820f0321e -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -102,7 +102,6 @@
 | `dev-process`                             | `/dev-process {기능명}`                      | custom      | PRD → 아키텍처 → 스펙 → TC 4단계 오케스트레이터                                                                    |
 | `feature-dev:feature-dev`                 | 기능 개발 요청 시                            | feature-dev | 코드베이스 분석 → 설계 → 가이드형 구현을 묶는 멀티스텝 워크플로우                                                  |
 | `spec-pipeline`                           | 요구사항→구현 풀 파이프라인 요청 시          | custom      | brainstorming → grilling → writing-plans → executing-plans 4단계 서브에이전트 체인으로 요구사항→구현까지 자동 실행 |
-| `qa-fix`                                  | `/qa-fix <노션/슬랙 QA 링크>`                | custom      | QA 문서의 번호 박스 스크린샷을 내려받아 영역 파악 → 소유 파일 역추적 → 태스크별 수정 → 라이브 검증 → 커밋까지 완주        |
 | `autoplan`                                | `/autoplan`                                  | gstack      | CEO·디자인·엔지니어·DX 계획 리뷰를 순차 자동 실행하는 오토 리뷰 파이프라인                                         |
 | `ship`                                    | `/ship`                                      | gstack      | 베이스 브랜치 머지·테스트·diff 리뷰·VERSION·CHANGELOG·커밋·푸시·PR을 한 번에                                       |
 | `land-and-deploy`                         | `/land-and-deploy`                           | gstack      | 랜드 + 배포 워크플로우                                                                                             |
