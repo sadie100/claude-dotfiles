@@ -112,7 +112,7 @@ curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" "<url>"
 
 `list_network_requests`로도 4xx를 교차 확인.
 
-**(b) 콘솔/런타임 에러** — `list_console_messages`(error). 트래킹/서드파티/기존 템플릿 에러는 첫 페이지를 기준선으로 잡고 **새로 등장하는 에러**에 집중. 단, **이 스킬의 주 타깃(조용한 스타일 미적용)은 콘솔 에러를 안 낸다** — 콘솔이 깨끗해도 안심하지 말고 (c)/(d)를 반드시 본다.
+**(b) 콘솔/런타임 에러** — `list_console_messages`(error). 트래킹/서드파티/기존 템플릿 에러는 첫 페이지를 기준선으로 잡고 **새로 등장하는 에러**에 집중. 프로젝트 knowledge에 기지(旣知) 콘솔 에러 목록이 있으면 대조해 제외한다 — 특정 페이지에만 뜨는 에러는 기준선 방식으로 못 거른다 (예: standard-cafe24 상품상세의 `null (reading 'CAFE24')`/`undefined (reading 'stype')` 2종은 의도된 모듈 임베드의 기지 노이즈, knowledge/cafe24-coupon-front-data.md E절). 단, **이 스킬의 주 타깃(조용한 스타일 미적용)은 콘솔 에러를 안 낸다** — 콘솔이 깨끗해도 안심하지 말고 (c)/(d)를 반드시 본다.
 
 ### worked path — "변경이 의도대로 먹었나"
 
