@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 4743952aace96faa79ff968123e8d8552d71cee29ec76f149429552820f0321e -->
+<!-- harness-sync-fingerprint: 16c7b538ca67d3262bd44f2993efbf6f3c3415f3fa2ceb2c9c12a7fdcb16c1cd -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -270,6 +270,7 @@
 | `Notion:tasks:plan`          | 태스크 플래닝 요청 시         | Notion | Notion 페이지 URL 기반 플래닝              |
 | `Notion:tasks:build`         | 태스크 빌드 요청 시           | Notion | Notion 페이지 URL 기반 태스크 구축         |
 | `Notion:tasks:explain-diff`  | 코드 변경 설명 문서 작성 시   | Notion | 코드 변경 내용을 설명하는 Notion 문서 생성 |
+| `notion-link-mention-fetch`  | 노션 멘션 링크가 비어 있을 때 | custom | MCP fetch가 빠뜨린 link_preview 멘션 URL을 ntn CLI raw API로 추출 |
 
 #### Atlassian (Jira/Confluence)
 
