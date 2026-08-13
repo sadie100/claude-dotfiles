@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 16c7b538ca67d3262bd44f2993efbf6f3c3415f3fa2ceb2c9c12a7fdcb16c1cd -->
+<!-- harness-sync-fingerprint: 6a9f6bdd59fe876f5baa259a7b9825541eb34a4d91c4847c99609329d0d22cf6 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -179,6 +179,8 @@
 | `write-nestjs-spec`               | `/write-nestjs-spec {모듈명}`           | custom            | NestJS 백엔드 모듈 API 스펙 문서 생성                                                                     |
 | `handoff`                         | 다른 에이전트로 인계 시                 | mattpocock/skills | 현재 대화를 핸드오프 문서로 압축                                                                          |
 | `mine-session-decisions`          | `/mine-session-decisions`               | custom            | 과거 세션 .jsonl에서 설계 결정·요구사항 해석·가정을 마이닝하여 문서 후보 추출                             |
+| `explain-diff-html`               | 코드 변경/diff/PR 설명 요청 시          | custom            | 코드 변경·브랜치·PR을 풍부하게 설명하는 HTML 산출물 생성                                                  |
+| `explain-diff-notion`             | 코드 변경/diff/PR 설명 요청 시          | custom            | 코드 변경·브랜치·PR을 풍부하게 설명하는 Notion 페이지 생성                                                |
 | `cafe24-doc-update`               | `/cafe24-doc-update`                    | custom            | 세션에서 실측한 비자명한 Cafe24/SmartDesign 동작을 cafe24 공용/몰별 CLAUDE.md에 기존 톤·구조에 맞춰 반영 |
 | `cafe24-data-source-survey`       | 자사몰 데이터 출처 조사·문서화 요청 시  | custom            | 자사몰별 라이브 페이지의 특정 데이터가 어느 Cafe24 소스(모듈/변수·에디터 필드·스킨 JS·앱)에서 오는지 추적해 자사몰-구현-현황 문서에 카테고리로 기록 |
 | `cafe24-analyze-plugin`           | `/cafe24-analyze-plugin`                | custom            | Cafe24 스킨 코드베이스를 전수 스캔해 외부 플러그인을 4분류(기능성 SaaS/카페24 앱/마케팅·트래킹/커스텀 데이터)로 인벤토리하고 상세+요약 문서 2종 산출 |
