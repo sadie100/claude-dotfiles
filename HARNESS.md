@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 6a9f6bdd59fe876f5baa259a7b9825541eb34a4d91c4847c99609329d0d22cf6 -->
+<!-- harness-sync-fingerprint: 549c62ad29130ea4b938e869adfee7b2aca74c7f690a9f983e0026f36b0a8796 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -273,6 +273,7 @@
 | `Notion:tasks:build`         | 태스크 빌드 요청 시           | Notion | Notion 페이지 URL 기반 태스크 구축         |
 | `Notion:tasks:explain-diff`  | 코드 변경 설명 문서 작성 시   | Notion | 코드 변경 내용을 설명하는 Notion 문서 생성 |
 | `notion-link-mention-fetch`  | 노션 멘션 링크가 비어 있을 때 | custom | MCP fetch가 빠뜨린 link_preview 멘션 URL을 ntn CLI raw API로 추출 |
+| `cafe24-standard-notion-update` | `/cafe24-standard-notion-update` | custom | standard-cafe24 레포의 setup.js 스키마 변경(전역 추가·제거·키 변경)을 노션 "카페24 자사몰 표준안 운영 매뉴얼" 페이지에 동기화 |
 
 #### Atlassian (Jira/Confluence)
 
