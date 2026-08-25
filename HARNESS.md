@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 549c62ad29130ea4b938e869adfee7b2aca74c7f690a9f983e0026f36b0a8796 -->
+<!-- harness-sync-fingerprint: dcebcedbd8bcd6628df16bbaf13622b3d516c53c10e551f184ef2fad3c3d7bb5 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -47,6 +47,12 @@
 | 플러그인              | 상태    | 설명                                                 |
 | --------------------- | ------- | ---------------------------------------------------- |
 | `chrome-devtools-mcp` | ✅ 활성 | Chrome DevTools 프로토콜 기반 브라우저 디버깅/자동화 |
+
+### Community Plugins (`claude-community`)
+
+| 플러그인 | 상태    | 설명                                                     |
+| -------- | ------- | -------------------------------------------------------- |
+| `eli5`   | ✅ 활성 | 어떤 주제든 큰 그림·적은 텍스트의 HTML 설명서로 풀어주기 |
 
 ### Custom Marketplace (`ui-ux-pro-max-skill`)
 
@@ -149,6 +155,7 @@
 | `playwright-cli`                             | Playwright 자동화/테스트 작업 시 | custom              | Playwright로 브라우저 상호작용 자동화 및 테스트 작성                                        |
 | `chrome-devtools-mcp:chrome-devtools`        | 브라우저 디버깅/자동화 시        | chrome-devtools-mcp | Chrome DevTools MCP 기반 범용 브라우저 디버깅                                               |
 | `chrome-devtools-mcp:chrome-devtools-cli`    | 브라우저 자동화 스크립트 작성 시 | chrome-devtools-mcp | CLI에서 Chrome DevTools 자동화                                                              |
+| `document-skills:discernment-nudge`          | 실행 가능한 답변/초안 마무리 직전 | document-skills    | 방금 산출한 답변·초안의 사실·가정·누락 맥락을 점검하는 후속 질문 2~3개를 덧붙임              |
 
 ### 코드 리뷰·리팩토링
 
@@ -189,6 +196,7 @@
 | `humanizer`                       | AI 작성 흔적 제거 요청 시               | custom            | AI 생성 텍스트의 패턴(과장 상징, 홍보성 문구, em dash 남발 등)을 검출하고 자연스럽게 교정                 |
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시                  | document-skills   | 구조화된 문서/제안서/스펙 공동 작성 워크플로우                                                            |
 | `document-skills:internal-comms`  | 사내 커뮤니케이션 작성 요청 시          | document-skills   | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성                                                      |
+| `eli5:eli5`                       | `/eli5 <주제>`                          | eli5              | 어떤 주제든 큰 시각 요소 위주의 초간단 HTML 그림 설명서로 변환                                            |
 | `diagram`                         | `/diagram`                              | gstack            | 영어 설명/머메이드 소스 → 다이어그램 트리플릿(소스 + 편집 가능 파일)                                      |
 | `document-generate`               | `/document-generate`                    | gstack            | 기능/모듈/프로젝트 문서를 처음부터 생성                                                                   |
 | `document-release`                | `/document-release`                     | gstack            | 배포 후 문서 갱신                                                                                         |
@@ -257,6 +265,7 @@
 | `slack:slack-api`          | Slack Web API 호출 작업 시   | slack | Slack Web API 메서드 탐색·스코프 확인·호출/디버깅 |
 | `slack:slack-cli`          | Slack CLI 사용 시            | slack | Slack CLI로 앱 생성·로컬 실행·매니페스트 관리, 개발자 문서 검색 |
 | `slack:create-slack-app`   | Slack 앱/에이전트 생성 시    | slack | Slack CLI + Bolt(JS/Python) 기반 Slack 앱 생성 가이드 |
+| `slack:slack-docs`         | Slack 플랫폼 문서 조회 시    | slack | docs.slack.dev 공식 문서 검색·요약 |
 
 #### Notion
 
@@ -306,6 +315,7 @@
 | `ask-matt`                                | 상황에 맞는 스킬/플로우 라우팅 시 | mattpocock/skills    | 레포의 사용자 호출 스킬 위에서 동작하는 라우터                        |
 | `setup-matt-pocock-skills`                | 엔지니어링 스킬 초기 설정 시      | mattpocock/skills    | AGENTS.md/CLAUDE.md에 이슈 트래커·트리아지 라벨·도메인 문서 블록 셋업 |
 | `init`                                    | `/init`                           | built-in             | CLAUDE.md 초기 생성                                                   |
+| `document-skills:academy-guide`           | Claude 제품 사용법 질문 시        | document-skills      | Claude Academy(academy.claude.com)의 코스·튜토리얼·유스케이스 추천    |
 
 ### GEO·SEO 분석
 
@@ -434,7 +444,7 @@ User-scope MCP 서버([`mcp-servers.json`](mcp-servers.json))와 활성 플러�
 | ----------------- | ------ | -------------------------------------- | ---------------------------------------------------------------------- |
 | `aws-knowledge`   | http   | `https://knowledge-mcp.global.api.aws` | AWS 공식 문서/지식 베이스 조회                                         |
 | `context7`        | stdio  | `npx -y @upstash/context7-mcp`         | 라이브러리/프레임워크 최신 문서 조회 (context7 플러그인 번들)          |
-| `chrome-devtools` | stdio  | `npx chrome-devtools-mcp@1.6.0`        | Chrome 브라우저 제어/디버깅/자동화 (chrome-devtools-mcp 플러그인 번들) |
+| `chrome-devtools` | stdio  | `npx chrome-devtools-mcp@1.7.0`        | Chrome 브라우저 제어/디버깅/자동화 (chrome-devtools-mcp 플러그인 번들) |
 | `playwright`      | stdio  | `npx @playwright/mcp@latest`           | 브라우저 자동화 및 E2E 테스트 (playwright 플러그인 번들)               |
 | `figma`           | (번들) | —                                      | Figma 디자인 파일 연동 (figma 플러그인 번들)                           |
 | `atlassian`       | (번들) | —                                      | Jira/Confluence 연동 (atlassian 플러그인 번들)                         |

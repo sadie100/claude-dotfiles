@@ -97,7 +97,8 @@
     "skill-creator@claude-plugins-official": true,
     "notion@claude-plugins-official": true,
     "chrome-devtools-mcp@claude-plugins-official": true,
-    "figma@claude-plugins-official": true
+    "figma@claude-plugins-official": true,
+    "eli5@claude-community": true
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
