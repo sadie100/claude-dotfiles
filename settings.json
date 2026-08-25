@@ -117,6 +117,12 @@
         "source": "github",
         "repo": "anthropics/skills"
       }
+    },
+    "claude-community": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-community"
+      }
     }
   },
   "effortLevel": "medium",
