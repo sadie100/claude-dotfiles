@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: dcebcedbd8bcd6628df16bbaf13622b3d516c53c10e551f184ef2fad3c3d7bb5 -->
+<!-- harness-sync-fingerprint: 0d8a28fa91ef17ccbbfc817d413e86e935d6e44180b29eff496248841866c07a -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -197,6 +197,7 @@
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시                  | document-skills   | 구조화된 문서/제안서/스펙 공동 작성 워크플로우                                                            |
 | `document-skills:internal-comms`  | 사내 커뮤니케이션 작성 요청 시          | document-skills   | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성                                                      |
 | `eli5:eli5`                       | `/eli5 <주제>`                          | eli5              | 어떤 주제든 큰 시각 요소 위주의 초간단 HTML 그림 설명서로 변환                                            |
+| `eli5`                            | `/eli5 <주제>`                          | custom            | 로컬 설치본 — 주제를 큰 그림·적은 텍스트의 HTML 설명서로 변환                                             |
 | `diagram`                         | `/diagram`                              | gstack            | 영어 설명/머메이드 소스 → 다이어그램 트리플릿(소스 + 편집 가능 파일)                                      |
 | `document-generate`               | `/document-generate`                    | gstack            | 기능/모듈/프로젝트 문서를 처음부터 생성                                                                   |
 | `document-release`                | `/document-release`                     | gstack            | 배포 후 문서 갱신                                                                                         |
