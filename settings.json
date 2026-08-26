@@ -41,7 +41,7 @@
       "Bash(npm install *)"
     ]
   },
-  "model": "sonnet",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "ConfigChange": [
       {
