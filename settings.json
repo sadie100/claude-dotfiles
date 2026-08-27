@@ -27,7 +27,15 @@
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__click"
     ],
     "deny": [
-      "Write(./node_modules/**)"
+      "Write(./node_modules/**)",
+      "Bash(pip install *)",
+      "Bash(pip3 install *)",
+      "Bash(python -m pip install *)",
+      "Bash(python3 -m pip install *)",
+      "Bash(brew install *)",
+      "Bash(npm install -g *)",
+      "Bash(npm i -g *)",
+      "Bash(pnpm add -g *)"
     ],
     "ask": [
       "Write(./.env)",
