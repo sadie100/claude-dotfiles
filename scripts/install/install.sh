@@ -25,8 +25,9 @@ import json, sys
 def deep_merge(base, over):
     if isinstance(base, dict) and isinstance(over, dict):
         result = {}
-        for k in set(list(base.keys()) + list(over.keys())):
-            if k in base and k in over:
+        # base 키 순서를 그대로 유지 (충돌 시 base 우선, 배열은 합집합)
+        for k in base:
+            if k in over:
                 if isinstance(base[k], dict) and isinstance(over[k], dict):
                     result[k] = deep_merge(base[k], over[k])
                 elif isinstance(base[k], list) and isinstance(over[k], list):
@@ -37,9 +38,11 @@ def deep_merge(base, over):
                     result[k] = seen
                 else:
                     result[k] = base[k]
-            elif k in base:
-                result[k] = base[k]
             else:
+                result[k] = base[k]
+        # over 에만 있는 키는 뒤에 추가 (기존 순서 보존)
+        for k in over:
+            if k not in base:
                 result[k] = over[k]
         return result
     return base
@@ -70,20 +73,44 @@ node "$DOTFILES_DIR/scripts/mcp-sync/mcp-sync.mjs" pull
 # --- Skills: absorb existing + directory symlink ---
 SKILLS_TARGET="$CLAUDE_DIR/skills"
 SKILLS_SOURCE="$DOTFILES_DIR/skills"
+SKILLS_BACKUP="$CLAUDE_DIR/skills.bak"
 
 if [ -L "$SKILLS_TARGET" ]; then
   echo "[skip]   $SKILLS_TARGET (already linked)"
 else
   # Absorb existing skills into dotfiles repo
   if [ -d "$SKILLS_TARGET" ]; then
+    # .ignore is a container, not a single skill: reconcile each sub-skill by
+    # name instead of comparing the whole folder as one unit. Handled outside
+    # the loop below because its glob does not match dot-directories.
+    if [ -d "$SKILLS_TARGET/.ignore" ]; then
+      mkdir -p "$SKILLS_SOURCE/.ignore"
+      for sub in "$SKILLS_TARGET/.ignore/"*/; do
+        [ -d "$sub" ] || continue
+        subname="$(basename "$sub")"
+        repo_sub="$SKILLS_SOURCE/.ignore/$subname"
+
+        if [ -d "$repo_sub" ]; then
+          echo "[skip]   .ignore/$subname already exists in dotfiles, backing up local copy"
+          mkdir -p "$SKILLS_BACKUP/.ignore"
+          mv "$sub" "$SKILLS_BACKUP/.ignore/$subname"
+        else
+          echo "[absorb] $sub -> $repo_sub"
+          cp -r "$sub" "$repo_sub"
+        fi
+      done
+    fi
+
     for skill in "$SKILLS_TARGET/"*/; do
       [ -d "$skill" ] || continue
       name="$(basename "$skill")"
+
       repo_skill="$SKILLS_SOURCE/$name"
 
       if [ -d "$repo_skill" ]; then
         echo "[skip]   $name already exists in dotfiles, backing up local copy"
-        mv "$skill" "${skill%/}.bak"
+        mkdir -p "$SKILLS_BACKUP"
+        mv "$skill" "$SKILLS_BACKUP/$name"
       else
         echo "[absorb] $skill -> $repo_skill"
         cp -r "$skill" "$repo_skill"
@@ -147,41 +174,54 @@ else
   echo "[link]   $TARGET_CLAUDE -> $DOTFILES_CLAUDE"
 fi
 
-# Register dotclaude in shell profile (source from repo, not inline)
+# Register dotclaude in shell profile.
+#   DOTCLAUDE_DIR must be exported where a NON-interactive login zsh can read it,
+#   because that's the shell Claude Code uses to run hooks/tools — it sources
+#   .zshenv but skips .zshrc (interactive-only). Putting the export in .zshrc
+#   left DOTCLAUDE_DIR empty in hooks launched from GUI editors (e.g. VSCode),
+#   which silently broke harness-sync/auto-push. So:
+#     - export DOTCLAUDE_DIR  -> ~/.zshenv        (env, every zsh invocation)
+#     - source dotclaude-func -> interactive rc   (functions/aliases)
 DOTCLAUDE_SOURCE_MARKER="# dotclaude-start"
-DOTCLAUDE_SOURCE_BLOCK="$DOTCLAUDE_SOURCE_MARKER
+ENV_BLOCK="$DOTCLAUDE_SOURCE_MARKER
 export DOTCLAUDE_DIR=\"$DOTFILES_DIR\"
+# dotclaude-end"
+FUNC_BLOCK="$DOTCLAUDE_SOURCE_MARKER
 source \"\$DOTCLAUDE_DIR/scripts/dotclaude-func/dotclaude-func.sh\"
 # dotclaude-end"
 
-SHELL_PROFILE=""
-if [ -f "$HOME/.zshrc" ]; then
-  SHELL_PROFILE="$HOME/.zshrc"
-elif [ -f "$HOME/.bashrc" ]; then
-  SHELL_PROFILE="$HOME/.bashrc"
-fi
-
-if [ -n "$SHELL_PROFILE" ]; then
-  # Remove old inline function if present
-  if grep -qF "function dotclaude" "$SHELL_PROFILE"; then
-    sed -i.bak "/function dotclaude/,/^}/d" "$SHELL_PROFILE"
-    echo "[clean]  Removed old inline dotclaude function from $SHELL_PROFILE"
+# Idempotently replace a marked dotclaude block in $1 with the content in $2.
+write_dotclaude_block() {
+  local file="$1" block="$2"
+  touch "$file"
+  if grep -qF "$DOTCLAUDE_SOURCE_MARKER" "$file"; then
+    sed -i.bak "/# dotclaude-start/,/# dotclaude-end/d" "$file"
   fi
+  printf '\n%s\n' "$block" >> "$file"
+}
 
-  # Remove old source block if present, then re-add
-  if grep -qF "$DOTCLAUDE_SOURCE_MARKER" "$SHELL_PROFILE"; then
-    sed -i.bak "/# dotclaude-start/,/# dotclaude-end/d" "$SHELL_PROFILE"
-  fi
-
-  echo "" >> "$SHELL_PROFILE"
-  echo "$DOTCLAUDE_SOURCE_BLOCK" >> "$SHELL_PROFILE"
-  echo "[alias]  Registered dotclaude in $SHELL_PROFILE (sourced from repo)"
+if [ -n "${ZSH_VERSION:-}" ] || [ -f "$HOME/.zshrc" ] || [ "$(basename "${SHELL:-}")" = "zsh" ]; then
+  # zsh: env in .zshenv (read by CC's non-interactive login zsh), funcs in .zshrc
+  write_dotclaude_block "$HOME/.zshenv" "$ENV_BLOCK"
+  write_dotclaude_block "$HOME/.zshrc" "$FUNC_BLOCK"
+  echo "[env]    Exported DOTCLAUDE_DIR in ~/.zshenv (read by Claude Code hook shell)"
+  echo "[alias]  Registered dotclaude in ~/.zshrc"
   echo ""
-  echo "Done! Run 'source $SHELL_PROFILE' or restart your shell to use 'dotclaude'."
+  echo "Done! Restart your shell (or Claude Code) to pick up DOTCLAUDE_DIR."
+elif [ -f "$HOME/.bashrc" ]; then
+  # bash: keep both in one profile (bash has no .zshenv equivalent)
+  write_dotclaude_block "$HOME/.bashrc" "$DOTCLAUDE_SOURCE_MARKER
+export DOTCLAUDE_DIR=\"$DOTFILES_DIR\"
+source \"\$DOTCLAUDE_DIR/scripts/dotclaude-func/dotclaude-func.sh\"
+# dotclaude-end"
+  echo "[alias]  Registered dotclaude in ~/.bashrc"
+  echo ""
+  echo "Done! Run 'source ~/.bashrc' or restart your shell to use 'dotclaude'."
 else
   echo ""
-  echo "Done! Could not detect shell profile. Manually add these lines to your profile:"
-  echo "$DOTCLAUDE_SOURCE_BLOCK"
+  echo "Done! Could not detect shell profile. Add DOTCLAUDE_DIR to your shell env manually:"
+  echo "$ENV_BLOCK"
+  echo "$FUNC_BLOCK"
 fi
 
 # Make sync script executable

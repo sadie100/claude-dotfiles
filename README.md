@@ -25,6 +25,14 @@ Claude Code는 머신마다 `~/.claude/` 아래에 settings, skills, CLAUDE.md�
 | `CLAUDE.md` | 전역 지시사항 | symlink | O |
 | `mcp-servers.json` | user-scope MCP 서버 (`~/.claude.json`의 `mcpServers` 키) | JSON 머지 (수동 / `dotclaude pull` 시 자동) | X |
 
+### `skills/.ignore/` — 로컬/회사 전용 스킬
+
+`skills/.ignore/` 아래에 둔 스킬은 `.gitignore`로 제외되어 git에 추적되지 않고, [HARNESS.md](./HARNESS.md) 자동 생성에도 포함되지 않습니다. 회사 도메인이나 머신 고유 설정에 종속된 스킬처럼 레포에 올리고 싶지 않은 스킬을 둘 때 사용하세요.
+
+- Claude Code는 `skills/` 바로 아래 1단계 폴더의 SKILL.md만 로드하므로, `scripts/local-skills-link/local-skills-link.sh`가 최상위 심링크(`skills/foo -> .ignore/foo`)를 만들어 노출합니다. 심링크는 `.git/info/exclude`에 자동 등록되어 git에 노출되지 않습니다
+- 이 스크립트는 `ConfigChange` 훅으로 자동 실행됩니다. 스킬을 추가했는데 심링크가 안 생겼다면 수동으로 한 번 실행하세요
+- 기기 간 동기화되지 않으므로 필요한 각 기기에서 직접 채워야 합니다
+
 ## 설치 방법
 
 ### 새 환경에서 설치 (원라이너)

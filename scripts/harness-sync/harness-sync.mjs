@@ -9,7 +9,7 @@
 // 3) Serializes a JSON payload and pipes it to `claude -p` so an LLM
 //    re-renders the markered sections in HARNESS.md.
 
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync, lstatSync, realpathSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -294,6 +294,15 @@ function collectLocalSkills() {
   const skillsDir = join(REPO_ROOT, "skills");
   const out = [];
   for (const dir of lsDirs(skillsDir)) {
+    if (dir === ".ignore") continue; // company/local-only skills — never documented or synced
+    // Top-level symlinks into .ignore/ (created by local-skills-link.sh) are
+    // local-only too — skip them the same way.
+    const full = join(skillsDir, dir);
+    try {
+      if (lstatSync(full).isSymbolicLink() && realpathSync(full).startsWith(realpathSync(join(skillsDir, ".ignore")) + "/")) continue;
+    } catch {
+      continue; // dangling symlink
+    }
     const content = readTextSafe(join(skillsDir, dir, "SKILL.md"));
     if (!content) continue;
     const fm = parseFrontmatter(content);
@@ -568,6 +577,9 @@ function main() {
   };
 
   const prompt = buildPrompt(payload, newFingerprint);
+  process.stdout.write(
+    "[harness-sync] HARNESS.md를 재생성합니다 (claude 호출, 최대 1분 소요). 스크립트를 중단하지 말고 기다려 주세요...\n",
+  );
   const ok = runClaude(prompt);
   if (!ok) {
     notifyUser("harness-sync: HARNESS.md 자동 갱신 실패 (claude 실행 오류). 직접 확인 필요.");

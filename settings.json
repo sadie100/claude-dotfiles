@@ -31,6 +31,8 @@
     ],
     "ask": [
       "Write(./.env)",
+      "Read(**/.env*)",
+      "Bash(*.env*)",
       "Bash(* deploy *)",
       "Bash(* publish *)",
       "Bash(git push *)",
@@ -39,14 +41,14 @@
       "Bash(npm install *)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "ConfigChange": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs\"",
+            "command": "\"$DOTCLAUDE_DIR/scripts/local-skills-link/local-skills-link.sh\"; node \"$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs\"",
             "async": false
           }
         ]
@@ -63,13 +65,13 @@
         ]
       }
     ],
-    "PostToolUse": [
+    "Stop": [
       {
-        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write"
+            "command": "node \"$DOTCLAUDE_DIR/scripts/hooks/notify.mjs\" \"응답이 완료되었습니다\"",
+            "async": true
           }
         ]
       }
@@ -89,12 +91,13 @@
     "slack@claude-plugins-official": true,
     "atlassian@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": false,
     "code-review@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "notion@claude-plugins-official": true,
-    "chrome-devtools-mcp@claude-plugins-official": true
+    "chrome-devtools-mcp@claude-plugins-official": true,
+    "figma@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
@@ -108,11 +111,22 @@
         "source": "github",
         "repo": "spences10/claude-code-toolkit"
       }
+    },
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
     }
   },
   "effortLevel": "medium",
+  "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
+<<<<<<< HEAD
   "theme": "dark",
+=======
+  "theme": "light-daltonized",
+>>>>>>> e19edbb2e35f1d9f3ba4f5e9df168e9bcb9c3817
   "skipAutoPermissionPrompt": true
 }
