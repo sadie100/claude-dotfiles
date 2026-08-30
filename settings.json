@@ -123,10 +123,6 @@
   "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
-<<<<<<< HEAD
-  "theme": "dark",
-=======
   "theme": "light-daltonized",
->>>>>>> e19edbb2e35f1d9f3ba4f5e9df168e9bcb9c3817
   "skipAutoPermissionPrompt": true
 }
