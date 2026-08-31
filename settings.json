@@ -134,7 +134,7 @@
       }
     }
   },
-  "effortLevel": "high",
+  "effortLevel": "medium",
   "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
