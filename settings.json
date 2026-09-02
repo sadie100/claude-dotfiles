@@ -49,7 +49,7 @@
       "Bash(npm install *)"
     ]
   },
-  "model": "claude-fable-5[1m]",
+  "model": "fable[1m]",
   "hooks": {
     "ConfigChange": [
       {
@@ -138,6 +138,5 @@
   "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
-  "theme": "light-daltonized",
-  "skipAutoPermissionPrompt": true
+  "theme": "light-daltonized"
 }
