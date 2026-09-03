@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 0d8a28fa91ef17ccbbfc817d413e86e935d6e44180b29eff496248841866c07a -->
+<!-- harness-sync-fingerprint: 82cea8a1314adfd86f38731e45b2fe2275ea69083e9c67d1fa975462bd697baf -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -236,6 +236,8 @@
 | `figma:figma-use-figjam`                | FigJam 컨텍스트 use_figma 사용 시                    | figma           | FigJam 컨텍스트에서 use_figma 툴 사용 보조                                                           |
 | `figma:figma-use-motion`                | 노드 애니메이션 작업 시                              | figma           | use_figma 툴로 노드 애니메이션(키프레임/이징/타임라인) 작업                                          |
 | `figma:figma-use-slides`                | 슬라이드 컨텍스트 use_figma 사용 시                  | figma           | 슬라이드 컨텍스트에서 use_figma 툴 사용 보조                                                         |
+| `figma:figma-shaders`                   | Figma 셰이더 효과/필 작업 시                         | figma           | `create_shader`/`update_shader` 호출 전 필수 로드 — 프로시저럴 셰이더 효과·필 생성/수정              |
+| `figma:figma-generative-plugins`        | 재사용 가능한 Figma 제너레이티브 플러그인 작업 시    | figma           | `create_generative_plugin`/`update_generative_plugin` 호출 전 필수 로드 — 플러그인 작성·수정·확장    |
 | `design-consultation`                   | `/design-consultation`                               | gstack          | 제품 이해 → 랜드스케이프 리서치 → 디자인 시스템 제안 + 폰트·컬러 프리뷰                              |
 | `design-html`                           | `/design-html`                                       | gstack          | 프로덕션급 Pretext-native HTML/CSS 디자인 확정                                                       |
 | `design-shotgun`                        | `/design-shotgun`                                    | gstack          | 다중 AI 디자인 변형 생성·비교 보드·피드백·반복                                                       |
@@ -350,6 +352,7 @@ AI 검색(ChatGPT, Claude, Perplexity, Gemini, Google AI Overviews) 가시성 �
 | `fewer-permission-prompts`   | 권한 프롬프트 최소화 요청 시  | built-in          | 자주 쓰는 read-only 명령을 allowlist로 추가                         |
 | `loop`                       | 반복 실행 요청 시             | built-in          | 프롬프트/슬래시 명령을 주기적으로 실행                              |
 | `git-guardrails-claude-code` | 파괴적 git 명령 차단 셋업 시  | custom            | Claude Code 훅으로 위험한 git 명령(push, reset --hard 등) 사전 차단 |
+| `bye`                        | `/bye`                        | custom            | 현재 Claude Code 세션 프로세스와 MCP 자식 프로세스만 종료 (VSCode 확장의 `/exit` 부재 우회) |
 | `scaffold-exercises`         | 코스 연습문제 스캐폴드 시     | mattpocock/skills | 섹션·문제·솔루션·해설 포함 연습문제 디렉토리 구조 생성(린트 통과)   |
 
 ### gstack 전용 (gstack 스택 종속)
@@ -445,7 +448,7 @@ User-scope MCP 서버([`mcp-servers.json`](mcp-servers.json))와 활성 플러�
 | ----------------- | ------ | -------------------------------------- | ---------------------------------------------------------------------- |
 | `aws-knowledge`   | http   | `https://knowledge-mcp.global.api.aws` | AWS 공식 문서/지식 베이스 조회                                         |
 | `context7`        | stdio  | `npx -y @upstash/context7-mcp`         | 라이브러리/프레임워크 최신 문서 조회 (context7 플러그인 번들)          |
-| `chrome-devtools` | stdio  | `npx chrome-devtools-mcp@1.7.0`        | Chrome 브라우저 제어/디버깅/자동화 (chrome-devtools-mcp 플러그인 번들) |
+| `chrome-devtools` | stdio  | `npx chrome-devtools-mcp@1.8.0`        | Chrome 브라우저 제어/디버깅/자동화 (chrome-devtools-mcp 플러그인 번들) |
 | `playwright`      | stdio  | `npx @playwright/mcp@latest`           | 브라우저 자동화 및 E2E 테스트 (playwright 플러그인 번들)               |
 | `figma`           | (번들) | —                                      | Figma 디자인 파일 연동 (figma 플러그인 번들)                           |
 | `atlassian`       | (번들) | —                                      | Jira/Confluence 연동 (atlassian 플러그인 번들)                         |
