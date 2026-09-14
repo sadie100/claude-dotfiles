@@ -89,7 +89,9 @@ def lint(path, strict=False):
             if len(inner) >= 20 or ENDINGS.search(inner.strip()) and len(inner) > 8:
                 out.append((i, "괄호 안 문장", "(" + inner[:50] + ")"))
         for s in split_sentences(body_nocode):
-            s2 = s.strip().rstrip("*").strip()
+            s2 = s.strip().strip("*").strip()
+            # 문장 끝의 짧은 괄호 인용("(§20)." 같은 근거 표기)은 종결 판정에서 뺀다
+            s2 = re.sub(r"\s*[(（][^()（）]{0,30}[)）][.!?]?$", "", s2).strip()
             if s2.endswith(":") or s2.endswith("："):
                 continue
             if len(s2) < 4:
