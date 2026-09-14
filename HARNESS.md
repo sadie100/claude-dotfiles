@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 82cea8a1314adfd86f38731e45b2fe2275ea69083e9c67d1fa975462bd697baf -->
+<!-- harness-sync-fingerprint: 8306c035a34a9428f127b1b7c7b301dd61966b4dd53f637d05b03cbfaecb9c8b -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -136,6 +136,7 @@
 | `chrome-devtools-mcp:memory-leak-debugging` | 메모리 누수 진단 요청 시           | chrome-devtools-mcp | JS/Node.js 메모리 누수 진단 (heapsnapshot, memlab 활용) |
 | `chrome-devtools-mcp:debug-optimize-lcp`    | LCP/Core Web Vitals 최적화 요청 시 | chrome-devtools-mcp | Largest Contentful Paint 디버깅 및 최적화 가이드        |
 | `chrome-devtools-mcp:a11y-debugging`        | 접근성 진단 요청 시                | chrome-devtools-mcp | 시맨틱 HTML, ARIA, 키보드 네비게이션, 명도 대비 점검    |
+| `chrome-devtools-mcp:cookie-debugging`      | 쿠키/세션/인증 문제 진단 시        | chrome-devtools-mcp | 401/403·세션 만료·Set-Cookie·SameSite·쿠키 동의 배너 점검 |
 | `chrome-devtools-mcp:troubleshooting`       | MCP 연결/타깃 문제 발생 시         | chrome-devtools-mcp | Chrome DevTools MCP 연결 문제 해결                      |
 | `investigate`                               | `/investigate`                     | gstack              | 루트 코즈 조사 기반 체계적 디버깅                       |
 
@@ -193,6 +194,7 @@
 | `cafe24-analyze-plugin`           | `/cafe24-analyze-plugin`                | custom            | Cafe24 스킨 코드베이스를 전수 스캔해 외부 플러그인을 4분류(기능성 SaaS/카페24 앱/마케팅·트래킹/커스텀 데이터)로 인벤토리하고 상세+요약 문서 2종 산출 |
 | `excalidraw-diagram`              | 워크플로우/아키텍처/개념 시각화 요청 시 | custom            | 워크플로우·아키텍처·개념을 시각적으로 설명하는 Excalidraw 다이어그램 JSON 생성                            |
 | `figma:figma-generate-diagram`    | Figma에 다이어그램 생성 요청 시         | figma             | `generate_diagram` 호출 전 필수 로드 — FigJam에 Mermaid 기반 플로우차트/아키텍처/시퀀스/ERD 생성          |
+| `ko-doc`                          | `/ko-doc` (한국어 전달 문서 작성/교정 시) | custom          | 노션·레포 한국어 문서, 타 팀 전달용 보고서·요청서를 독자에 맞춰 문장형으로 작성 (메모체 AI 말투 방지)     |
 | `humanizer`                       | AI 작성 흔적 제거 요청 시               | custom            | AI 생성 텍스트의 패턴(과장 상징, 홍보성 문구, em dash 남발 등)을 검출하고 자연스럽게 교정                 |
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시                  | document-skills   | 구조화된 문서/제안서/스펙 공동 작성 워크플로우                                                            |
 | `document-skills:internal-comms`  | 사내 커뮤니케이션 작성 요청 시          | document-skills   | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성                                                      |
@@ -448,7 +450,7 @@ User-scope MCP 서버([`mcp-servers.json`](mcp-servers.json))와 활성 플러�
 | ----------------- | ------ | -------------------------------------- | ---------------------------------------------------------------------- |
 | `aws-knowledge`   | http   | `https://knowledge-mcp.global.api.aws` | AWS 공식 문서/지식 베이스 조회                                         |
 | `context7`        | stdio  | `npx -y @upstash/context7-mcp`         | 라이브러리/프레임워크 최신 문서 조회 (context7 플러그인 번들)          |
-| `chrome-devtools` | stdio  | `npx chrome-devtools-mcp@1.8.0`        | Chrome 브라우저 제어/디버깅/자동화 (chrome-devtools-mcp 플러그인 번들) |
+| `chrome-devtools` | stdio  | `npx chrome-devtools-mcp@1.9.0`        | Chrome 브라우저 제어/디버깅/자동화 (chrome-devtools-mcp 플러그인 번들) |
 | `playwright`      | stdio  | `npx @playwright/mcp@latest`           | 브라우저 자동화 및 E2E 테스트 (playwright 플러그인 번들)               |
 | `figma`           | (번들) | —                                      | Figma 디자인 파일 연동 (figma 플러그인 번들)                           |
 | `atlassian`       | (번들) | —                                      | Jira/Confluence 연동 (atlassian 플러그인 번들)                         |
