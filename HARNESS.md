@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 8306c035a34a9428f127b1b7c7b301dd61966b4dd53f637d05b03cbfaecb9c8b -->
+<!-- harness-sync-fingerprint: 9db4b7b4fba6321dc11af630f6ca48071729fa98f7b533d8f54dd5e5e67e01d4 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -191,7 +191,6 @@
 | `explain-diff-notion`             | 코드 변경/diff/PR 설명 요청 시          | custom            | 코드 변경·브랜치·PR을 풍부하게 설명하는 Notion 페이지 생성                                                |
 | `cafe24-doc-update`               | `/cafe24-doc-update`                    | custom            | 세션에서 실측한 비자명한 Cafe24/SmartDesign 동작을 cafe24 공용/몰별 CLAUDE.md에 기존 톤·구조에 맞춰 반영 |
 | `cafe24-data-source-survey`       | 자사몰 데이터 출처 조사·문서화 요청 시  | custom            | 자사몰별 라이브 페이지의 특정 데이터가 어느 Cafe24 소스(모듈/변수·에디터 필드·스킨 JS·앱)에서 오는지 추적해 자사몰-구현-현황 문서에 카테고리로 기록 |
-| `cafe24-analyze-plugin`           | `/cafe24-analyze-plugin`                | custom            | Cafe24 스킨 코드베이스를 전수 스캔해 외부 플러그인을 4분류(기능성 SaaS/카페24 앱/마케팅·트래킹/커스텀 데이터)로 인벤토리하고 상세+요약 문서 2종 산출 |
 | `excalidraw-diagram`              | 워크플로우/아키텍처/개념 시각화 요청 시 | custom            | 워크플로우·아키텍처·개념을 시각적으로 설명하는 Excalidraw 다이어그램 JSON 생성                            |
 | `figma:figma-generate-diagram`    | Figma에 다이어그램 생성 요청 시         | figma             | `generate_diagram` 호출 전 필수 로드 — FigJam에 Mermaid 기반 플로우차트/아키텍처/시퀀스/ERD 생성          |
 | `ko-doc`                          | `/ko-doc` (한국어 전달 문서 작성/교정 시) | custom          | 노션·레포 한국어 문서, 타 팀 전달용 보고서·요청서를 독자에 맞춰 문장형으로 작성 (메모체 AI 말투 방지)     |
@@ -271,6 +270,7 @@
 | `slack:slack-cli`          | Slack CLI 사용 시            | slack | Slack CLI로 앱 생성·로컬 실행·매니페스트 관리, 개발자 문서 검색 |
 | `slack:create-slack-app`   | Slack 앱/에이전트 생성 시    | slack | Slack CLI + Bolt(JS/Python) 기반 Slack 앱 생성 가이드 |
 | `slack:slack-docs`         | Slack 플랫폼 문서 조회 시    | slack | docs.slack.dev 공식 문서 검색·요약 |
+| `slack:test-slack-app`     | Slack 앱 동작 테스트 시      | slack | 개발자 샌드박스에서 `slack run`으로 슬래시 명령·이벤트·모달 등 실동작 점검 |
 
 #### Notion
 
