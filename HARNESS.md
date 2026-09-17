@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 45187bf9049f29eb8dc8d693bf80fce5d8a30478d98cb346a58dab4c0267c23d -->
+<!-- harness-sync-fingerprint: 9db4b7b4fba6321dc11af630f6ca48071729fa98f7b533d8f54dd5e5e67e01d4 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -121,6 +121,7 @@
 | `prototype`                           | 디자인 탐색용 프로토타입 요청 시 | mattpocock/skills | 일회용 프로토타입(터미널 앱 또는 단일 라우트의 UI 변형들) 빌드 |
 | `resolving-merge-conflicts`           | 머지/리베이스 충돌 해결 시       | mattpocock/skills | 진행 중인 git 머지/리베이스 충돌 해소 가이드                   |
 | `cafe24-smart-design`                 | Cafe24 스킨 템플릿 작성/편집 시  | custom            | Cafe24 Smart Design 모듈·변수(`{$...}`)·모디파이어 레퍼런스    |
+| `cafe24-live-fix`                     | `/cafe24-live-fix`               | custom            | FTP 연동·로컬 미러가 없는 Cafe24 몰의 CSS/JS를 라이브 URL만으로 수정해 완성 코드 전달 |
 | `codex`                               | `/codex`                         | gstack            | OpenAI Codex CLI 래퍼 — 3가지 모드                             |
 
 ### 디버깅·진단
