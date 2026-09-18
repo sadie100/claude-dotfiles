@@ -49,7 +49,7 @@
       "Bash(npm install *)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "claude-fable-5-1[1m]",
   "hooks": {
     "ConfigChange": [
       {
