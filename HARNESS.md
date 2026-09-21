@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: a19b06c24b3d957a669182a897e7b0caff7d4b3c2653aa95af788acaf4b000a4 -->
+<!-- harness-sync-fingerprint: 9db4b7b4fba6321dc11af630f6ca48071729fa98f7b533d8f54dd5e5e67e01d4 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -191,7 +191,6 @@
 | `explain-diff-notion`             | 코드 변경/diff/PR 설명 요청 시          | custom            | 코드 변경·브랜치·PR을 풍부하게 설명하는 Notion 페이지 생성                                                |
 | `cafe24-doc-update`               | `/cafe24-doc-update`                    | custom            | 세션에서 실측한 비자명한 Cafe24/SmartDesign 동작을 cafe24 공용/몰별 CLAUDE.md에 기존 톤·구조에 맞춰 반영 |
 | `cafe24-data-source-survey`       | 자사몰 데이터 출처 조사·문서화 요청 시  | custom            | 자사몰별 라이브 페이지의 특정 데이터가 어느 Cafe24 소스(모듈/변수·에디터 필드·스킨 JS·앱)에서 오는지 추적해 자사몰-구현-현황 문서에 카테고리로 기록 |
-| `cafe24-standard-update-notice`   | `/cafe24-standard-update-notice`        | custom            | 자사몰 표준안(standard-cafe24) 변경사항을 사업부용 슬랙 "[업데이트 안내]" mrkdwn 문서 초안으로 작성 (전송은 하지 않음) |
 | `excalidraw-diagram`              | 워크플로우/아키텍처/개념 시각화 요청 시 | custom            | 워크플로우·아키텍처·개념을 시각적으로 설명하는 Excalidraw 다이어그램 JSON 생성                            |
 | `figma:figma-generate-diagram`    | Figma에 다이어그램 생성 요청 시         | figma             | `generate_diagram` 호출 전 필수 로드 — FigJam에 Mermaid 기반 플로우차트/아키텍처/시퀀스/ERD 생성          |
 | `ko-doc`                          | `/ko-doc` (한국어 전달 문서 작성/교정 시) | custom          | 노션·레포 한국어 문서, 타 팀 전달용 보고서·요청서를 독자에 맞춰 문장형으로 작성 (메모체 AI 말투 방지)     |
