@@ -35,7 +35,14 @@
       "Bash(brew install *)",
       "Bash(npm install -g *)",
       "Bash(npm i -g *)",
-      "Bash(pnpm add -g *)"
+      "Bash(pnpm add -g *)",
+      "Bash(git reset --hard*)",
+      "Bash(git push --force)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git checkout -- .*)",
+      "Bash(git checkout .)",
+      "Bash(git clean -f*)"
     ],
     "ask": [
       "Write(./.env)",
