@@ -142,13 +142,13 @@
     }
   },
   "effortLevel": "medium",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    }
+  },
   "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
-  "theme": "light-daltonized",
-  "modelSettings": {
-    "claude-opus-5-5": {
-      "effortLevel": "xhigh"
-    }
-  }
+  "theme": "light-daltonized"
 }
