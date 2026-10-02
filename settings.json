@@ -145,5 +145,10 @@
   "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
-  "theme": "light-daltonized"
+  "theme": "light-daltonized",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  }
 }
