@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 857ed60898b34ab6c4812a4973220bdf7b0d1c4ef7709bec0acd85bd4a17ed44 -->
+<!-- harness-sync-fingerprint: fde7f27c121fef6ebc48d33cb9bb6c22fb2e6630634ae9d61d2758c28c10419b -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -434,6 +434,8 @@ gstack의 런타임·인프라(browse 엔진, gstack 브라우저, gbrain, 세�
 | `ConfigChange` | `"$DOTCLAUDE_DIR/scripts/local-skills-link/local-skills-link.sh"; node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"` | ❌ (sync) | 설정 변경 시 로컬 스킬 심볼릭 링크 갱신 + HARNESS.md 자동 갱신 (fingerprint로 게이트) |
 | `Notification` | `node "$DOTCLAUDE_DIR/scripts/hooks/notify.mjs"`                                                                       | ❌ (sync) | Claude Code 알림 발생 시 notify.mjs 실행                         |
 | `Stop`         | `node "$DOTCLAUDE_DIR/scripts/hooks/notify.mjs" "응답이 완료되었습니다"`                                               | ✅ (async) | 응답 완료 시 완료 알림 전송                                      |
+| `Stop`         | `node "$DOTCLAUDE_DIR/scripts/hooks/browser-guard.mjs"`                                                                | ❌ (sync) | 자동완성 로그인 폼을 시도하지 않고 사용자에게 로그인을 요청하는 응답 차단 |
+| `PreToolUse`   | `node "$DOTCLAUDE_DIR/scripts/hooks/browser-guard.mjs"`                                                                | ❌ (sync) | 공유 디버깅 Chrome을 교란하는 브라우저 툴(창 리사이즈·탭 닫기·격리 창 등) 호출 차단 |
 
 <!-- AUTO:END hooks -->
 

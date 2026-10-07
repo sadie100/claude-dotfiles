@@ -74,6 +74,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 A few local overrides on top of the principles above.
 
 - **Skill creation:** Always use `~/.claude/skills` for `--path` when creating skills.
+- **Skills missing from your list:** When the user names a `/skill` that isn't in your available-skills list, never conclude it doesn't exist. Skills with `disable-model-invocation: true` are hidden from your list but still exist — look on disk first (`~/.claude/skills/<name>/SKILL.md`, project `.claude/skills/`, `~/.claude/commands/`, `.claude/commands/`), then read and follow that SKILL.md.
 - **Doc editing:** When extending existing docs (READMEs, guides, etc.), match the document's tone, structure, and level of detail. New sections should blend in rather than stand out — avoid making added blocks or diagrams more prominent than the existing ones.
 
 # Model Roles: Advisor / Worker

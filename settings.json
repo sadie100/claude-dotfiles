@@ -87,6 +87,21 @@
             "type": "command",
             "command": "node \"$DOTCLAUDE_DIR/scripts/hooks/notify.mjs\" \"응답이 완료되었습니다\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "node \"$DOTCLAUDE_DIR/scripts/hooks/browser-guard.mjs\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__chrome-devtools-shared__.*|mcp__playwright-shared__.*|mcp__claude-in-chrome__.*|mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$DOTCLAUDE_DIR/scripts/hooks/browser-guard.mjs\""
           }
         ]
       }
