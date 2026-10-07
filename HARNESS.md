@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: fde7f27c121fef6ebc48d33cb9bb6c22fb2e6630634ae9d61d2758c28c10419b -->
+<!-- harness-sync-fingerprint: 57f0043f71ab327a7fbe82d2d2cf333887d6d77faa8205ed17c155d34e7ec190 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -434,7 +434,6 @@ gstack의 런타임·인프라(browse 엔진, gstack 브라우저, gbrain, 세�
 | `ConfigChange` | `"$DOTCLAUDE_DIR/scripts/local-skills-link/local-skills-link.sh"; node "$DOTCLAUDE_DIR/scripts/harness-sync/harness-sync.mjs"` | ❌ (sync) | 설정 변경 시 로컬 스킬 심볼릭 링크 갱신 + HARNESS.md 자동 갱신 (fingerprint로 게이트) |
 | `Notification` | `node "$DOTCLAUDE_DIR/scripts/hooks/notify.mjs"`                                                                       | ❌ (sync) | Claude Code 알림 발생 시 notify.mjs 실행                         |
 | `Stop`         | `node "$DOTCLAUDE_DIR/scripts/hooks/notify.mjs" "응답이 완료되었습니다"`                                               | ✅ (async) | 응답 완료 시 완료 알림 전송                                      |
-| `Stop`         | `node "$DOTCLAUDE_DIR/scripts/hooks/browser-guard.mjs"`                                                                | ❌ (sync) | 자동완성 로그인 폼을 시도하지 않고 사용자에게 로그인을 요청하는 응답 차단 |
 | `PreToolUse`   | `node "$DOTCLAUDE_DIR/scripts/hooks/browser-guard.mjs"`                                                                | ❌ (sync) | 공유 디버깅 Chrome을 교란하는 브라우저 툴(창 리사이즈·탭 닫기·격리 창 등) 호출 차단 |
 
 <!-- AUTO:END hooks -->
@@ -450,7 +449,7 @@ User-scope MCP 서버([`mcp-servers.json`](mcp-servers.json))와 활성 플러�
 | 서버              | 타입   | 엔드포인트                             | 설명                                                                   |
 | ----------------- | ------ | -------------------------------------- | ---------------------------------------------------------------------- |
 | `aws-knowledge`   | http   | `https://knowledge-mcp.global.api.aws` | AWS 공식 문서/지식 베이스 조회                                         |
-| `context7`        | stdio  | `npx -y @upstash/context7-mcp`         | 라이브러리/프레임워크 최신 문서 조회 (context7 플러그인 번들)          |
+| `context7`        | http   | `https://mcp.context7.com/mcp`         | 라이브러리/프레임워크 최신 문서 조회 (context7 플러그인 번들)          |
 | `chrome-devtools` | stdio  | `npx chrome-devtools-mcp@1.9.0`        | Chrome 브라우저 제어/디버깅/자동화 (chrome-devtools-mcp 플러그인 번들) |
 | `playwright`      | stdio  | `npx @playwright/mcp@latest`           | 브라우저 자동화 및 E2E 테스트 (playwright 플러그인 번들)               |
 | `figma`           | (번들) | —                                      | Figma 디자인 파일 연동 (figma 플러그인 번들)                           |

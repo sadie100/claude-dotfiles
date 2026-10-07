@@ -2,9 +2,7 @@
 // Shared-Chrome browser guard for Claude Code.
 // PreToolUse: denies browser tools that disturb the shared debugging Chrome
 // (window resize, tab close, extra isolated windows, launch-style servers).
-// Stop: blocks a turn that asks the user to log in before trying the
-// Chrome-autofilled login form. Any internal error exits 0 silently so the
-// session is never broken by this hook.
+// Any internal error exits 0 silently so the session is never broken by this hook.
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
@@ -95,83 +93,11 @@ function preToolUse(payload) {
   }
 }
 
-// Concatenated text of the final assistant turn in the transcript (.jsonl).
-function lastAssistantText(transcriptPath) {
-  try {
-    const lines = readFileSync(transcriptPath, "utf8").split("\n");
-    const parts = [];
-    let seen = false;
-    for (let i = lines.length - 1; i >= 0; i--) {
-      if (!lines[i]) continue;
-      let entry;
-      try {
-        entry = JSON.parse(lines[i]);
-      } catch {
-        continue;
-      }
-      if (entry?.isSidechain) continue;
-      if (entry?.type === "assistant") {
-        seen = true;
-        const content = entry.message?.content;
-        const text = Array.isArray(content)
-          ? content
-              .filter((b) => b?.type === "text" && typeof b.text === "string")
-              .map((b) => b.text)
-              .join(" ")
-          : typeof content === "string"
-            ? content
-            : "";
-        if (text) parts.unshift(text);
-        continue;
-      }
-      // A real user prompt ends the final assistant turn; tool_result entries
-      // (type "user" with tool_result content) are part of the turn.
-      if (entry?.type === "user" && seen) {
-        const c = entry.message?.content;
-        const isToolResult = Array.isArray(c) && c.some((b) => b?.type === "tool_result");
-        if (!isToolResult) break;
-      }
-    }
-    return parts.join(" ");
-  } catch {
-    return "";
-  }
-}
-
-const LOGIN_REQUEST = [
-  /로그인(을|해)?\s*(해\s*주|부탁|좀)/,
-  /로그인\s*(해|하여)\s*주(세요|시)/,
-];
-const ESCAPE_TOKEN = "자동완성 로그인 실패";
-
-function stop(payload) {
-  if (payload.stop_hook_active) return;
-  const text =
-    typeof payload.last_assistant_message === "string" && payload.last_assistant_message
-      ? payload.last_assistant_message
-      : payload.transcript_path
-        ? lastAssistantText(payload.transcript_path)
-        : "";
-  if (!text || text.includes(ESCAPE_TOKEN)) return;
-  if (!LOGIN_REQUEST.some((re) => re.test(text))) return;
-  process.stdout.write(
-    JSON.stringify({
-      decision: "block",
-      reason:
-        "사용자에게 로그인을 부탁하기 전에 직접 시도할 것. 해당 몰의 /member/login.html" +
-        "(개발 스킨이면 /skin-skinN/member/login.html)로 이동하면 아이디와 비밀번호가 크롬 자동완성으로 채워져 있으니 " +
-        "로그인 버튼만 클릭하고, 쿠키 iscache=F로 회원 여부를 확인한다. " +
-        "자동완성이 비어 있거나 로그인이 실패했으면 응답에 '자동완성 로그인 실패'라고 명시하고 그 근거와 함께 부탁할 것.",
-    }),
-  );
-}
-
 async function main() {
   try {
     const raw = await readStdin();
     const payload = JSON.parse(raw);
     if (payload?.hook_event_name === "PreToolUse") preToolUse(payload);
-    else if (payload?.hook_event_name === "Stop") stop(payload);
   } catch {
     // never break the session
   }
