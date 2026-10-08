@@ -38,6 +38,19 @@ function deny(reason) {
   );
 }
 
+// Hands the decision to the user instead of blocking outright (permission prompt).
+function ask(reason) {
+  process.stdout.write(
+    JSON.stringify({
+      hookSpecificOutput: {
+        hookEventName: "PreToolUse",
+        permissionDecision: "ask",
+        permissionDecisionReason: reason,
+      },
+    }),
+  );
+}
+
 function stateFile(sessionId) {
   const safeId = String(sessionId || "unknown").replace(/[^A-Za-z0-9_-]/g, "_");
   return join(STATE_DIR, `${safeId}.json`);
@@ -122,6 +135,7 @@ async function checkNewPage(sessionId, url) {
     `\n한 세션은 회원 탭 1개, 비회원 탭 1개까지만 둔다. 다음을 먼저 할 것:\n` +
     `  1. list_pages로 위 탭의 pageId를 찾는다.\n` +
     `  2. 각 탭에서 쿠키 iscache=F를 읽어 회원/비회원을 판정한다(라벨·isolatedContext 이름으로 단정 금지).\n` +
+    `     이 세션이 열지 않은 탭이어도 판정 대상이다. '다른 세션 탭일 수 있음'은 새 탭을 여는 이유가 아니다.\n` +
     `  3. 필요한 상태의 탭이 있으면 그 탭에서 navigate_page 한다(URL이 달라도 새로 열지 않는다).\n` +
     `확인한 결과 쓸 수 있는 탭이 정말 없을 때만 같은 new_page를 다시 호출한다(그때는 통과). ` +
     `사용자에게 왜 새 탭이 필요한지 한 줄로 알린다.`
@@ -138,8 +152,9 @@ async function preToolUse(payload) {
     );
   }
   if (tool === `${CDP}close_page` || tool === `${PW}browser_close`) {
-    return deny(
-      "검증 탭은 사용자가 이어서 확인하므로 닫지 않는다. 재검증은 기존 탭에서 navigate 할 것.",
+    // 검증 탭은 사용자가 이어서 보므로 스스로 닫지 않는다. 사용자가 닫으라고 한 경우만 승인하도록 묻는다(2026-10-08).
+    return ask(
+      "검증 탭은 사용자가 이어서 확인하므로 에이전트가 스스로 닫지 않는다. 사용자가 이 탭을 닫으라고 요청한 경우에만 승인할 것.",
     );
   }
   if (tool === `${CDP}new_page`) {
@@ -147,7 +162,7 @@ async function preToolUse(payload) {
     const isoReason = name ? checkIsolatedContext(payload.session_id, name) : null;
     if (isoReason) return deny(isoReason);
     const reason = await checkNewPage(payload.session_id, String(input.url || ""));
-    if (reason) deny(reason);
+    if (reason) return deny(reason);
     return;
   }
   if (
