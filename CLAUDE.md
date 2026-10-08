@@ -98,6 +98,7 @@ Brief standards:
 
 - Include the context you've already gathered so the Worker doesn't re-explore it
 - Include file paths, project conventions, known pitfalls, and completion criteria (tests that must pass)
+- Before sending, check the brief's preferences and defaults against the plan the user approved. Copy approved behaviors into the brief verbatim; they override any general guidance you add
 
 Boundaries:
 
