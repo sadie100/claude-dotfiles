@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Shared-Chrome browser guard for Claude Code.
 // PreToolUse: denies browser tools that disturb the shared debugging Chrome
-// (window resize, tab close, extra isolated windows, launch-style servers).
+// (window resize, tab close, extra isolated windows, unchecked new tabs, launch-style servers).
 // Any internal error exits 0 silently so the session is never broken by this hook.
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -38,19 +38,30 @@ function deny(reason) {
   );
 }
 
+function stateFile(sessionId) {
+  const safeId = String(sessionId || "unknown").replace(/[^A-Za-z0-9_-]/g, "_");
+  return join(STATE_DIR, `${safeId}.json`);
+}
+
+function readState(sessionId) {
+  try {
+    return JSON.parse(readFileSync(stateFile(sessionId), "utf8")) || {};
+  } catch {
+    return {};
+  }
+}
+
+function writeState(sessionId, state) {
+  mkdirSync(STATE_DIR, { recursive: true });
+  writeFileSync(stateFile(sessionId), JSON.stringify(state));
+}
+
 // One isolatedContext name per session: each name opens a new browser window.
 function checkIsolatedContext(sessionId, name) {
-  const safeId = String(sessionId || "unknown").replace(/[^A-Za-z0-9_-]/g, "_");
-  const file = join(STATE_DIR, `${safeId}.json`);
-  let stored = "";
-  try {
-    stored = JSON.parse(readFileSync(file, "utf8"))?.isolatedContext || "";
-  } catch {
-    // no state yet
-  }
+  const state = readState(sessionId);
+  const stored = state.isolatedContext || "";
   if (!stored) {
-    mkdirSync(STATE_DIR, { recursive: true });
-    writeFileSync(file, JSON.stringify({ isolatedContext: name }));
+    writeState(sessionId, { ...state, isolatedContext: name });
     return null;
   }
   if (stored === name) return null;
@@ -61,7 +72,63 @@ function checkIsolatedContext(sessionId, name) {
   );
 }
 
-function preToolUse(payload) {
+// Tabs in the shared Chrome on the same host as the URL about to be opened.
+async function sameHostTabs(url) {
+  let host = "";
+  try {
+    host = new URL(url).host;
+  } catch {
+    return [];
+  }
+  try {
+    const res = await fetch("http://127.0.0.1:9222/json/list", { signal: AbortSignal.timeout(800) });
+    const list = await res.json();
+    return list
+      .filter((t) => t.type === "page")
+      .filter((t) => {
+        try {
+          return new URL(t.url).host === host;
+        } catch {
+          return false;
+        }
+      })
+      .map((t) => t.url);
+  } catch {
+    return [];
+  }
+}
+
+// Think-before-new-tab gate: when tabs on the same host already exist, deny the first
+// new_page once (per session and host, re-armed after 10 min) so the agent checks them first.
+// Repeating the same call afterwards passes — that is the deliberate "I checked" path.
+const NEW_PAGE_WARN_TTL = 10 * 60 * 1000;
+
+async function checkNewPage(sessionId, url) {
+  const tabs = await sameHostTabs(url);
+  if (tabs.length === 0) return null;
+  let host = "";
+  try {
+    host = new URL(url).host;
+  } catch {
+    return null;
+  }
+  const state = readState(sessionId);
+  const warned = state.newPageWarned || {};
+  if (warned[host] && Date.now() - warned[host] < NEW_PAGE_WARN_TTL) return null;
+  writeState(sessionId, { ...state, newPageWarned: { ...warned, [host]: Date.now() } });
+  return (
+    `새 탭을 열기 전에 멈춘다. 공유 크롬에 ${host} 탭이 이미 ${tabs.length}개 있다:\n` +
+    tabs.map((u) => `  - ${u}`).join("\n") +
+    `\n한 세션은 회원 탭 1개, 비회원 탭 1개까지만 둔다. 다음을 먼저 할 것:\n` +
+    `  1. list_pages로 위 탭의 pageId를 찾는다.\n` +
+    `  2. 각 탭에서 쿠키 iscache=F를 읽어 회원/비회원을 판정한다(라벨·isolatedContext 이름으로 단정 금지).\n` +
+    `  3. 필요한 상태의 탭이 있으면 그 탭에서 navigate_page 한다(URL이 달라도 새로 열지 않는다).\n` +
+    `확인한 결과 쓸 수 있는 탭이 정말 없을 때만 같은 new_page를 다시 호출한다(그때는 통과). ` +
+    `사용자에게 왜 새 탭이 필요한지 한 줄로 알린다.`
+  );
+}
+
+async function preToolUse(payload) {
   const tool = String(payload.tool_name || "");
   const input = payload.tool_input || {};
 
@@ -77,8 +144,9 @@ function preToolUse(payload) {
   }
   if (tool === `${CDP}new_page`) {
     const name = typeof input.isolatedContext === "string" ? input.isolatedContext.trim() : "";
-    if (!name) return;
-    const reason = checkIsolatedContext(payload.session_id, name);
+    const isoReason = name ? checkIsolatedContext(payload.session_id, name) : null;
+    if (isoReason) return deny(isoReason);
+    const reason = await checkNewPage(payload.session_id, String(input.url || ""));
     if (reason) deny(reason);
     return;
   }
@@ -97,7 +165,7 @@ async function main() {
   try {
     const raw = await readStdin();
     const payload = JSON.parse(raw);
-    if (payload?.hook_event_name === "PreToolUse") preToolUse(payload);
+    if (payload?.hook_event_name === "PreToolUse") await preToolUse(payload);
   } catch {
     // never break the session
   }
