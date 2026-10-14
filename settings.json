@@ -1,4 +1,5 @@
 {
+  "language": "korean",
   "permissions": {
     "allow": [
       "Read",
@@ -87,6 +88,11 @@
             "type": "command",
             "command": "node \"$DOTCLAUDE_DIR/scripts/hooks/notify.mjs\" \"응답이 완료되었습니다\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "node \"$DOTCLAUDE_DIR/scripts/hooks/korean-reply-guard.mjs\"",
+            "timeout": 10
           }
         ]
       }
