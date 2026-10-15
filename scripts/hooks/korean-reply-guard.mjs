@@ -32,8 +32,10 @@ function lastReplyText(transcriptPath) {
         }
         const content = e && e.message && e.message.content;
         if (e.type === "user") {
-            // 도구 결과나 사용자 입력을 만나면 그 뒤가 "마지막 답변"이다
-            if (parts.length) break;
+            // 사용자 입력에서는 무조건 멈춘다 — 이번 답변이 아직 기록되기 전이면 이전 턴 답변을 읽어
+            // 오판한다(2026-10-14 실측: 한국어 답변을 직전 턴 영어 답변으로 판정). 도구 결과는 그 뒤가 답변이다.
+            const isToolResult = Array.isArray(content) && content.some((b) => b && b.type === "tool_result");
+            if (!isToolResult || parts.length) break;
             continue;
         }
         if (e.type !== "assistant" || !Array.isArray(content)) continue;
@@ -58,8 +60,10 @@ function strip(text) {
 try {
     const input = JSON.parse(readStdin() || "{}");
     if (input.stop_hook_active) process.exit(0);
-    if (!input.transcript_path) process.exit(0);
-    const text = strip(lastReplyText(input.transcript_path));
+    // 입력에 마지막 답변이 실려 오면 그걸 쓰고, 없으면 transcript 에서 읽는다
+    let raw = typeof input.last_assistant_message === "string" ? input.last_assistant_message : "";
+    if (!raw && input.transcript_path) raw = lastReplyText(input.transcript_path);
+    const text = strip(raw);
     const hangul = (text.match(/[가-힣]/g) || []).length;
     const latin = (text.match(/[A-Za-z]/g) || []).length;
     if (latin < MIN_LATIN) process.exit(0);
