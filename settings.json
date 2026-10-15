@@ -1,5 +1,4 @@
 {
-  "language": "korean",
   "permissions": {
     "allow": [
       "Read",
@@ -158,10 +157,11 @@
       }
     }
   },
+  "language": "korean",
   "effortLevel": "medium",
   "modelSettings": {
     "claude-opus-5-5": {
-      "effortLevel": "medium"
+      "effortLevel": "xhigh"
     }
   },
   "advisorModel": "fable",
