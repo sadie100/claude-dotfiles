@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: ef6875628ef2dbe90ef5f54c66d944ebc78b980cc59c96bf603f0576a194aa7f -->
+<!-- harness-sync-fingerprint: e7d8c1cf356773fdfb824020c3378bd9c51bf021472e8a66498d3b925c7eef37 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -186,6 +186,7 @@
 | `write-app-spec`                  | `/write-app-spec`                       | custom            | 프론트엔드/풀스택 앱의 코드베이스를 분석하여 화면, 라우팅, 핵심 로직, 데이터 모델을 문서화한 SPEC.md 생성 |
 | `write-nestjs-spec`               | `/write-nestjs-spec {모듈명}`           | custom            | NestJS 백엔드 모듈 API 스펙 문서 생성                                                                     |
 | `handoff`                         | 다른 에이전트로 인계 시                 | mattpocock/skills | 현재 대화를 핸드오프 문서로 압축                                                                          |
+| `qa-handoff`                      | `/qa-handoff`                           | custom            | 남은 실측·검증을 QA 에이전트에게 넘기는 한국어 핸드오프 문서를 OS 임시 폴더에 작성                        |
 | `mine-session-decisions`          | `/mine-session-decisions`               | custom            | 과거 세션 .jsonl에서 설계 결정·요구사항 해석·가정을 마이닝하여 문서 후보 추출                             |
 | `explain-diff-html`               | 코드 변경/diff/PR 설명 요청 시          | custom            | 코드 변경·브랜치·PR을 풍부하게 설명하는 HTML 산출물 생성                                                  |
 | `explain-diff-notion`             | 코드 변경/diff/PR 설명 요청 시          | custom            | 코드 변경·브랜치·PR을 풍부하게 설명하는 Notion 페이지 생성                                                |
@@ -451,7 +452,7 @@ User-scope MCP 서버([`mcp-servers.json`](mcp-servers.json))와 활성 플러�
 | ----------------- | ------ | -------------------------------------- | ---------------------------------------------------------------------- |
 | `aws-knowledge`   | http   | `https://knowledge-mcp.global.api.aws` | AWS 공식 문서/지식 베이스 조회                                         |
 | `context7`        | http   | `https://mcp.context7.com/mcp`         | 라이브러리/프레임워크 최신 문서 조회 (context7 플러그인 번들)          |
-| `chrome-devtools` | stdio  | `npx chrome-devtools-mcp@1.9.0`        | Chrome 브라우저 제어/디버깅/자동화 (chrome-devtools-mcp 플러그인 번들) |
+| `chrome-devtools` | stdio  | `npx chrome-devtools-mcp@1.11.0`       | Chrome 브라우저 제어/디버깅/자동화 (chrome-devtools-mcp 플러그인 번들) |
 | `playwright`      | stdio  | `npx @playwright/mcp@latest`           | 브라우저 자동화 및 E2E 테스트 (playwright 플러그인 번들)               |
 | `figma`           | (번들) | —                                      | Figma 디자인 파일 연동 (figma 플러그인 번들)                           |
 | `atlassian`       | (번들) | —                                      | Jira/Confluence 연동 (atlassian 플러그인 번들)                         |
