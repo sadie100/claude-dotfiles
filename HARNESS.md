@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: e7d8c1cf356773fdfb824020c3378bd9c51bf021472e8a66498d3b925c7eef37 -->
+<!-- harness-sync-fingerprint: 31a778e65331bfd081b477cdc9b330eba4fdfa36802df4754d361668c54292ad -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -34,6 +34,7 @@
 | `atlassian`            | ✅ 활성   | Jira/Confluence 연동                                   |
 | `notion`               | ✅ 활성   | Notion 연동                                            |
 | `slack`                | ✅ 활성   | Slack 연동                                             |
+| `postman`              | ✅ 활성   | Postman 연동 (API 목·컬렉션 검사·모니터링·문서 게시)   |
 | `ralph-loop`           | ❌ 비활성 | 반복 실행 루프                                         |
 
 ### Anthropic Agent Skills (`anthropic-agent-skills`)
