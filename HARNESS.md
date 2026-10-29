@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 31a778e65331bfd081b477cdc9b330eba4fdfa36802df4754d361668c54292ad -->
+<!-- harness-sync-fingerprint: 286ddec0d60db8c4026c7cbb690be4d38d9110fb85febe5f3389e1ef3f376ce2 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -36,6 +36,7 @@
 | `slack`                | ✅ 활성   | Slack 연동                                             |
 | `postman`              | ✅ 활성   | Postman 연동 (API 목·컬렉션 검사·모니터링·문서 게시)   |
 | `ralph-loop`           | ❌ 비활성 | 반복 실행 루프                                         |
+| `mattpocock-skills`    | ✅ 활성   | Matt Pocock의 엔지니어링 스킬 모음 (grilling, 스펙/티켓 플로우, TDD, 코드 리뷰, 도메인 모델링 등) |
 
 ### Anthropic Agent Skills (`anthropic-agent-skills`)
 
@@ -83,15 +84,6 @@
 | `dev-architecture`          | `/dev-architecture {기능명}`        | custom            | 아키텍처 설계. 기술 옵션 분석 및 트레이드오프 제시                        |
 | `dev-spec`                  | `/dev-spec {기능명}`                | custom            | 상세 구현 스펙 작성. 인수 조건(AC)을 Given-When-Then 형식으로 정의        |
 | `dev-testcase`              | `/dev-testcase {기능명}`            | custom            | 테스트 케이스 자동 도출. 스펙의 AC에서 TC를 생성                          |
-| `to-prd`                    | 대화 컨텍스트 → PRD 변환 시         | mattpocock/skills | 현재 대화 맥락을 PRD로 정리하여 이슈 트래커에 게시                        |
-| `grill-me`                  | 계획/설계 검증 요청 시              | mattpocock/skills | 계획·설계를 결정 트리 단위로 끝까지 질의하며 검증                         |
-| `grill-with-docs`           | 도메인 문서 기반 계획 검증 시       | mattpocock/skills | CONTEXT.md/ADR 기반으로 계획을 검증하고 문서 인라인 갱신                  |
-| `grilling`                  | 계획/설계 스트레스 테스트 시        | mattpocock/skills | 'grill' 트리거 구문 기반 인터뷰형 계획 검증                               |
-| `codebase-design`           | 모듈 인터페이스 설계/개선 시        | mattpocock/skills | deep module 설계 공용 어휘 — 심화 기회 식별·심층 모듈 결정 보조           |
-| `design-an-interface`       | 모듈 API 디자인 비교 탐색 시        | mattpocock/skills | 병렬 서브에이전트로 동일 모듈의 급진적으로 다른 인터페이스 설계 다수 생성 |
-| `domain-modeling`           | 도메인 용어/유비쿼터스 언어 정리 시 | mattpocock/skills | DDD 도메인 모델 구축·ADR 기록·도메인 모델 유지                            |
-| `ubiquitous-language`       | 도메인 용어집 작성 시               | mattpocock/skills | 대화에서 DDD 유비쿼터스 언어 추출·UBIQUITOUS_LANGUAGE.md 저장             |
-| `to-issues`                 | 계획/스펙/PRD → 이슈 분해 시        | mattpocock/skills | 트레이서 불릿 버티컬 슬라이스 기준으로 독립 실행 가능한 이슈로 분해       |
 | `spec`                      | `/spec`                             | gstack            | 모호한 의도 → 5단계로 정밀 실행 가능한 스펙 작성                          |
 | `plan-ceo-review`           | `/plan-ceo-review`                  | gstack            | CEO/창업자 모드 계획 리뷰                                                 |
 | `plan-design-review`        | `/plan-design-review`               | gstack            | 디자이너 시각 계획 리뷰 (인터랙티브)                                      |
@@ -117,9 +109,6 @@
 
 | 스킬                                  | 트리거                           | 소속              | 설명                                                           |
 | ------------------------------------- | -------------------------------- | ----------------- | -------------------------------------------------------------- |
-| `tdd`                                 | TDD 기반 개발 요청 시            | mattpocock/skills | red-green-refactor 루프 기반 테스트 우선 개발                  |
-| `implement`                           | PRD/이슈 기반 구현 요청 시       | mattpocock/skills | PRD나 이슈 묶음을 기반으로 작업 구현                           |
-| `prototype`                           | 디자인 탐색용 프로토타입 요청 시 | mattpocock/skills | 일회용 프로토타입(터미널 앱 또는 단일 라우트의 UI 변형들) 빌드 |
 | `resolving-merge-conflicts`           | 머지/리베이스 충돌 해결 시       | mattpocock/skills | 진행 중인 git 머지/리베이스 충돌 해소 가이드                   |
 | `cafe24-smart-design`                 | Cafe24 스킨 템플릿 작성/편집 시  | custom            | Cafe24 Smart Design 모듈·변수(`{$...}`)·모디파이어 레퍼런스    |
 | `cafe24-live-fix`                     | `/cafe24-live-fix`               | custom            | FTP 연동·로컬 미러가 없는 Cafe24 몰의 CSS/JS를 라이브 URL만으로 수정해 완성 코드 전달 |
@@ -129,8 +118,6 @@
 
 | 스킬                                        | 트리거                             | 소속                | 설명                                                    |
 | ------------------------------------------- | ---------------------------------- | ------------------- | ------------------------------------------------------- |
-| `diagnose`                                  | 어려운 버그/성능 회귀 진단 시      | mattpocock/skills   | 재현 → 최소화 → 가설 → 계측 → 수정 → 회귀 테스트 루프   |
-| `diagnosing-bugs`                           | 버그/성능 문제 진단 시             | mattpocock/skills   | "diagnose/debug this" 트리거형 진단 루프                |
 | `mobile-view-debugger`                      | 모바일 뷰 문제 진단 요청 시        | custom              | 모바일 에뮬레이션 + 자동 진단(오버플로우, 터치 타겟 등) |
 | `measure-rerender`                          | 리렌더링 성능 측정 요청 시         | custom              | React 컴포넌트 리렌더링 횟수 측정 및 비교 분석          |
 | `cafe24-find-source`                        | Cafe24 스타일/스크립트 원본 파일 역추적 시 | custom          | 옵티마이저 번들(optimizer.php)에 합쳐진 렌더 스타일/스크립트가 어느 원본 스킨 소스 파일에서 왔는지 역추적 |
@@ -173,9 +160,6 @@
 | `vercel-composition-patterns`   | React 컴포넌트 합성 패턴 적용 시    | vercel-labs/agent-skills | 컴파운드 컴포넌트·render props·context provider 등 확장형 컴포넌트 API 설계 (React 19 포함) |
 | `vercel-react-best-practices`   | React/Next.js 성능 작업 시          | vercel-labs/agent-skills | Vercel Engineering의 React/Next.js 성능 최적화 가이드라인                                   |
 | `vercel-react-view-transitions` | React View Transition API 사용 시   | vercel-labs/agent-skills | `<ViewTransition>`·`addTransitionType` 기반 페이지/요소 전환 애니메이션 구현                |
-| `improve-codebase-architecture` | 아키텍처 개선/리팩토링 기회 탐색 시 | mattpocock/skills        | CONTEXT.md/ADR 기반 deepening 기회 도출                                                     |
-| `zoom-out`                      | 더 넓은 맥락 요청 시                | mattpocock/skills        | 상위 관점에서 코드 구조와 맥락 설명                                                         |
-| `triage`                        | 이슈/외부 PR 트리아지 시            | mattpocock/skills        | 트리아지 역할 상태머신으로 이슈/PR을 분류·검증·에이전트 브리프 작성                         |
 | `devex-review`                  | `/devex-review`                     | gstack                   | 라이브 개발자 경험(DX) 감사                                                                 |
 | `health`                        | `/health`                           | gstack                   | 코드 품질 대시보드                                                                          |
 | `gstack-retro`                  | `/gstack-retro`                     | gstack                   | 주간 엔지니어링 회고                                                                        |
@@ -186,7 +170,6 @@
 | --------------------------------- | --------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------- |
 | `write-app-spec`                  | `/write-app-spec`                       | custom            | 프론트엔드/풀스택 앱의 코드베이스를 분석하여 화면, 라우팅, 핵심 로직, 데이터 모델을 문서화한 SPEC.md 생성 |
 | `write-nestjs-spec`               | `/write-nestjs-spec {모듈명}`           | custom            | NestJS 백엔드 모듈 API 스펙 문서 생성                                                                     |
-| `handoff`                         | 다른 에이전트로 인계 시                 | mattpocock/skills | 현재 대화를 핸드오프 문서로 압축                                                                          |
 | `qa-handoff`                      | `/qa-handoff`                           | custom            | 남은 실측·검증을 QA 에이전트에게 넘기는 한국어 핸드오프 문서를 OS 임시 폴더에 작성                        |
 | `mine-session-decisions`          | `/mine-session-decisions`               | custom            | 과거 세션 .jsonl에서 설계 결정·요구사항 해석·가정을 마이닝하여 문서 후보 추출                             |
 | `explain-diff-html`               | 코드 변경/diff/PR 설명 요청 시          | custom            | 코드 변경·브랜치·PR을 풍부하게 설명하는 HTML 산출물 생성                                                  |
@@ -205,9 +188,6 @@
 | `document-generate`               | `/document-generate`                    | gstack            | 기능/모듈/프로젝트 문서를 처음부터 생성                                                                   |
 | `document-release`                | `/document-release`                     | gstack            | 배포 후 문서 갱신                                                                                         |
 | `make-pdf`                        | `/make-pdf`                             | gstack            | 마크다운 파일 → 출판 품질 PDF                                                                             |
-| `edit-article`                    | 아티클 편집/개선 요청 시                | mattpocock/skills | 섹션 재구성·명확성 개선·문장 다듬기로 아티클 초안 개선                                                    |
-| `teach`                           | 새 스킬/개념 학습 요청 시               | mattpocock/skills | 워크스페이스 내에서 사용자에게 새 스킬/개념 교육                                                          |
-| `writing-great-skills`            | 스킬 작성 가이드 참조 시                | mattpocock/skills | 좋은 스킬을 쓰기 위한 어휘·원칙 레퍼런스                                                                  |
 
 ### 디자인·UI 생성
 
@@ -301,6 +281,30 @@
 | `atlassian:jira-sprint-dashboard`            | Jira 스프린트 대시보드 생성 시  | atlassian | Jira 프로젝트·스프린트·보드·JQL 데이터로 시각적 스프린트 대시보드(캔버스/HTML/마크다운) 생성 |
 | `atlassian:triage-issue`                     | 버그 트리아지 요청 시           | atlassian | Jira에서 중복 검색 후 신규 이슈 생성/기존 이슈 코멘트                                        |
 
+#### Postman
+
+| 스킬                            | 트리거                                 | 소속    | 설명                                                                     |
+| ------------------------------- | -------------------------------------- | ------- | ------------------------------------------------------------------------ |
+| `postman:api-engineer`          | API 설계/구현/목/테스트/배포 작업 시   | postman | API 엔지니어링 기본 진입점 — 로컬 계약·테스트·목 기반으로 Postman 스킬 라우팅 |
+| `postman:bootstrap`             | 레포 Postman 셋업/동기화 시            | postman | Postman CLI 설정·인증·워크스페이스 바인딩, 리소스 import/pull/push/sync  |
+| `postman:api-discovery`         | API·소유자·소비자 탐색 시              | postman | API/소유자 찾기, 퍼블릭 프로바이더 연동, 엔드포인트 소비자·변경 영향 조사 |
+| `postman:api-documentation`     | API 문서 생성/게시 시                  | postman | 컬렉션/OpenAPI 기반 API 계약 정의 및 문서 생성·게시                      |
+| `postman:api-mocking`           | 목 백엔드 생성 시                      | postman | 컬렉션/OpenAPI로 스탠드인 백엔드(Code Mock) 생성·실패 시나리오 테스트    |
+| `postman:api-simulation`        | 의존 API 목으로 서비스 실행 시         | postman | 의존 HTTP API 목을 한 포트로 조합해 업스트림 호출 검증·장애 시나리오 실행 |
+| `postman:api-testing`           | 엔드포인트 테스트 시                   | postman | 컬렉션 어서션 실행, 실 트래픽의 API 계약 준수 검사                        |
+| `postman:api-monitoring`        | 정기 API 체크 설정 시                  | postman | Postman Monitor 설정·실행·진단, 셀프호스트 러너로 사설 API 점검          |
+| `postman:performance-testing`   | API 부하 테스트 시                     | postman | 가상 사용자 동시 부하·지연/에러 임계값 기반 벤치마크                     |
+| `postman:ai-readiness`          | API의 AI 에이전트 준비도 평가 시       | postman | 컬렉션/OpenAPI 스펙의 에이전트 사용성 점수화 및 계약 개선                |
+| `postman:ci-integration`        | CI에 API 검사 추가 시                  | postman | API 테스트·거버넌스 린트·AI 준비도 게이트를 CI에 추가, 머지 후 게시      |
+| `postman:collection-schema-v3`  | v3 컬렉션 YAML 작성/디버깅 시          | postman | 로컬 Postman v3 컬렉션·환경 YAML 스키마 작성 및 린트 실패 해결           |
+| `postman:datasets`              | 컬렉션 테스트 입력 데이터 구성 시      | postman | 쿼리/조인 데이터셋·스프레드시트·DB 행을 `pm.datasets()`로 활용          |
+| `postman:variables`             | 변수 스코프/시크릿 배치 결정 시        | postman | 환경별 요청 파라미터화, 변수 스코프 선택, 시크릿 노출 없이 참조          |
+| `postman:flows`                 | Postman Flow 실행/배포/디버깅 시       | postman | Postman Flow 로컬 실행·웹훅 배포·실패 블록 추적                          |
+| `postman:postman-mcp-server`    | Postman MCP 도구 사용 시               | postman | Postman MCP로 워크스페이스 리소스 조회·변경 및 MCP 제약 처리             |
+| `postman:webhook-testing`       | 웹훅 핸들러 테스트 시                  | postman | 공개 URL로 웹훅 수신·기록·로컬 포워딩, 재전송·서명 검증                  |
+| `postman:add-marketplace`       | 새 벤더 플러그인 라우트 추가 시        | postman | Postman 플러그인 레포에 신규 마켓플레이스/에이전트 타깃 연결             |
+| `postman:release-installer`     | Postman 인스톨러 npm 릴리스 시         | postman | `@postman/postman-plugin` 인스톨러를 npm next/latest 태그로 릴리스       |
+
 ### Claude API·MCP 빌드
 
 | 스킬                          | 트리거                     | 소속            | 설명                                           |
@@ -318,8 +322,6 @@
 | `skill-creator:skill-creator`             | 스킬 생성/수정/평가 요청 시       | skill-creator        | 신규 스킬 생성, 기존 스킬 개선, 변량 분석 기반 성능 벤치마크          |
 | `document-skills:skill-creator`           | 스킬 생성/평가 요청 시            | document-skills      | document-skills 마켓플레이스의 스킬 생성기                            |
 | `find-skills`                             | 스킬 검색/설치 요청 시            | custom               | 설치 가능한 스킬 발견                                                 |
-| `ask-matt`                                | 상황에 맞는 스킬/플로우 라우팅 시 | mattpocock/skills    | 레포의 사용자 호출 스킬 위에서 동작하는 라우터                        |
-| `setup-matt-pocock-skills`                | 엔지니어링 스킬 초기 설정 시      | mattpocock/skills    | AGENTS.md/CLAUDE.md에 이슈 트래커·트리아지 라벨·도메인 문서 블록 셋업 |
 | `init`                                    | `/init`                           | built-in             | CLAUDE.md 초기 생성                                                   |
 | `document-skills:academy-guide`           | Claude 제품 사용법 질문 시        | document-skills      | Claude Academy(academy.claude.com)의 코스·튜토리얼·유스케이스 추천    |
 

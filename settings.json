@@ -130,7 +130,8 @@
     "chrome-devtools-mcp@claude-plugins-official": true,
     "figma@claude-plugins-official": true,
     "eli5@claude-community": true,
-    "postman@claude-plugins-official": true
+    "postman@claude-plugins-official": true,
+    "mattpocock-skills@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
