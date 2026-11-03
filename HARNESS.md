@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 286ddec0d60db8c4026c7cbb690be4d38d9110fb85febe5f3389e1ef3f376ce2 -->
+<!-- harness-sync-fingerprint: d21cc85ebff423beab3b1a25a7da8d21954682230b74123e2420254a21553a3d -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -178,6 +178,7 @@
 | `cafe24-data-source-survey`       | 자사몰 데이터 출처 조사·문서화 요청 시  | custom            | 자사몰별 라이브 페이지의 특정 데이터가 어느 Cafe24 소스(모듈/변수·에디터 필드·스킨 JS·앱)에서 오는지 추적해 자사몰-구현-현황 문서에 카테고리로 기록 |
 | `excalidraw-diagram`              | 워크플로우/아키텍처/개념 시각화 요청 시 | custom            | 워크플로우·아키텍처·개념을 시각적으로 설명하는 Excalidraw 다이어그램 JSON 생성                            |
 | `figma:figma-generate-diagram`    | Figma에 다이어그램 생성 요청 시         | figma             | `generate_diagram` 호출 전 필수 로드 — FigJam에 Mermaid 기반 플로우차트/아키텍처/시퀀스/ERD 생성          |
+| `figma:figma-spec`                | Figma 스펙(PRD/브리프/RFC) 작업 시      | figma             | 독립형 또는 Design/FigJam 파일에 임베드된 Figma 스펙 문서 생성·읽기·편집·리뷰·코멘트                      |
 | `ko-doc`                          | `/ko-doc` (한국어 전달 문서 작성/교정 시) | custom          | 노션·레포 한국어 문서, 타 팀 전달용 보고서·요청서를 독자에 맞춰 문장형으로 작성 (메모체 AI 말투 방지)     |
 | `humanizer`                       | AI 작성 흔적 제거 요청 시               | custom            | AI 생성 텍스트의 패턴(과장 상징, 홍보성 문구, em dash 남발 등)을 검출하고 자연스럽게 교정                 |
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시                  | document-skills   | 구조화된 문서/제안서/스펙 공동 작성 워크플로우                                                            |
@@ -212,6 +213,7 @@
 | `figma:figma-generate-design`           | 앱 페이지/뷰를 Figma로 변환 요청 시                  | figma           | 앱 페이지·뷰·레이아웃을 디자인 시스템 컴포넌트 기반으로 Figma에 구축 (design-to-Figma)               |
 | `figma:figma-generate-library`          | Figma 디자인 시스템 구축 요청 시                     | figma           | 코드베이스에서 Figma 변수/토큰·컴포넌트 라이브러리 구축                                              |
 | `figma:figma-code-connect`              | Figma Code Connect 매핑 작업 시                      | figma           | Figma 컴포넌트↔코드 스니펫 매핑(.figma.ts/.figma.js) 생성·관리                                       |
+| `figma:figma-code-workflows`            | 로컬 HTML/프로젝트를 Figma로 가져올 때               | figma           | 로컬 파일을 편집 가능한 Design 프레임·Code Layer·Code(Make) 파일로 임포트하고 프리뷰 복구            |
 | `figma:figma-implement-motion`          | Figma 모션 구현 요청 시                              | figma           | Figma 모션/애니메이션을 프로덕션 코드로 변환                                                         |
 | `figma:figma-swiftui`                   | SwiftUI↔Figma 변환 시                                | figma           | SwiftUI ↔ Figma 양방향 디자인/코드 변환                                                              |
 | `figma:figma-create-new-file`           | 새 Figma 파일 생성 전                                | figma           | `create_new_file` 호출 전 필수 로드 — 새 디자인/FigJam/슬라이드 파일 생성                            |
@@ -358,6 +360,7 @@ AI 검색(ChatGPT, Claude, Perplexity, Gemini, Google AI Overviews) 가시성 �
 | `loop`                       | 반복 실행 요청 시             | built-in          | 프롬프트/슬래시 명령을 주기적으로 실행                              |
 | `git-guardrails-claude-code` | 파괴적 git 명령 차단 셋업 시  | custom            | Claude Code 훅으로 위험한 git 명령(push, reset --hard 등) 사전 차단 |
 | `bye`                        | `/bye`                        | custom            | 현재 Claude Code 세션 프로세스와 MCP 자식 프로세스만 종료 (VSCode 확장의 `/exit` 부재 우회) |
+| `deploy-egnis-vibe`          | `/deploy-egnis-vibe {주소}`   | custom            | 현재 프로젝트 폴더를 Egnis Vibe(vibe.egnis.net)에 배포해 사내 URL 발급 (명시적 요청 시에만 실행) |
 | `scaffold-exercises`         | 코스 연습문제 스캐폴드 시     | mattpocock/skills | 섹션·문제·솔루션·해설 포함 연습문제 디렉토리 구조 생성(린트 통과)   |
 
 ### gstack 전용 (gstack 스택 종속)
