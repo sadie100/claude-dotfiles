@@ -173,12 +173,12 @@
   "autoMode": {
     "environment": [
       "$defaults",
-      "Trusted internal domains: itadmin001.cafe24.com — our own Cafe24 test mall (QA only, not a brand production mall)",
-      "Additional context: itadmin001 is a disposable QA mall. Orders, carts, addresses, and member records on it are test data with no business impact."
+      "Trusted internal domains (overrides default): exact hosts itadmin001.cafe24.com and m.itadmin001.cafe24.com — our own Cafe24 QA test mall, not a brand production mall. We upload our skin files there over FTP as routine development.",
+      "Additional context: itadmin001 is a disposable QA mall. Its carts, orders, shipping addresses, and test member accounts hold test data with no business impact. Its payment setup is used only with 무통장입금 or PG test mode, never real card or bank details."
     ],
     "allow": [
       "$defaults",
-      "Test mall orders: On itadmin001.cafe24.com only, entering the order form, clicking 구매하기/주문하기, placing orders, and changing cart/order/address records are allowed — it is a disposable QA mall where order volume has no business impact. This does not extend to any other mall or brand domain."
+      "Test mall order QA: When the user's task is testing or QA of the cart, order, or checkout flow, then on the exact hosts itadmin001.cafe24.com / m.itadmin001.cafe24.com (storefront pages, including /skin-skinN/ dev skins) the agent may enter the order form, click 구매하기/주문하기, place orders paid by 무통장입금 or PG test mode, cancel those test orders, and edit cart items, shipping addresses, and test member records. It may log in with the browser-autofilled test account. Not covered: entering real card/bank details or acting on PG payment domains, the Cafe24 admin console (eclogin / admin settings, operators, permissions), entering real customers' contact info, and any other mall or brand domain."
     ]
   }
 }
