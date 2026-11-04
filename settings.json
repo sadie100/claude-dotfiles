@@ -169,5 +169,16 @@
   "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
-  "theme": "light-daltonized"
+  "theme": "light-daltonized",
+  "autoMode": {
+    "environment": [
+      "$defaults",
+      "Trusted internal domains: itadmin001.cafe24.com — our own Cafe24 test mall (QA only, not a brand production mall)",
+      "Additional context: itadmin001 is a disposable QA mall. Orders, carts, addresses, and member records on it are test data with no business impact."
+    ],
+    "allow": [
+      "$defaults",
+      "Test mall orders: On itadmin001.cafe24.com only, entering the order form, clicking 구매하기/주문하기, placing orders, and changing cart/order/address records are allowed — it is a disposable QA mall where order volume has no business impact. This does not extend to any other mall or brand domain."
+    ]
+  }
 }
