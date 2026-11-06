@@ -163,10 +163,17 @@
   "effortLevel": "medium",
   "modelSettings": {
     "claude-opus-5-5": {
-      "effortLevel": "xhigh"
+      "effortLevel": "medium"
     }
   },
   "advisorModel": "fable",
+  "pluginConfigs": {
+    "cc-plugin-agents-md@builtin": {
+      "options": {
+        "instructionFiles": "claude-md-and-agents-md"
+      }
+    }
+  },
   "autoUpdatesChannel": "latest",
   "plansDirectory": ".claude/plans",
   "theme": "light-daltonized",
@@ -180,12 +187,5 @@
       "Trusted internal domains (overrides default): exact hosts itadmin001.cafe24.com and m.itadmin001.cafe24.com — our own Cafe24 QA test mall, not a brand production mall. We upload our skin files there over FTP as routine development.",
       "Additional context: itadmin001 is a disposable QA mall. Its carts, orders, shipping addresses, and test member accounts hold test data with no business impact. Its payment setup is used only with 무통장입금 or PG test mode, never real card or bank details."
     ]
-  },
-  "pluginConfigs": {
-    "cc-plugin-agents-md@builtin": {
-      "options": {
-        "instructionFiles": "claude-md-and-agents-md"
-      }
-    }
   }
 }
