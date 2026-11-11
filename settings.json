@@ -166,7 +166,7 @@
       "effortLevel": "medium"
     },
     "claude-fable-5-2": {
-      "effortLevel": "xhigh"
+      "effortLevel": "medium"
     }
   },
   "advisorModel": "fable",
