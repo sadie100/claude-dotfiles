@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: d21cc85ebff423beab3b1a25a7da8d21954682230b74123e2420254a21553a3d -->
+<!-- harness-sync-fingerprint: 1e5500dd76fb1dc784dfc582b2d1cdc209aacbfb6b29eeda9032a8c18bc1e4a0 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -142,6 +142,7 @@
 | `run`                                        | 앱을 실행해 결과 확인 시         | built-in            | 프로젝트 앱을 띄워 변경사항을 실 환경에서 확인                                              |
 | `document-skills:webapp-testing`             | 로컬 웹앱 테스트 요청 시         | document-skills     | Playwright 기반 로컬 웹앱 동작 검증                                                         |
 | `playwright-cli`                             | Playwright 자동화/테스트 작업 시 | custom              | Playwright로 브라우저 상호작용 자동화 및 테스트 작성                                        |
+| `ego-browser`                                | 브라우저 조작/QA/도그푸딩 필요 시 | custom              | 사용자 로그인 컨텍스트를 활용하는 Chromium(ego-lite)으로 사이트 조작·폼 입력·스크린샷·QA 수행 |
 | `chrome-devtools-mcp:chrome-devtools`        | 브라우저 디버깅/자동화 시        | chrome-devtools-mcp | Chrome DevTools MCP 기반 범용 브라우저 디버깅                                               |
 | `chrome-devtools-mcp:chrome-devtools-cli`    | 브라우저 자동화 스크립트 작성 시 | chrome-devtools-mcp | CLI에서 Chrome DevTools 자동화                                                              |
 | `document-skills:discernment-nudge`          | 실행 가능한 답변/초안 마무리 직전 | document-skills    | 방금 산출한 답변·초안의 사실·가정·누락 맥락을 점검하는 후속 질문 2~3개를 덧붙임              |
@@ -288,12 +289,12 @@
 | 스킬                            | 트리거                                 | 소속    | 설명                                                                     |
 | ------------------------------- | -------------------------------------- | ------- | ------------------------------------------------------------------------ |
 | `postman:api-engineer`          | API 설계/구현/목/테스트/배포 작업 시   | postman | API 엔지니어링 기본 진입점 — 로컬 계약·테스트·목 기반으로 Postman 스킬 라우팅 |
-| `postman:bootstrap`             | 레포 Postman 셋업/동기화 시            | postman | Postman CLI 설정·인증·워크스페이스 바인딩, 리소스 import/pull/push/sync  |
 | `postman:api-discovery`         | API·소유자·소비자 탐색 시              | postman | API/소유자 찾기, 퍼블릭 프로바이더 연동, 엔드포인트 소비자·변경 영향 조사 |
 | `postman:api-documentation`     | API 문서 생성/게시 시                  | postman | 컬렉션/OpenAPI 기반 API 계약 정의 및 문서 생성·게시                      |
 | `postman:api-mocking`           | 목 백엔드 생성 시                      | postman | 컬렉션/OpenAPI로 스탠드인 백엔드(Code Mock) 생성·실패 시나리오 테스트    |
 | `postman:api-simulation`        | 의존 API 목으로 서비스 실행 시         | postman | 의존 HTTP API 목을 한 포트로 조합해 업스트림 호출 검증·장애 시나리오 실행 |
 | `postman:api-testing`           | 엔드포인트 테스트 시                   | postman | 컬렉션 어서션 실행, 실 트래픽의 API 계약 준수 검사                        |
+| `postman:application-testing`   | Playwright 테스트를 Postman과 연결 시  | postman | `postman application test`로 Playwright 트래픽 캡처·컬렉션 계약 대조·결과 게시 |
 | `postman:api-monitoring`        | 정기 API 체크 설정 시                  | postman | Postman Monitor 설정·실행·진단, 셀프호스트 러너로 사설 API 점검          |
 | `postman:performance-testing`   | API 부하 테스트 시                     | postman | 가상 사용자 동시 부하·지연/에러 임계값 기반 벤치마크                     |
 | `postman:ai-readiness`          | API의 AI 에이전트 준비도 평가 시       | postman | 컬렉션/OpenAPI 스펙의 에이전트 사용성 점수화 및 계약 개선                |
@@ -303,6 +304,8 @@
 | `postman:variables`             | 변수 스코프/시크릿 배치 결정 시        | postman | 환경별 요청 파라미터화, 변수 스코프 선택, 시크릿 노출 없이 참조          |
 | `postman:flows`                 | Postman Flow 실행/배포/디버깅 시       | postman | Postman Flow 로컬 실행·웹훅 배포·실패 블록 추적                          |
 | `postman:postman-mcp-server`    | Postman MCP 도구 사용 시               | postman | Postman MCP로 워크스페이스 리소스 조회·변경 및 MCP 제약 처리             |
+| `postman:cli-install`           | Postman CLI 미설치/`command not found` 시 | postman | Postman CLI 전역 설치, 설치 불가 시 호스티드 MCP 서버로 대체          |
+| `postman:workspaces`            | 레포 Postman 초기화/워크스페이스 연결 시 | postman | `postman init`·워크스페이스 바인딩, 인증·플랜·크레딧 제한 관련 CLI 제안 처리 |
 | `postman:webhook-testing`       | 웹훅 핸들러 테스트 시                  | postman | 공개 URL로 웹훅 수신·기록·로컬 포워딩, 재전송·서명 검증                  |
 | `postman:add-marketplace`       | 새 벤더 플러그인 라우트 추가 시        | postman | Postman 플러그인 레포에 신규 마켓플레이스/에이전트 타깃 연결             |
 | `postman:release-installer`     | Postman 인스톨러 npm 릴리스 시         | postman | `@postman/postman-plugin` 인스톨러를 npm next/latest 태그로 릴리스       |
