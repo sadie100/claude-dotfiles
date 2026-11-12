@@ -130,5 +130,20 @@ Escalate a worker's effort only when a task fails twice at the current tier.
   (via Explore for bulk lookups), then start the change.
 </explore_before_act>
 
+<scope_discipline>
+Applies in every session, regardless of model.
+Do not design for rare or future cases nobody asked about.
+- Build for the cases in the request and the code paths that exist today.
+  No config options, extension points, generic abstractions, or fallbacks
+  "in case we need it later".
+- Still handle: inputs that realistically reach this code (null/empty,
+  network/IO failure at system boundaries), and anything that would break
+  existing behavior.
+- If you spot a plausible future need, mention it in one line in the summary
+  instead of building it.
+Why: speculative generality adds code to read, test, and maintain for cases
+that usually never arrive.
+</scope_discipline>
+
 
 
