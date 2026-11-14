@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 1e5500dd76fb1dc784dfc582b2d1cdc209aacbfb6b29eeda9032a8c18bc1e4a0 -->
+<!-- harness-sync-fingerprint: 045a59997c59c0e0a1c6ea10951ab69ca80d8fec7dd2dbf0293876e9b03815b0 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -110,9 +110,9 @@
 | 스킬                                  | 트리거                           | 소속              | 설명                                                           |
 | ------------------------------------- | -------------------------------- | ----------------- | -------------------------------------------------------------- |
 | `resolving-merge-conflicts`           | 머지/리베이스 충돌 해결 시       | mattpocock/skills | 진행 중인 git 머지/리베이스 충돌 해소 가이드                   |
-| `cafe24-smart-design`                 | Cafe24 스킨 템플릿 작성/편집 시  | custom            | Cafe24 Smart Design 모듈·변수(`{$...}`)·모디파이어 레퍼런스    |
 | `cafe24-live-fix`                     | `/cafe24-live-fix`               | custom            | FTP 연동·로컬 미러가 없는 Cafe24 몰의 CSS/JS를 라이브 URL만으로 수정해 완성 코드 전달 |
 | `codex`                               | `/codex`                         | gstack            | OpenAI Codex CLI 래퍼 — 3가지 모드                             |
+| `ponytail`                            | `/ponytail` (최소 변경 구현 요청 시) | custom        | 레이지 시니어 개발자 모드 — 과제를 온전히 푸는 가장 작은 변경과 한 번에 읽히는 답변 (lite/full/ultra) |
 
 ### 디버깅·진단
 
@@ -142,7 +142,6 @@
 | `run`                                        | 앱을 실행해 결과 확인 시         | built-in            | 프로젝트 앱을 띄워 변경사항을 실 환경에서 확인                                              |
 | `document-skills:webapp-testing`             | 로컬 웹앱 테스트 요청 시         | document-skills     | Playwright 기반 로컬 웹앱 동작 검증                                                         |
 | `playwright-cli`                             | Playwright 자동화/테스트 작업 시 | custom              | Playwright로 브라우저 상호작용 자동화 및 테스트 작성                                        |
-| `ego-browser`                                | 브라우저 조작/QA/도그푸딩 필요 시 | custom              | 사용자 로그인 컨텍스트를 활용하는 Chromium(ego-lite)으로 사이트 조작·폼 입력·스크린샷·QA 수행 |
 | `chrome-devtools-mcp:chrome-devtools`        | 브라우저 디버깅/자동화 시        | chrome-devtools-mcp | Chrome DevTools MCP 기반 범용 브라우저 디버깅                                               |
 | `chrome-devtools-mcp:chrome-devtools-cli`    | 브라우저 자동화 스크립트 작성 시 | chrome-devtools-mcp | CLI에서 Chrome DevTools 자동화                                                              |
 | `document-skills:discernment-nudge`          | 실행 가능한 답변/초안 마무리 직전 | document-skills    | 방금 산출한 답변·초안의 사실·가정·누락 맥락을 점검하는 후속 질문 2~3개를 덧붙임              |
@@ -164,6 +163,9 @@
 | `devex-review`                  | `/devex-review`                     | gstack                   | 라이브 개발자 경험(DX) 감사                                                                 |
 | `health`                        | `/health`                           | gstack                   | 코드 품질 대시보드                                                                          |
 | `gstack-retro`                  | `/gstack-retro`                     | gstack                   | 주간 엔지니어링 회고                                                                        |
+| `ponytail-review`               | `/ponytail-review`                  | custom                   | 변경분의 로직·보안·부하 내성·테스트·성능·불필요 코드를 연결 코드까지 읽고 평이한 말로 리뷰  |
+| `ponytail-audit`                | `/ponytail-audit`                   | custom                   | 레포 전체 품질 감사(버그·보안·부하·무테스트 위험 코드·느린 경로·삭제/병합/분리 대상) 리포트 |
+| `ponytail-debt`                 | `/ponytail-debt`                    | custom                   | `shortcut:`(구 `ponytail:`) 주석을 모아 기술 부채 원장으로 보고 (변경 없음)                 |
 
 ### 문서화·도식화
 
@@ -182,6 +184,7 @@
 | `figma:figma-spec`                | Figma 스펙(PRD/브리프/RFC) 작업 시      | figma             | 독립형 또는 Design/FigJam 파일에 임베드된 Figma 스펙 문서 생성·읽기·편집·리뷰·코멘트                      |
 | `ko-doc`                          | `/ko-doc` (한국어 전달 문서 작성/교정 시) | custom          | 노션·레포 한국어 문서, 타 팀 전달용 보고서·요청서를 독자에 맞춰 문장형으로 작성 (메모체 AI 말투 방지)     |
 | `humanizer`                       | AI 작성 흔적 제거 요청 시               | custom            | AI 생성 텍스트의 패턴(과장 상징, 홍보성 문구, em dash 남발 등)을 검출하고 자연스럽게 교정                 |
+| `stop-slop`                       | 산문 작성/교정 시 AI 말투 제거 요청 시  | custom            | 초안·편집·리뷰 중 예측 가능한 AI 글쓰기 패턴을 제거                                                       |
 | `document-skills:doc-coauthoring` | 문서 공동 작성 요청 시                  | document-skills   | 구조화된 문서/제안서/스펙 공동 작성 워크플로우                                                            |
 | `document-skills:internal-comms`  | 사내 커뮤니케이션 작성 요청 시          | document-skills   | 상태 보고, 리더십 업데이트 등 내부 커뮤니케이션 작성                                                      |
 | `eli5:eli5`                       | `/eli5 <주제>`                          | eli5              | 어떤 주제든 큰 시각 요소 위주의 초간단 HTML 그림 설명서로 변환                                            |
@@ -227,6 +230,8 @@
 | `design-consultation`                   | `/design-consultation`                               | gstack          | 제품 이해 → 랜드스케이프 리서치 → 디자인 시스템 제안 + 폰트·컬러 프리뷰                              |
 | `design-html`                           | `/design-html`                                       | gstack          | 프로덕션급 Pretext-native HTML/CSS 디자인 확정                                                       |
 | `design-shotgun`                        | `/design-shotgun`                                    | gstack          | 다중 AI 디자인 변형 생성·비교 보드·피드백·반복                                                       |
+| `hallmark`                              | 새 웹사이트/페이지 디자인 요청 시 (`/hallmark`)      | custom          | 생성된 티 나지 않는 디자인의 신규 사이트·페이지 제작 (기존 디자인은 `/hallmark redesign` 명시 시만)  |
+| `unslop`                                | `/unslop` (AI 티 나는 UI 정리 요청 시)               | custom          | 바이브코딩된 AI풍 UI를 제품 기반 방향으로 간격·색·아이콘·카피·타입·레이아웃·모션 순서로 재디자인      |
 
 ### 오피스 문서 생성
 
@@ -329,6 +334,8 @@
 | `find-skills`                             | 스킬 검색/설치 요청 시            | custom               | 설치 가능한 스킬 발견                                                 |
 | `init`                                    | `/init`                           | built-in             | CLAUDE.md 초기 생성                                                   |
 | `document-skills:academy-guide`           | Claude 제품 사용법 질문 시        | document-skills      | Claude Academy(academy.claude.com)의 코스·튜토리얼·유스케이스 추천    |
+| `ponytail-help`                           | `/ponytail-help`                  | custom               | ponytail 레벨·스킬·명령 빠른 참조                                     |
+| `ponytail-gain`                           | `/ponytail-gain`                  | custom               | 벤치마크 기반 ponytail 절감 효과(코드·비용·속도) 표시                 |
 
 ### GEO·SEO 분석
 
