@@ -113,6 +113,7 @@
 | `cafe24-live-fix`                     | `/cafe24-live-fix`               | custom            | FTP 연동·로컬 미러가 없는 Cafe24 몰의 CSS/JS를 라이브 URL만으로 수정해 완성 코드 전달 |
 | `codex`                               | `/codex`                         | gstack            | OpenAI Codex CLI 래퍼 — 3가지 모드                             |
 | `ponytail`                            | `/ponytail` (최소 변경 구현 요청 시) | custom        | 레이지 시니어 개발자 모드 — 과제를 온전히 푸는 가장 작은 변경과 한 번에 읽히는 답변 (lite/full/ultra) |
+| `ponytail` | 코딩 작업 시 / "ponytail", "simplest solution" 요청 시 | custom | 게으른 시니어 개발자 모드 — 작업을 완전히 해결하는 최소 변경 + 한 번에 읽히는 응답 (lite/full/ultra) |
 
 ### 디버깅·진단
 
@@ -166,6 +167,9 @@
 | `ponytail-review`               | `/ponytail-review`                  | custom                   | 변경분의 로직·보안·부하 내성·테스트·성능·불필요 코드를 연결 코드까지 읽고 평이한 말로 리뷰  |
 | `ponytail-audit`                | `/ponytail-audit`                   | custom                   | 레포 전체 품질 감사(버그·보안·부하·무테스트 위험 코드·느린 경로·삭제/병합/분리 대상) 리포트 |
 | `ponytail-debt`                 | `/ponytail-debt`                    | custom                   | `shortcut:`(구 `ponytail:`) 주석을 모아 기술 부채 원장으로 보고 (변경 없음)                 |
+| `ponytail-review` | `/ponytail-review` | custom | 변경분 품질 리뷰 — 로직·보안·부하·테스트·성능·불필요 코드를 연결 코드까지 읽고 평이하게 설명 |
+| `ponytail-audit` | `/ponytail-audit` | custom | 레포 전체 품질 감사 — 버그·보안·부하·테스트 공백·삭제/병합/분리 대상 순위 리포트 (수정 없음) |
+| `ponytail-debt` | `/ponytail-debt` | custom | `shortcut:`/`ponytail:` 주석을 부채 원장으로 나열 (수정 없음) |
 
 ### 문서화·도식화
 
@@ -193,6 +197,7 @@
 | `document-generate`               | `/document-generate`                    | gstack            | 기능/모듈/프로젝트 문서를 처음부터 생성                                                                   |
 | `document-release`                | `/document-release`                     | gstack            | 배포 후 문서 갱신                                                                                         |
 | `make-pdf`                        | `/make-pdf`                             | gstack            | 마크다운 파일 → 출판 품질 PDF                                                                             |
+| `stop-slop` | 글 작성/편집/리뷰 시 | custom | 산문에서 예측 가능한 AI 작성 패턴 제거 |
 
 ### 디자인·UI 생성
 
@@ -232,6 +237,8 @@
 | `design-shotgun`                        | `/design-shotgun`                                    | gstack          | 다중 AI 디자인 변형 생성·비교 보드·피드백·반복                                                       |
 | `hallmark`                              | 새 웹사이트/페이지 디자인 요청 시 (`/hallmark`)      | custom          | 생성된 티 나지 않는 디자인의 신규 사이트·페이지 제작 (기존 디자인은 `/hallmark redesign` 명시 시만)  |
 | `unslop`                                | `/unslop` (AI 티 나는 UI 정리 요청 시)               | custom          | 바이브코딩된 AI풍 UI를 제품 기반 방향으로 간격·색·아이콘·카피·타입·레이아웃·모션 순서로 재디자인      |
+| `hallmark` | 새 웹사이트/페이지 디자인 요청 시 (`/hallmark redesign <path>`) | custom | 생성된 티가 아닌 디자인된 느낌의 웹사이트·신규 페이지 제작 |
+| `unslop` | AI 티 나는 UI 정리/리디자인 요청 시 | custom | 바이브코딩된 UI를 제품 고유 방향으로 재디자인 — 간격·색·아이콘·카피·타이포·레이아웃·모션 순차 개선 |
 
 ### 오피스 문서 생성
 
@@ -336,6 +343,8 @@
 | `document-skills:academy-guide`           | Claude 제품 사용법 질문 시        | document-skills      | Claude Academy(academy.claude.com)의 코스·튜토리얼·유스케이스 추천    |
 | `ponytail-help`                           | `/ponytail-help`                  | custom               | ponytail 레벨·스킬·명령 빠른 참조                                     |
 | `ponytail-gain`                           | `/ponytail-gain`                  | custom               | 벤치마크 기반 ponytail 절감 효과(코드·비용·속도) 표시                 |
+| `ponytail-help` | `/ponytail-help` | custom | ponytail 레벨·스킬·명령 빠른 참조 |
+| `ponytail-gain` | `/ponytail-gain` | custom | 벤치마크 기반 ponytail 절감 효과(코드·비용·속도) 표시 |
 
 ### GEO·SEO 분석
 
