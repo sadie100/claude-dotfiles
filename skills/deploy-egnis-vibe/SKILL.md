@@ -58,6 +58,8 @@ vibe는 구글 로그인(@egnis.kr) 기반이다. CLI는 **디바이스 코드 �
 RESP=$(curl -s -X POST https://vibe.egnis.net/__egnis/device/start)
 DEVICE_CODE=$(printf '%s' "$RESP" | python3 -c 'import sys,json;print(json.load(sys.stdin)["device_code"])')
 USER_CODE=$(printf '%s' "$RESP" | python3 -c 'import sys,json;print(json.load(sys.stdin)["user_code"])')
+# 다음 명령이 새 셸에서 실행돼도 이어지도록 파일에 남긴다(Claude Code는 명령마다 셸이 새로 뜬다)
+printf '%s' "$DEVICE_CODE" > "${TMPDIR:-/tmp}/vibe-device-code"
 ```
 
 사용자에게 다음을 그대로 안내한다:
@@ -65,6 +67,7 @@ USER_CODE=$(printf '%s' "$RESP" | python3 -c 'import sys,json;print(json.load(sy
 
 ```bash
 # (2) 승인될 때까지 폴링 → 세션 토큰 획득 (최대 10분, 5초 간격)
+DEVICE_CODE=${DEVICE_CODE:-$(cat "${TMPDIR:-/tmp}/vibe-device-code" 2>/dev/null)}
 SESSION=""
 for i in $(seq 1 120); do
   POLL=$(curl -s -X POST https://vibe.egnis.net/__egnis/device/poll -H 'Content-Type: application/json' -d "{\"device_code\":\"$DEVICE_CODE\"}")
@@ -74,10 +77,14 @@ for i in $(seq 1 120); do
   sleep 5
 done
 [ -n "$SESSION" ] || { echo "승인 대기 시간이 지났어요. 다시 시도하세요."; exit 1; }
+# 세션을 본인만 읽을 수 있는 파일에 저장한다 — 이후 단계가 새 셸에서 실행돼도 이 파일에서 다시 읽는다.
+(umask 077; printf '%s' "$SESSION" > ~/.vibe-session)
+rm -f "${TMPDIR:-/tmp}/vibe-device-code"
 ```
 
-- 이후 모든 vibe 호출은 `-H "Cookie: __egnis_session=$SESSION"` 으로 인증한다.
-- ⚠️ `$SESSION` 토큰은 변수로만 두고 로그·보고서에 출력하지 않는다.
+- **세션 유지 (필수)**: Claude Code·Codex는 명령을 실행할 때마다 셸을 새로 띄워서 앞 단계의 변수(`$SESSION`)가 사라진다. 그래서 **이후 vibe를 호출하는 모든 명령은 맨 앞에서 `SESSION=$(cat ~/.vibe-session)`으로 세션을 다시 읽는다**(아래 코드 블록에 이미 들어 있다). 세션이 비면 쿠키 없이 호출돼 401/426이 나온다.
+- 이후 모든 vibe 호출은 `-H "Cookie: __egnis_session=$SESSION"` 으로 인증한다. 응답이 401이거나 "로그인 세션이 없습니다"면 세션이 만료된 것이니 1단계부터 다시 한다.
+- ⚠️ 세션 토큰은 `~/.vibe-session`(권한 600)에만 두고 로그·보고서·화면에 출력하지 않는다.
 - **Windows(PowerShell)**: 동일 플로우를 `Invoke-RestMethod`로. cloudflared·winget 불필요.
   ```powershell
   $r = Invoke-RestMethod -Method Post https://vibe.egnis.net/__egnis/device/start
@@ -85,8 +92,9 @@ done
   do { Start-Sleep 5; $p = Invoke-RestMethod -Method Post https://vibe.egnis.net/__egnis/device/poll -ContentType 'application/json' -Body (@{device_code=$r.device_code}|ConvertTo-Json) } until ($p.status -ne 'pending')
   if ($p.status -ne 'approved') { Write-Host '승인 실패/만료'; exit 1 }
   $SESSION = $p.session
+  Set-Content -Path "$env:USERPROFILE\.vibe-session" -Value $SESSION -NoNewline   # 새 PowerShell에서도 이어 쓰기
   ```
-  이후 호출은 `-H "Cookie: __egnis_session=$SESSION"`(curl.exe) 또는 `-Headers @{Cookie="__egnis_session=$SESSION"}`.
+  이후 호출은 명령 맨 앞에서 `$SESSION = Get-Content "$env:USERPROFILE\.vibe-session" -Raw`로 다시 읽고, `-H "Cookie: __egnis_session=$SESSION"`(curl.exe) 또는 `-Headers @{Cookie="__egnis_session=$SESSION"}`로 쓴다.
 
 ## 2단계 — 앱 유형 판별 (정적 vs 서버형)
 
@@ -169,6 +177,7 @@ zip -qr /tmp/vibe-deploy.zip . -x 'node_modules/*' '.git/*' 'dist/*' '.env*' '*.
 ## 4단계 — 주소 사용 가능 확인 (필수)
 
 ```bash
+SESSION=$(cat ~/.vibe-session 2>/dev/null)   # 새 셸에서도 1단계 세션 사용
 curl -s -H "Cookie: __egnis_session=$SESSION" "https://vibe.egnis.net/api/slug-check/<슬러그>"
 ```
 - `available: true` → 진행.
@@ -184,6 +193,7 @@ BASE=$(python3 -c 'import json;print(json.load(open(".vibe/base.json")).get("ver
 ```
 정적 앱(기본):
 ```bash
+SESSION=$(cat ~/.vibe-session 2>/dev/null)   # 새 셸에서도 1단계 세션 사용
 curl -s -X POST https://vibe.egnis.net/upload \
   -H "Cookie: __egnis_session=$SESSION" \
   -F "file=@/tmp/vibe-deploy.zip" \
@@ -192,6 +202,7 @@ curl -s -X POST https://vibe.egnis.net/upload \
 ```
 서버형 앱 — `apptype=server`를, 공용 데이터를 쓰면 `datasources=...`도 같은 curl에 함께 넣는다:
 ```bash
+SESSION=$(cat ~/.vibe-session 2>/dev/null)   # 새 셸에서도 1단계 세션 사용
 curl -s -X POST https://vibe.egnis.net/upload \
   -H "Cookie: __egnis_session=$SESSION" \
   -F "file=@/tmp/vibe-deploy.zip" \
@@ -222,6 +233,7 @@ curl -s -X POST https://vibe.egnis.net/upload \
 - PUT의 `Content-Type`은 반드시 `application/zip`(서명에 포함됨 — 다르면 R2가 403).
 
 ```bash
+SESSION=$(cat ~/.vibe-session 2>/dev/null)   # 새 셸에서도 1단계 세션 사용
 ZIP=/tmp/vibe-deploy.zip
 BYTES=$(wc -c < "$ZIP" | tr -d ' ')
 # ① 발급
@@ -259,6 +271,7 @@ curl -s -X POST https://vibe.egnis.net/upload \
 ## 6단계 — 빌드 로그 스트리밍
 
 ```bash
+SESSION=$(cat ~/.vibe-session 2>/dev/null)   # 새 셸에서도 1단계 세션 사용
 curl -sN --max-time 420 -H "Cookie: __egnis_session=$SESSION" "https://vibe.egnis.net/events/<jobId>"
 ```
 SSE 로그를 사용자에게 보여주고, `event: done`의 JSON이 최종 결과다.
@@ -276,6 +289,7 @@ SSE 로그를 사용자에게 보여주고, `event: done`의 JSON이 최종 결�
 
 1. **최신 소스 받기** (1단계 로그인 후). 빈 작업 폴더에 푼다:
    ```bash
+SESSION=$(cat ~/.vibe-session 2>/dev/null)   # 새 셸에서도 1단계 세션 사용
    curl -sf -H "Cookie: __egnis_session=$SESSION" -o /tmp/<슬러그>-src.zip "https://vibe.egnis.net/api/service/<슬러그>/source"
    mkdir -p ~/vibe/<슬러그> && unzip -oq /tmp/<슬러그>-src.zip -d ~/vibe/<슬러그> && cd ~/vibe/<슬러그>
    ```
@@ -461,6 +475,7 @@ const n = await fetch(`${process.env.EGNIS_DATA_PROXY}/api/proxy/notion`, {
 1단계(디바이스 코드 세션)로 `$SESSION`을 얻은 뒤 그대로 이어서 쓴다.
 
 ```bash
+SESSION=$(cat ~/.vibe-session 2>/dev/null)   # 새 셸에서도 1단계 세션 사용
 # 1) 활성화 여부 확인 — enabled:false면 관리자에게 R2 셋업(docs/media-storage.md)을 요청하라고 안내하고 중단.
 curl -s -H "Cookie: __egnis_session=$SESSION" https://vibe.egnis.net/api/media-policy
 
@@ -529,5 +544,5 @@ async function uploadToMedia(file, session) {
 ## 안전 규칙
 - **사용자가 명시적으로 배포를 요청할 때만 실행한다. 스스로 판단해 배포하지 않는다.**
 - `.env`·서비스계정 JSON 등 **비밀 파일이 zip에 들어가지 않게** 제외 패턴을 유지한다. 비밀은 datasources/프록시로 처리하고 코드·zip에 넣지 않는다.
-- 디바이스 플로우의 `$SESSION`(세션 토큰)은 **로그·보고서에 노출하지 않는다** — 변수로만 둔다.
+- 디바이스 플로우의 세션 토큰은 **로그·보고서에 노출하지 않는다** — `~/.vibe-session`(권한 600)과 변수로만 다룬다.
 - 다른 사람 소유 슬러그면 서버가 403으로 거부한다 — 우회하지 말고 다른 슬러그를 제안한다.
