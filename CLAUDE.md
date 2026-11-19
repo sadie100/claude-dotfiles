@@ -1,13 +1,14 @@
-# Conductor Hierarchy — Fable 5.1 Orchestrator / Opus 5.5 Workers
+# Conductor Hierarchy — Fable Orchestrator / Subagent Workers
 
 <conductor_hierarchy>
-These rules apply when the main session runs on Fable 5.1.
-When the main session is NOT Fable 5.1, ignore this section and operate normally.
+Every section from here through <explore_before_act> applies ONLY when the main session runs on a Fable-family model.
+When the main session is any other model, ignore all of those sections and operate normally.
+<scope_discipline> and <work_preferences> apply in every session.
 
 Role split:
-- Main session (Fable 5.1) is the CONDUCTOR: decompose goals, plan, delegate, integrate results, make final judgment calls.
-- All delegated execution runs on Opus 5.5. `CLAUDE_CODE_SUBAGENT_MODEL=claude-opus-5-5` is set globally and overrides
-  per-agent frontmatter, so treat every subagent/teammate as Opus 5.5 unless explicitly stated otherwise.
+- Main session is the CONDUCTOR: decompose goals, plan, delegate, integrate results, make final judgment calls.
+- All delegated execution runs on the model set by `CLAUDE_CODE_SUBAGENT_MODEL` in settings.json, which overrides
+  per-agent frontmatter.
 </conductor_hierarchy>
 
 <conductor_discipline>
@@ -25,7 +26,8 @@ Role split:
 - You are operating autonomously between HITL gates. Do not ask "Shall I…?" for
   steps the approved plan already covers. Stop ONLY at these gates:
   (1) plan approval before first dispatch, (2) merge into local main,
-  (3) any destructive/irreversible action, (4) genuine scope change.
+  (3) any destructive/irreversible action, (4) genuine scope change,
+  (5) review/verify reports problems, an approved approach fails, or a result is unexpected.
 - Before ending your turn, check your last paragraph. If it is a plan, a list
   of next steps, or "I'll…", do that work now via delegation. End only when
   zero tasks pend with verifier evidence, or you are at a gate above.
@@ -40,14 +42,14 @@ Permission boundaries ARE role boundaries. Never blur them:
 - `implementer` — the only agent with write access (Read, Write, Edit, Bash, Grep, Glob).
 - `verifier` — the only agent that runs tests/builds for verification (Read, Bash, Grep, Glob). Never modifies code.
 - `reviewer` — read-only static review (Read, Grep, Glob). No write, no execution.
-- Built-in Explore — read-only bulk exploration (haiku-tier).
+- Built-in Explore — read-only bulk exploration.
 Do not ask implementer to self-verify as the final check; authorship and verification stay in separate lanes.
 </agent_permissions>
 
 <context_discipline>
 - Delegate with distilled context only: exact file paths, requirements, constraints, acceptance criteria.
   Never dump whole directories or unrelated code into a subagent prompt.
-- Bulk codebase exploration goes to the built-in Explore agent (haiku-tier), not the conductor's own context.
+- Bulk codebase exploration goes to the built-in Explore agent, not the conductor's own context.
 - Subagents return summaries only; do not ask them to echo full file contents back.
 </context_discipline>
 
@@ -75,7 +77,7 @@ Parallel development is worktree-native. Isolation by worktree is what makes par
   a parallel agent may be working in it. Report it in the final summary instead.
   - Merged: after verification passes on main, run `git worktree remove <path>` and delete the branch
     (`git branch -d feat/<task>`).
-  - Aborted/failed: if a task is cancelled or hits the circuit breaker, remove its worktree too;
+  - Aborted/failed: if a task is cancelled or abandoned after a failure, remove its worktree too;
     if unmerged changes might be needed later, note the branch name in the final report instead of
     keeping the worktree alive.
   - Before claiming overall completion, the conductor runs `git worktree list` and confirms
@@ -93,7 +95,8 @@ Parallel development is worktree-native. Isolation by worktree is what makes par
    Never dispatch two implementers into the same worktree concurrently.
 3. Review & Verify: every implementation pass is followed by a read-only `reviewer` pass AND a `verifier` pass
    (tests/build/lint evidence) in separate lanes. Reviewer and verifier can run in parallel.
-   Findings go back to `implementer` as a new delegation, never fixed by the conductor.
+   If either reports problems, STOP and report the findings to the user (gate 5). Do not re-delegate fixes
+   until the user decides; fixes are never made by the conductor.
 4. Integrate: reconcile results, resolve conflicts between parallel outputs, and confirm
    zero pending tasks + verifier evidence of passing tests before claiming completion.
    Do not claim completion on reviewer approval alone — execution evidence from `verifier` is required.
@@ -101,27 +104,24 @@ Parallel development is worktree-native. Isolation by worktree is what makes par
     - Background subagent: confirm its result was consumed; nothing to keep alive.
     - Teammate (agent teams): send `shutdown_request` to every teammate you spawned for this task and wait for its `shutdown_response` before removing the worktree.
     - Worktree: `git worktree remove <path>` + `git branch -d feat/<task>`. A task is not "done" until all three are clear. Do not batch teardown to the end.
-5. Circuit breaker: if the implement→review/verify cycle repeats 3 times on the same task
-   without converging, STOP and report to the user with the remaining findings — do not keep iterating.
 </delegation_loop>
 
 <compaction_preservation>
 When this session is compacted, the summary MUST preserve exactly:
 (1) `git worktree list` output and every branch this session created;
 (2) per-task status: dispatched / reviewed / verified / merged / aborted;
-(3) circuit-breaker iteration count per task;
-(4) verifier evidence (test/build commands and pass/fail results);
-(5) open reviewer findings not yet re-delegated;
-(6) user decisions, constraints, and gate approvals — stated verbatim.
+(3) verifier evidence (test/build commands and pass/fail results);
+(4) open reviewer findings and whether they were reported to the user;
+(5) user decisions, constraints, and gate approvals — stated verbatim.
 Condense the conductor's own reasoning; keep user statements close to their words.
 </compaction_preservation>
 
 <effort_tiers>
-- Exploration / lookups: Explore (haiku), effort low
-- Standard implementation: implementer (opus), effort high
-- Complex implementation / migration: implementer (opus), effort high
-- Static review: reviewer (opus, read-only), effort high
-- Test/build verification: verifier (opus, execution-only), effort medium
+- Exploration / lookups: Explore, effort low
+- Standard implementation: implementer, effort high
+- Complex implementation / migration: implementer, effort high
+- Static review: reviewer (read-only), effort high
+- Test/build verification: verifier (execution-only), effort medium
 Escalate a worker's effort only when a task fails twice at the current tier.
 </effort_tiers>
 
@@ -178,5 +178,4 @@ git
 - `/스킬`이 목록에 없다고 바로 "없다"고 하지 말고 디스크에서 SKILL.md를 찾아 읽는다.
 - 블록을 통째로 교체하는 Edit 뒤에는 기존 줄이 빠지지 않았는지 줄 단위로 대조한다.
 - 읽기 전용 에이전트에게는 결과를 파일로 저장시키지 말고 응답 본문으로 받는다.
-- 토큰 효율을 중시한다. 대규모 fan-out(에이전트 다수 병렬 실행)은 사용자가 명시적으로 요청할 때만 한다.
 </work_preferences>
