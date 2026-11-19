@@ -162,7 +162,7 @@ Applies in every session, regardless of model. 여러 프로젝트에서 반복 
 - 사용자가 영어로 프롬프트를 쓰면 영어 공부 중이니 어색한 표현을 짧게 교정해 준다.
 
 git
-- 커밋은 요청받았을 때만 한다. 커밋 요청은 push 없이 커밋까지만 한다.
+- 커밋 요청은 push 없이 커밋까지만 한다.
 - 미커밋 작업을 보호한다. 작업 트리가 더러울 때 `git reset --hard`, `git checkout -- <file>`로 되돌리지 않는다. add는 파일을 지정해서 하고 `--amend`는 쓰지 않는다.
 - git 상태를 바꾸는 서브에이전트 작업은 격리된 worktree나 스크래치 사본에서 돌린다.
 
