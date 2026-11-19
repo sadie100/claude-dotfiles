@@ -1,6 +1,6 @@
 # Claude Code Harness 구성 현황
 
-<!-- harness-sync-fingerprint: 045a59997c59c0e0a1c6ea10951ab69ca80d8fec7dd2dbf0293876e9b03815b0 -->
+<!-- harness-sync-fingerprint: 62ed15533405ff2df7653d212016c0bfb345ff377c9d0544d2332ca9ee4cdb31 -->
 
 이 레포지토리에 설치된 Claude Code 설정(스킬, 플러그인, 훅, MCP 등)을 정리한 문서입니다.
 
@@ -227,6 +227,7 @@
 | `figma:figma-use-figjam`                | FigJam 컨텍스트 use_figma 사용 시                    | figma           | FigJam 컨텍스트에서 use_figma 툴 사용 보조                                                           |
 | `figma:figma-use-motion`                | 노드 애니메이션 작업 시                              | figma           | use_figma 툴로 노드 애니메이션(키프레임/이징/타임라인) 작업                                          |
 | `figma:figma-use-slides`                | 슬라이드 컨텍스트 use_figma 사용 시                  | figma           | 슬라이드 컨텍스트에서 use_figma 툴 사용 보조                                                         |
+| `figma:figma-3d-transforms`             | 3D·원근·아이소메트릭·패럴랙스 표현 요청 시           | figma           | Figma 노드에 깊이·원근·z축 회전·틸트 등 3D 트랜스폼 추가/편집                                        |
 | `figma:figma-shaders`                   | Figma 셰이더 효과/필 작업 시                         | figma           | `create_shader`/`update_shader` 호출 전 필수 로드 — 프로시저럴 셰이더 효과·필 생성/수정              |
 | `figma:figma-generative-plugins`        | 재사용 가능한 Figma 제너레이티브 플러그인 작업 시    | figma           | `create_generative_plugin`/`update_generative_plugin` 호출 전 필수 로드 — 플러그인 작성·수정·확장    |
 | `design-consultation`                   | `/design-consultation`                               | gstack          | 제품 이해 → 랜드스케이프 리서치 → 디자인 시스템 제안 + 폰트·컬러 프리뷰                              |
@@ -311,6 +312,7 @@
 | `postman:variables`             | 변수 스코프/시크릿 배치 결정 시        | postman | 환경별 요청 파라미터화, 변수 스코프 선택, 시크릿 노출 없이 참조          |
 | `postman:flows`                 | Postman Flow 실행/배포/디버깅 시       | postman | Postman Flow 로컬 실행·웹훅 배포·실패 블록 추적                          |
 | `postman:postman-mcp-server`    | Postman MCP 도구 사용 시               | postman | Postman MCP로 워크스페이스 리소스 조회·변경 및 MCP 제약 처리             |
+| `postman:mcp-testing`           | MCP 서버 점검/디버깅/테스트 작성 시    | postman | 로컬·원격 MCP 서버 연결 확인, 툴 호출 실패 디버깅, 회귀 테스트 작성      |
 | `postman:cli-install`           | Postman CLI 미설치/`command not found` 시 | postman | Postman CLI 전역 설치, 설치 불가 시 호스티드 MCP 서버로 대체          |
 | `postman:workspaces`            | 레포 Postman 초기화/워크스페이스 연결 시 | postman | `postman init`·워크스페이스 바인딩, 인증·플랜·크레딧 제한 관련 CLI 제안 처리 |
 | `postman:webhook-testing`       | 웹훅 핸들러 테스트 시                  | postman | 공개 URL로 웹훅 수신·기록·로컬 포워딩, 재전송·서명 검증                  |
