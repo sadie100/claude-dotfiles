@@ -13,6 +13,32 @@ LOCKDIR="$DOTFILES_DIR/.git/dotfiles-sync.lock.d"
 mkdir "$LOCKDIR" 2>/dev/null || exit 0
 trap 'rmdir "$LOCKDIR"' EXIT
 
+# Warn (once per broken state) if ~/.claude entries are no longer symlinks into this repo.
+# Warn only — never auto-fix, never fail the sync.
+check_symlinks() {
+  local marker="$DOTFILES_DIR/.git/dotfiles-sync.symlink-warned"
+  local real_dir broken="" name target
+  real_dir="$(pwd -P)"
+  for name in settings.json CLAUDE.md skills agents; do
+    target="$(readlink "$HOME/.claude/$name" 2>/dev/null || true)"
+    case "$target" in
+      "$DOTFILES_DIR"/*|"$real_dir"/*) ;;
+      *) broken="${broken:+$broken, }$name" ;;
+    esac
+  done
+
+  if [ -z "$broken" ]; then
+    rm -f "$marker"
+    return 0
+  fi
+  [ "$(cat "$marker" 2>/dev/null || true)" = "$broken" ] && return 0
+  printf '%s' "$broken" > "$marker"
+  local msg="dotfiles 심볼릭 링크 끊김: ~/.claude/{$broken}"
+  echo "[dotfiles-sync] $msg" >&2
+  node "$DOTFILES_DIR/scripts/hooks/notify.mjs" "$msg" </dev/null >/dev/null 2>&1 || true
+}
+check_symlinks || true
+
 # Exit if no changes
 if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
   exit 0

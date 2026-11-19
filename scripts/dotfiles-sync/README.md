@@ -31,6 +31,7 @@ dotfiles 레포의 변경분을 자동으로 commit + push하는 동기화 스�
 ## 동작
 
 1. 동시 실행 방지: lockdir(bash) / Named Mutex(PowerShell) 획득 실패 시 즉시 종료
+   - (bash) `~/.claude/{settings.json,CLAUDE.md,skills,agents}`가 이 레포를 가리키는 심볼릭 링크가 아니면 `scripts/hooks/notify.mjs`로 데스크톱 알림을 띄운다. 자동 복구는 하지 않고, 같은 끊김 상태에는 한 번만 알리며(`.git/dotfiles-sync.symlink-warned`), 모두 정상이면 표식을 지운다.
 2. 변경분 검사: unstaged / staged / untracked가 모두 없으면 종료
 3. `git add -A` → 변경 파일명을 메시지로 `git commit -m "sync: <files>"` (`--no-gpg-sign`)
 4. `git push`, 거부되면 `pull --rebase`(에디터 비활성화로 멈춤 없음) 후 재시도. 진짜 충돌이면 `rebase --abort`로 깨끗이 되돌리고 종료(오프라인 등)

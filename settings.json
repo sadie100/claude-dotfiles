@@ -160,7 +160,7 @@
     }
   },
   "language": "korean",
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "modelSettings": {
     "claude-opus-5-5": {
       "effortLevel": "medium"
@@ -190,5 +190,9 @@
       "Trusted internal domains (overrides default): exact hosts itadmin001.cafe24.com and m.itadmin001.cafe24.com — our own Cafe24 QA test mall, not a brand production mall. We upload our skin files there over FTP as routine development.",
       "Additional context: itadmin001 is a disposable QA mall. Its carts, orders, shipping addresses, and test member accounts hold test data with no business impact. Its payment setup is used only with 무통장입금 or PG test mode, never real card or bank details."
     ]
-  }
+  },
+  "env": {
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-opus-5-5"
+  },
+  "autoCompactWindow": 300000
 }
