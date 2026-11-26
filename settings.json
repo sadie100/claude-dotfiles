@@ -56,7 +56,7 @@
       "Bash(npm install *)"
     ]
   },
-  "model": "fable",
+  "model": "opus",
   "hooks": {
     "ConfigChange": [
       {
