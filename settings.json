@@ -193,6 +193,5 @@
   },
   "env": {
     "CLAUDE_CODE_SUBAGENT_MODEL": "claude-opus-5-5"
-  },
-  "autoCompactWindow": 300000
+  }
 }
